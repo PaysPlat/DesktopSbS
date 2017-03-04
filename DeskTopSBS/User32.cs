@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace DeskTopSBS
 {
-   public static class User32
+    public static class User32
     {
         [DllImport("user32.dll")]
         public static extern int GetWindowLong(IntPtr hwnd, int index);
@@ -18,8 +18,17 @@ namespace DeskTopSBS
         public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
         public const int WS_EX_TRANSPARENT = 0x00000020;
-        public const int GWL_EXSTYLE = (-20);
+        public const int WS_EX_TOOLWINDOW = 0x00000080;
 
+        public const int GWL_EXSTYLE = -20;
+        public const int GWL_STYLE = -16;
+
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
+
+        [DllImport("user32.dll")]
+        public static extern int ShowCursor(bool bShow);
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetDesktopWindow();
@@ -30,10 +39,10 @@ namespace DeskTopSBS
         [DllImport("user32.dll")]
         public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-      
+
         [DllImport("user32.dll")]
         public static extern int EnumWindows(EnumWindowsCallback lpEnumFunc, int lParam);
-       public  delegate bool EnumWindowsCallback(IntPtr hwnd, int lParam);
+        public delegate bool EnumWindowsCallback(IntPtr hwnd, int lParam);
 
         [DllImport("user32.dll")]
         public static extern ulong GetWindowLongA(IntPtr hWnd, int nIndex);
@@ -43,15 +52,15 @@ namespace DeskTopSBS
 
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT 
+        public struct RECT
         {
             public int Left;
             public int Top;
             public int Right;
             public int Bottom;
 
-            
-             
+
+
             public bool IsEmpty()
             {
                 return this.Left == 0 &&
@@ -62,13 +71,13 @@ namespace DeskTopSBS
 
             public override int GetHashCode()
             {
-                return 11*Left + 13*Top + 17*Right + 19*Bottom;
+                return 11 * Left + 13 * Top + 17 * Right + 19 * Bottom;
             }
 
             public override bool Equals(object obj)
             {
                 if (!(obj is RECT)) return false;
-                RECT other = (RECT) obj;
+                RECT other = (RECT)obj;
 
                 return this.Left == other.Left &&
                        this.Top == other.Top &&

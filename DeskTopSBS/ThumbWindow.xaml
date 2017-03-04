@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:DeskTopSBS"
         xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
-        Topmost="True" ShowInTaskbar="False" ShowActivated="False"
+        Title="ThumbWindows"
+        Topmost="True" ShowInTaskbar="False" 
         WindowStyle="None" ResizeMode="NoResize" Background="Transparent"
         AllowsTransparency="True"
         IsHitTestVisible="False">

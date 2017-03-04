@@ -11,35 +11,30 @@ namespace DeskTopSBS
 {
     public class WinSBS
     {
-        private string title = null;
-        public string Title
-        {
-            get
-            {
-                if (this.title == null)
-                {
-                    StringBuilder sb = new StringBuilder(100);
-                    User32.GetWindowText(this.Handle, sb, sb.Capacity);
-                    this.title = sb.ToString();
-                }
-                return this.title;
-            }
-        }
+        public string Title { get; set; }
 
         public IntPtr Handle { get; private set; }
 
         public ThumbWindow ThumbLeft { get; private set; }
         public ThumbWindow ThumbRight { get; private set; }
 
-        public DwmApi.WS WinStyle { get; set; }
-        public DwmApi.WSEX WinStyleEx { get; set; }
+        public WinSBS Owner { get; set; }
+     
+
+        //public DwmApi.WS WinStyle { get; set; }
+        //public DwmApi.WSEX WinStyleEx { get; set; }
 
         public User32.RECT SourceRect { get; set; }
-
 
         public WinSBS(IntPtr inHandle)
         {
             this.Handle = inHandle;
+        }
+
+        public void CopyThumbInstances(WinSBS inOriginal)
+        {
+            this.ThumbLeft = inOriginal.ThumbLeft;
+            this.ThumbRight = inOriginal.ThumbRight;
         }
 
         public void RegisterThumbs()
@@ -48,8 +43,8 @@ namespace DeskTopSBS
             IntPtr thumbLeft = IntPtr.Zero,
                 thumbRight = IntPtr.Zero;
 
-            this.ThumbLeft = new ThumbWindow();
-            this.ThumbRight = new ThumbWindow();
+             this.ThumbLeft = new ThumbWindow();
+             this.ThumbRight = new ThumbWindow();
 
             this.ThumbLeft.Show();
             this.ThumbRight.Show();
@@ -64,7 +59,7 @@ namespace DeskTopSBS
                 this.ThumbRight.Thumb = thumbRight;
                 this.UpdateThumbs();
             }
-         
+
         }
 
         public void UnRegisterThumbs()
@@ -82,7 +77,6 @@ namespace DeskTopSBS
         public void UpdateThumbs()
         {
 
-
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
             props.fVisible = true;
             props.dwFlags = DwmApi.DWM_TNP_VISIBLE | DwmApi.DWM_TNP_RECTDESTINATION;
@@ -95,22 +89,27 @@ namespace DeskTopSBS
                 Bottom = this.SourceRect.Bottom - SourceRect.Top
             };
 
-            this.ThumbLeft.Left = this.SourceRect.Left / 2.0;
-            this.ThumbLeft.Top = this.SourceRect.Top;
-            this.ThumbLeft.Width = props.rcDestination.Right;
-            this.ThumbLeft.Height = props.rcDestination.Bottom;
+            User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle??IntPtr.Zero,
+                1920 + this.SourceRect.Left/2,
+                this.SourceRect.Top,
+                props.rcDestination.Right,
+                props.rcDestination.Bottom,
+                0);
 
-            DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
+              DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
 
             int screenWidthMiddle = (int)System.Windows.SystemParameters.PrimaryScreenWidth / 2;
 
-            this.ThumbRight.Left = screenWidthMiddle + this.SourceRect.Left / 2.0;
-            this.ThumbRight.Top = this.SourceRect.Top;
-            this.ThumbRight.Width = props.rcDestination.Right;
-            this.ThumbRight.Height = props.rcDestination.Bottom;
+            User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
+              screenWidthMiddle + this.SourceRect.Left / 2,
+              this.SourceRect.Top,
+              props.rcDestination.Right,
+              props.rcDestination.Bottom,
+              0);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
         }
+
 
 
         public override string ToString()

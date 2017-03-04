@@ -31,6 +31,7 @@ namespace DeskTopSBS
         public ThumbWindow()
         {
             InitializeComponent();
+            
         }
 
 
@@ -38,7 +39,7 @@ namespace DeskTopSBS
         {
             this.Handle = new WindowInteropHelper(this).Handle;
             int extendedStyle = User32.GetWindowLong(this.Handle, User32.GWL_EXSTYLE);
-            User32.SetWindowLong(this.Handle, User32.GWL_EXSTYLE, extendedStyle | User32.WS_EX_TRANSPARENT);
+            User32.SetWindowLong(this.Handle, User32.GWL_EXSTYLE, extendedStyle | User32.WS_EX_TRANSPARENT|User32.WS_EX_TOOLWINDOW);
         }
 
  
