@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Forms.Integration;
+using System.Windows.Media;
 
 namespace DeskTopSBS
 {
@@ -22,10 +25,11 @@ namespace DeskTopSBS
                 return this.title;
             }
         }
+
         public IntPtr Handle { get; private set; }
 
-        public IntPtr ThumbLeft { get; private set; }
-        public IntPtr ThumbRight { get; private set; }
+        public ThumbWindow ThumbLeft { get; private set; }
+        public ThumbWindow ThumbRight { get; private set; }
 
         public DwmApi.WS WinStyle { get; set; }
         public DwmApi.WSEX WinStyleEx { get; set; }
@@ -38,29 +42,39 @@ namespace DeskTopSBS
             this.Handle = inHandle;
         }
 
-        public void RegisterThumbs(IntPtr destHandle)
+        public void RegisterThumbs()
         {
 
             IntPtr thumbLeft = IntPtr.Zero,
                 thumbRight = IntPtr.Zero;
 
+            this.ThumbLeft = new ThumbWindow();
+            this.ThumbRight = new ThumbWindow();
 
-            int tlRes = DwmApi.DwmRegisterThumbnail(destHandle, this.Handle, out thumbLeft);
-            int trRes = DwmApi.DwmRegisterThumbnail(destHandle, this.Handle, out thumbRight);
+            this.ThumbLeft.Show();
+            this.ThumbRight.Show();
+
+
+            int tlRes = DwmApi.DwmRegisterThumbnail(this.ThumbLeft.Handle, this.Handle, out thumbLeft);
+            int trRes = DwmApi.DwmRegisterThumbnail(this.ThumbRight.Handle, this.Handle, out thumbRight);
 
             if (tlRes == 0 && trRes == 0)
             {
-                this.ThumbLeft = thumbLeft;
-                this.ThumbRight = thumbRight;
-
+                this.ThumbLeft.Thumb = thumbLeft;
+                this.ThumbRight.Thumb = thumbRight;
+                this.UpdateThumbs();
             }
-
+         
         }
 
         public void UnRegisterThumbs()
         {
-            DwmApi.DwmUnregisterThumbnail(this.ThumbLeft);
-            DwmApi.DwmUnregisterThumbnail(this.ThumbRight);
+            DwmApi.DwmUnregisterThumbnail(this.ThumbLeft.Thumb);
+            DwmApi.DwmUnregisterThumbnail(this.ThumbRight.Thumb);
+
+            this.ThumbLeft.Close();
+            this.ThumbRight.Close();
+
         }
 
 
@@ -73,30 +87,29 @@ namespace DeskTopSBS
             props.fVisible = true;
             props.dwFlags = DwmApi.DWM_TNP_VISIBLE | DwmApi.DWM_TNP_RECTDESTINATION;
 
-            User32.RECT sourceRect = this.SourceRect;
-
             props.rcDestination = new User32.RECT
             {
-                Left = sourceRect.Left / 2,
-                Top = sourceRect.Top,
-                Right = sourceRect.Right / 2,
-                Bottom = sourceRect.Bottom
+                Left = 0,
+                Top = 0,
+                Right = (this.SourceRect.Right - this.SourceRect.Left) / 2,
+                Bottom = this.SourceRect.Bottom - SourceRect.Top
             };
 
-            DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft, ref props);
+            this.ThumbLeft.Left = this.SourceRect.Left / 2.0;
+            this.ThumbLeft.Top = this.SourceRect.Top;
+            this.ThumbLeft.Width = props.rcDestination.Right;
+            this.ThumbLeft.Height = props.rcDestination.Bottom;
+
+            DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
 
             int screenWidthMiddle = (int)System.Windows.SystemParameters.PrimaryScreenWidth / 2;
-            props.rcDestination = new User32.RECT
-            {
-                Left = screenWidthMiddle + sourceRect.Left / 2,
-                Top = sourceRect.Top,
-                Right = screenWidthMiddle + sourceRect.Right / 2,
-                Bottom = sourceRect.Bottom
-            };
 
+            this.ThumbRight.Left = screenWidthMiddle + this.SourceRect.Left / 2.0;
+            this.ThumbRight.Top = this.SourceRect.Top;
+            this.ThumbRight.Width = props.rcDestination.Right;
+            this.ThumbRight.Height = props.rcDestination.Bottom;
 
-            DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight, ref props);
-
+            DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
         }
 
 
