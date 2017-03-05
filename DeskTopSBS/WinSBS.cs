@@ -60,6 +60,8 @@ namespace DeskTopSBS
                 this.UpdateThumbs();
             }
 
+
+
         }
 
         public void UnRegisterThumbs()
@@ -91,19 +93,19 @@ namespace DeskTopSBS
             {
                 Left = decalLeft,
                 Top = decalTop,
-                Right = Math.Min(screenWidth, this.SourceRect.Right)-this.SourceRect.Left,
-                Bottom = Math.Min(screenHeight, this.SourceRect.Bottom )-this.SourceRect.Top
+                Right = Math.Min(screenWidth, this.SourceRect.Right) - this.SourceRect.Left,
+                Bottom = Math.Min(screenHeight, this.SourceRect.Bottom) - this.SourceRect.Top
             };
 
             props.rcDestination = new User32.RECT
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right-props.rcSource.Left) / 2.0),
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / 2.0),
                 Bottom = props.rcSource.Bottom - props.rcSource.Top
             };
 
-            int posLeft = (int) Math.Floor(Math.Max(0, this.SourceRect.Left)/2.0),
+            int posLeft = (int)Math.Floor(Math.Max(0, this.SourceRect.Left) / 2.0),
                 posTop = Math.Max(0, this.SourceRect.Top);
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
@@ -117,7 +119,7 @@ namespace DeskTopSBS
 
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-              screenWidth/2+posLeft,
+              screenWidth / 2 + posLeft,
               posTop,
               props.rcDestination.Right,
               props.rcDestination.Bottom,
@@ -126,12 +128,11 @@ namespace DeskTopSBS
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
 
 #if DEBUG
-            if (this.Title.Contains("Chrome"))
-            {
-               DebugWindow.Instance.UpdateMessage( $"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine} Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //if (this.Title.Contains("Chrome"))
+            //{
+            //   DebugWindow.Instance.UpdateMessage( $"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine} Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //}
 
-
-            }
 #endif
 
         }

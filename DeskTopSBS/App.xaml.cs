@@ -90,6 +90,8 @@ namespace DeskTopSBS
             this.tmpWindows = new List<WinSBS>();
             User32.EnumWindows(windowFound, 0);
 
+            int updateAllIndex = -1;
+
             for (int i = this.tmpWindows.Count - 1; i >= 0; --i)
             {
                 if (i < this.tmpWindows.Count - 1)
@@ -110,8 +112,11 @@ namespace DeskTopSBS
                 {
                     this.tmpWindows[i].CopyThumbInstances(this.windows[oldIndex]);
 
-                    if (!this.windows[oldIndex].SourceRect.Equals(this.tmpWindows[i].SourceRect) ||
-                        this.windows[oldIndex].Owner?.Handle != this.tmpWindows[i].Owner?.Handle)
+                    if (updateAllIndex < 0 && this.windows[oldIndex].Owner?.Handle != this.tmpWindows[i].Owner?.Handle)
+                    {
+                        updateAllIndex = i;
+                    }
+                    else if (!this.windows[oldIndex].SourceRect.Equals(this.tmpWindows[i].SourceRect))
                     {
                         this.tmpWindows[i].UpdateThumbs();
                     }
@@ -127,10 +132,23 @@ namespace DeskTopSBS
 
             this.windows = this.tmpWindows;
 
-            this.cursorSbS.Owner = this.windows.FirstOrDefault();
+            if (updateAllIndex > -1)
+            {
+                for (int i = updateAllIndex; i >= 0; --i)
+                {
+                    this.windows[i].UpdateThumbs();
+                }
+            }
+
+
+
+            // this.cursorSbS.Owner = this.windows.FirstOrDefault();
             this.cursorSbS.Position = User32.GetMousePositionOnScreen();
             this.cursorSbS.UpdateThumbs();
 
+
+            // DebugWindow.Instance.UpdateMessage($"Active Window: {this.cursorSbS.Owner} Handle: {this.cursorSbS.Owner.Handle}{Environment.NewLine}Exe: {User32.GetFilePath(this.cursorSbS.Owner.Handle)}");
+            //DebugWindow.Instance.UpdateMessage(count.ToString());
         }
 
         private bool windowFound(IntPtr hwnd, int lParam)
