@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DeskTopSBS.Properties
+namespace DesktopSbS.Properties
 {
 
 

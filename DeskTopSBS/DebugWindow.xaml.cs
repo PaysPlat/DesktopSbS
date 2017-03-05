@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
     /// <summary>
     /// Interaction logic for DebugWindow.xaml

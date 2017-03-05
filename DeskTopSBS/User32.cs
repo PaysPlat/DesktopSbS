@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
     public static class User32
     {

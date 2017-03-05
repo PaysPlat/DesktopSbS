@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
-    public class WinSBS
+    public class WinSbS
     {
         public string Title { get; set; }
 
@@ -18,7 +18,7 @@ namespace DeskTopSBS
         public ThumbWindow ThumbLeft { get; private set; }
         public ThumbWindow ThumbRight { get; private set; }
 
-        public WinSBS Owner { get; set; }
+        public WinSbS Owner { get; set; }
 
 
         //public DwmApi.WS WinStyle { get; set; }
@@ -26,12 +26,12 @@ namespace DeskTopSBS
 
         public User32.RECT SourceRect { get; set; }
 
-        public WinSBS(IntPtr inHandle)
+        public WinSbS(IntPtr inHandle)
         {
             this.Handle = inHandle;
         }
 
-        public void CopyThumbInstances(WinSBS inOriginal)
+        public void CopyThumbInstances(WinSbS inOriginal)
         {
             this.ThumbLeft = inOriginal.ThumbLeft;
             this.ThumbRight = inOriginal.ThumbRight;
@@ -79,10 +79,15 @@ namespace DeskTopSBS
         public void UpdateThumbs()
         {
             int screenWidth = (int)System.Windows.SystemParameters.PrimaryScreenWidth;
+
             int screenHeight = (int)System.Windows.SystemParameters.PrimaryScreenHeight;
 
+            if (this.SourceRect.Top < screenHeight - 40)
+            {
+                screenHeight -= 40;
+            }
 
-            DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
+                DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
             props.fVisible = true;
             props.dwFlags = DwmApi.DWM_TNP_VISIBLE | DwmApi.DWM_TNP_RECTDESTINATION | DwmApi.DWM_TNP_RECTSOURCE;
 

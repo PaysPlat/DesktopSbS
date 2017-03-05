@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
     public class CursorSbS
     {
         public CursorWindow ThumbLeft { get; private set; }
         public CursorWindow ThumbRight { get; private set; }
 
-        public WinSBS Owner { get; set; }
+        public WinSbS Owner { get; set; }
 
         public User32.Win32Point Position { get; set; }
 
@@ -48,8 +48,8 @@ namespace DeskTopSBS
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
                 this.Position.X / 2,
                 this.Position.Y,
-                6,
-                20,
+                16,
+                32,
                 0);
 
 
@@ -58,8 +58,8 @@ namespace DeskTopSBS
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
                 screenWidthMiddle + this.Position.X / 2,
                 this.Position.Y,
-                6,
-                20,
+                16,
+                32,
                 0);
         }
 

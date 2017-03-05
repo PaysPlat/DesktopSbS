@@ -9,10 +9,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using DeskTopSBS.Hook;
+using DesktopSbS.Hook;
 using Microsoft.Win32;
 
-namespace DeskTopSBS
+namespace DesktopSbS
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -26,8 +26,8 @@ namespace DeskTopSBS
 
         private GlobalKeyboardHook keyboardHook;
 
-        private List<WinSBS> windows = new List<WinSBS>();
-        private List<WinSBS> tmpWindows = new List<WinSBS>();
+        private List<WinSbS> windows = new List<WinSbS>();
+        private List<WinSbS> tmpWindows = new List<WinSbS>();
 
 
         private CursorSbS cursorSbS;
@@ -43,7 +43,7 @@ namespace DeskTopSBS
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
-            // this.hideCursor();
+            this.hideCursors();
             this.cursorSbS = new CursorSbS();
             this.cursorSbS.RegisterThumbs();
 
@@ -64,7 +64,7 @@ namespace DeskTopSBS
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
-            this.showCursor();
+            this.showCursors();
 
         }
 
@@ -87,21 +87,8 @@ namespace DeskTopSBS
 
         private void updateWindows()
         {
-            this.tmpWindows = new List<WinSBS>();
+            this.tmpWindows = new List<WinSbS>();
             User32.EnumWindows(windowFound, 0);
-
-            // move TaskBar to Pos 0
-            int indexTaskbar = this.tmpWindows.FindIndex(w => string.IsNullOrEmpty(w.Title) &&
-            User32.GetFilePath(w.Handle).ToLower() == @"c:\windows\explorer.exe" &&
-            (w.SourceRect.Bottom - w.SourceRect.Top) == 40);
-
-            if (indexTaskbar > 0)
-            {
-                WinSBS taskBar = this.tmpWindows[indexTaskbar];
-                this.tmpWindows.RemoveAt(indexTaskbar);
-                this.tmpWindows.Insert(0, taskBar);
-            }
-
 
             int updateAllIndex = -1;
 
@@ -187,7 +174,7 @@ namespace DeskTopSBS
                  && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
             {
 
-                WinSBS win = new WinSBS(hwnd);
+                WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;
                 this.tmpWindows.Add(win);
@@ -196,15 +183,41 @@ namespace DeskTopSBS
             return true; //continue enumeration
         }
 
-        private void hideCursor()
+        private void hideCursors()
         {
-            Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true).SetValue("Arrow", $@"{App.ExePath}Resources\blank.cur");
+            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
+            cursorsKey.SetValue("AppStarting", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("Arrow", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("Hand", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("Help", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("No", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("NWPen", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeAll", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeNESW", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeNS", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeNSWE", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeWE", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("UpArrow", $@"{App.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("Wait", $@"{App.ExePath}Resources\blank.cur");
             User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
 
         }
-        private void showCursor()
+        private void showCursors()
         {
-            Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true).SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
+            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
+            cursorsKey.SetValue("AppStarting", @"%SystemRoot%\cursors\aero_working.cur");
+            cursorsKey.SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
+            cursorsKey.SetValue("Hand",  @"%SystemRoot%\cursors\aero_link.cur");
+            cursorsKey.SetValue("Help",  @"%SystemRoot%\cursors\aero_helpsel.cur");
+            cursorsKey.SetValue("No",  @"%SystemRoot%\cursors\aero_unavail.cur");
+            cursorsKey.SetValue("NWPen",  @"%SystemRoot%\cursors\aero_pen.cur");
+            cursorsKey.SetValue("SizeAll",  @"%SystemRoot%\cursors\aero_move.cur");
+            cursorsKey.SetValue("SizeNESW",  @"%SystemRoot%\cursors\aero_nesw.cur");
+            cursorsKey.SetValue("SizeNS",  @"%SystemRoot%\cursors\aero_ns.cur");
+            cursorsKey.SetValue("SizeNSWE",  @"%SystemRoot%\cursors\aero_nswe.cur");
+            cursorsKey.SetValue("SizeWE",  @"%SystemRoot%\cursors\aero_ew.cur");
+            cursorsKey.SetValue("UpArrow",  @"%SystemRoot%\cursors\aero_up.cur");
+            cursorsKey.SetValue("Wait",  @"%SystemRoot%\cursors\aero_busy.cur");
             User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace DeskTopSBS.Hook
+namespace DesktopSbS.Hook
 {
     public class GlobalKeyboardHook
     {

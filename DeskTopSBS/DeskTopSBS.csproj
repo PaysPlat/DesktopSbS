@@ -7,8 +7,8 @@
     <ProjectGuid>{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeskTopSBS</RootNamespace>
-    <AssemblyName>DeskTopSBS</AssemblyName>
+    <RootNamespace>DesktopSbS</RootNamespace>
+    <AssemblyName>DesktopSbS</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -71,7 +71,7 @@
     <Compile Include="Hook\GlobalKeyboardHook.cs" />
     <Compile Include="Hook\GlobalMouseHook.cs" />
     <Compile Include="User32.cs" />
-    <Compile Include="WinSBS.cs" />
+    <Compile Include="WinSbS.cs" />
     <Page Include="CursorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,10 +121,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\aero_arrow_SbS.png" />
     <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\cursorSbS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
