@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -67,6 +68,24 @@ namespace DeskTopSBS
 
         [DllImport("user32.dll")]
         public static extern void GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowThreadProcessId(IntPtr handle, out uint processId);
+
+        public static string GetFilePath(IntPtr hwnd)
+        {
+            try
+            {
+                uint pid = 0;
+                GetWindowThreadProcessId(hwnd, out pid);
+                Process proc = Process.GetProcessById((int)pid); //Gets the process by ID.
+                return proc.MainModule.FileName.ToString();   //Returns the path.
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
 
         [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]

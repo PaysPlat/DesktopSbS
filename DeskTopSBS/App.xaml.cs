@@ -23,7 +23,7 @@ namespace DeskTopSBS
 
         public static readonly string ExePath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\";
 
-  
+
         private GlobalKeyboardHook keyboardHook;
 
         private List<WinSBS> windows = new List<WinSBS>();
@@ -89,6 +89,19 @@ namespace DeskTopSBS
         {
             this.tmpWindows = new List<WinSBS>();
             User32.EnumWindows(windowFound, 0);
+
+            // move TaskBar to Pos 0
+            int indexTaskbar = this.tmpWindows.FindIndex(w => string.IsNullOrEmpty(w.Title) &&
+            User32.GetFilePath(w.Handle).ToLower() == @"c:\windows\explorer.exe" &&
+            (w.SourceRect.Bottom - w.SourceRect.Top) == 40);
+
+            if (indexTaskbar > 0)
+            {
+                WinSBS taskBar = this.tmpWindows[indexTaskbar];
+                this.tmpWindows.RemoveAt(indexTaskbar);
+                this.tmpWindows.Insert(0, taskBar);
+            }
+
 
             int updateAllIndex = -1;
 
