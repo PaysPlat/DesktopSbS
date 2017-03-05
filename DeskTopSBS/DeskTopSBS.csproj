@@ -59,10 +59,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CursorSbS.cs" />
+    <Compile Include="CursorWindow.xaml.cs">
+      <DependentUpon>CursorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DebugWindow.xaml.cs">
+      <DependentUpon>DebugWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DwmApi.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Hook\GlobalKeyboardHook.cs" />
+    <Compile Include="Hook\GlobalMouseHook.cs" />
     <Compile Include="User32.cs" />
     <Compile Include="WinSBS.cs" />
+    <Page Include="CursorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DebugWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ThumbWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,9 +121,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\blank.cur">
+    <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <Resource Include="Resources\cursorSbS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

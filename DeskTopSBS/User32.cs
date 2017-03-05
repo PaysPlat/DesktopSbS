@@ -12,6 +12,24 @@ namespace DeskTopSBS
     public static class User32
     {
         [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetCursorPos(ref Win32Point pt);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Win32Point
+        {
+            public Int32 X;
+            public Int32 Y;
+        };
+
+        public static Win32Point GetMousePositionOnScreen()
+        {
+            Win32Point w32Mouse = new Win32Point();
+            GetCursorPos(ref w32Mouse);
+            return w32Mouse;
+        }
+
+        [DllImport("user32.dll")]
         public static extern int GetWindowLong(IntPtr hwnd, int index);
 
         [DllImport("user32.dll")]
@@ -51,6 +69,13 @@ namespace DeskTopSBS
         public static extern void GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
 
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+        public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+
+        public const int SPI_SETCURSORS = 0x0057;
+        public const int SPIF_UPDATEINIFILE = 0x01;
+        public const int SPIF_SENDCHANGE = 0x02;
+
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -83,6 +108,11 @@ namespace DeskTopSBS
                        this.Top == other.Top &&
                        this.Right == other.Right &&
                        this.Bottom == other.Bottom;
+            }
+
+            public override string ToString()
+            {
+                return $"Left: {Left} Top: {Top} Right: {Right} Bottom:{Bottom}";
             }
         }
 

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using DeskTopSBS.Hook;
 using Microsoft.Win32;
 
 namespace DeskTopSBS
@@ -18,31 +20,57 @@ namespace DeskTopSBS
     public partial class App : Application
     {
 
+
+        public static readonly string ExePath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\";
+
+  
+        private GlobalKeyboardHook keyboardHook;
+
         private List<WinSBS> windows = new List<WinSBS>();
         private List<WinSBS> tmpWindows = new List<WinSBS>();
 
-      
+
+        private CursorSbS cursorSbS;
+
+
         private bool requestAbort = false;
 
         private Thread threadUpdateWindows;
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
+
+            this.keyboardHook = new GlobalKeyboardHook();
+            this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
+
+            // this.hideCursor();
+            this.cursorSbS = new CursorSbS();
+            this.cursorSbS.RegisterThumbs();
 
             this.threadUpdateWindows = new Thread(asyncUpdateWindows);
+            this.threadUpdateWindows.IsBackground = true;
             this.threadUpdateWindows.Start();
 
+        }
+
+        private void KeyboardHook_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Pause)
+            {
+                this.requestAbort = true;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
-            this.requestAbort = true;
+            this.showCursor();
+
         }
 
         private void asyncUpdateWindows()
         {
+
             while (!this.requestAbort)
             {
                 DateTime start = DateTime.Now;
@@ -53,6 +81,7 @@ namespace DeskTopSBS
 
                 Thread.Sleep(Math.Max(0, 20 - elapsedMS));
             }
+            this.Dispatcher.Invoke(this.Shutdown);
         }
 
 
@@ -60,8 +89,8 @@ namespace DeskTopSBS
         {
             this.tmpWindows = new List<WinSBS>();
             User32.EnumWindows(windowFound, 0);
-            
-            for (int i = this.tmpWindows.Count-1; i >=0 ; --i)
+
+            for (int i = this.tmpWindows.Count - 1; i >= 0; --i)
             {
                 if (i < this.tmpWindows.Count - 1)
                 {
@@ -91,15 +120,16 @@ namespace DeskTopSBS
                 }
 
             }
-
             for (int i = 0; i < this.windows.Count; ++i)
             {
                 this.windows[i].UnRegisterThumbs();
             }
 
-          
-
             this.windows = this.tmpWindows;
+
+            this.cursorSbS.Owner = this.windows.FirstOrDefault();
+            this.cursorSbS.Position = User32.GetMousePositionOnScreen();
+            this.cursorSbS.UpdateThumbs();
 
         }
 
@@ -135,7 +165,16 @@ namespace DeskTopSBS
             return true; //continue enumeration
         }
 
-       
+        private void hideCursor()
+        {
+            Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true).SetValue("Arrow", $@"{App.ExePath}Resources\blank.cur");
+            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
 
+        }
+        private void showCursor()
+        {
+            Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true).SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
+            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
+        }
     }
 }

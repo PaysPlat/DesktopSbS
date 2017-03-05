@@ -19,7 +19,7 @@ namespace DeskTopSBS
         public ThumbWindow ThumbRight { get; private set; }
 
         public WinSBS Owner { get; set; }
-     
+
 
         //public DwmApi.WS WinStyle { get; set; }
         //public DwmApi.WSEX WinStyleEx { get; set; }
@@ -43,8 +43,8 @@ namespace DeskTopSBS
             IntPtr thumbLeft = IntPtr.Zero,
                 thumbRight = IntPtr.Zero;
 
-             this.ThumbLeft = new ThumbWindow();
-             this.ThumbRight = new ThumbWindow();
+            this.ThumbLeft = new ThumbWindow();
+            this.ThumbRight = new ThumbWindow();
 
             this.ThumbLeft.Show();
             this.ThumbRight.Show();
@@ -76,38 +76,64 @@ namespace DeskTopSBS
 
         public void UpdateThumbs()
         {
+            int screenWidth = (int)System.Windows.SystemParameters.PrimaryScreenWidth;
+            int screenHeight = (int)System.Windows.SystemParameters.PrimaryScreenHeight;
+
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
             props.fVisible = true;
-            props.dwFlags = DwmApi.DWM_TNP_VISIBLE | DwmApi.DWM_TNP_RECTDESTINATION;
+            props.dwFlags = DwmApi.DWM_TNP_VISIBLE | DwmApi.DWM_TNP_RECTDESTINATION | DwmApi.DWM_TNP_RECTSOURCE;
+
+            int decalLeft = Math.Max(0, -this.SourceRect.Left),
+                decalTop = Math.Max(0, -this.SourceRect.Top);
+
+            props.rcSource = new User32.RECT
+            {
+                Left = decalLeft,
+                Top = decalTop,
+                Right = Math.Min(screenWidth, this.SourceRect.Right)-this.SourceRect.Left,
+                Bottom = Math.Min(screenHeight, this.SourceRect.Bottom )-this.SourceRect.Top
+            };
 
             props.rcDestination = new User32.RECT
             {
                 Left = 0,
                 Top = 0,
-                Right = (this.SourceRect.Right - this.SourceRect.Left) / 2,
-                Bottom = this.SourceRect.Bottom - SourceRect.Top
+                Right = (int)Math.Ceiling((props.rcSource.Right-props.rcSource.Left) / 2.0),
+                Bottom = props.rcSource.Bottom - props.rcSource.Top
             };
 
-            User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle??IntPtr.Zero,
-                1920 + this.SourceRect.Left/2,
-                this.SourceRect.Top,
+            int posLeft = (int) Math.Floor(Math.Max(0, this.SourceRect.Left)/2.0),
+                posTop = Math.Max(0, this.SourceRect.Top);
+
+            User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
+                posLeft,
+                posTop,
                 props.rcDestination.Right,
                 props.rcDestination.Bottom,
                 0);
 
-              DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
+            DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
 
-            int screenWidthMiddle = (int)System.Windows.SystemParameters.PrimaryScreenWidth / 2;
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-              screenWidthMiddle + this.SourceRect.Left / 2,
-              this.SourceRect.Top,
+              screenWidth/2+posLeft,
+              posTop,
               props.rcDestination.Right,
               props.rcDestination.Bottom,
               0);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
+
+#if DEBUG
+            if (this.Title.Contains("Chrome"))
+            {
+               DebugWindow.Instance.UpdateMessage( $"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine} Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+
+
+            }
+#endif
+
         }
 
 

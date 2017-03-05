@@ -1,3 +1,4 @@
 DeskTopSBS/bin/
 DeskTopSBS/obj/
 *.user
+*.suo
