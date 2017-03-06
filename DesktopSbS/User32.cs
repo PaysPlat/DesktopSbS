@@ -49,37 +49,34 @@ namespace DesktopSbS
 
         #endregion
 
-        #region Window
+        #region Monitor
 
-        public static RECT GetMonitorRect(POINT pt)
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int GetDeviceCaps(IntPtr hDC, DeviceCap nIndex);
+
+        public static void GetDpi(this System.Windows.Forms.Screen screen, DpiType dpiType, out uint dpiX, out uint dpiY)
         {
-            IntPtr mh = MonitorFromPoint(pt, 0);
-            MONITORINFO mi = new MONITORINFO();
-            mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
-            mi.dwFlags = 0;
-            bool result = GetMonitorInfo(mh, ref mi);
-            return mi.rcMonitor;
+            var pnt = new System.Drawing.Point(screen.Bounds.Left + 1, screen.Bounds.Top + 1);
+            var mon = MonitorFromPoint(pnt, 2/*MONITOR_DEFAULTTONEAREST*/);
+            GetDpiForMonitor(mon, dpiType, out dpiX, out dpiY);
         }
 
-        [DllImport(dll, CharSet = CharSet.Auto)]
-        public static extern bool GetMonitorInfo(IntPtr hmonitor,ref MONITORINFO info);
+        [DllImport("User32.dll")]
+        private static extern IntPtr MonitorFromPoint([In]System.Drawing.Point pt, [In]uint dwFlags);
 
-        [DllImport(dll, ExactSpelling = true)]
-        public static extern IntPtr MonitorFromPoint(POINT pt, int flags);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
-        public class MONITORINFO
-        {
-            public int cbSize = Marshal.SizeOf(typeof(MONITORINFO));
-            public RECT rcMonitor = new RECT();
-            public RECT rcWork = new RECT();
-            public int dwFlags = 0;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-            public char[] szDevice = new char[32];
-        }
+        [DllImport("Shcore.dll")]
+        private static extern IntPtr GetDpiForMonitor([In]IntPtr hmonitor, [In]DpiType dpiType, [Out]out uint dpiX, [Out]out uint dpiY);
+    
 
 
-        public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
+    #endregion
+
+    #region Window
+
+
+
+
+    public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
         {
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
             placement.length = Marshal.SizeOf(placement);
@@ -92,12 +89,8 @@ namespace DesktopSbS
         public static extern bool GetWindowPlacement(
             IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
-        public const int SWP_ASYNCWINDOWPOS = 0x4000;
-        public const int SWP_FRAMECHANGED = 0x20;
-        public const int SWP_NOSIZE = 0x1;
-
         [DllImport(dll)]
-        public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
+        public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy, SWP wFlags);
 
         [DllImport(dll)]
         public static extern IntPtr GetDesktopWindow();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
@@ -97,12 +98,12 @@ namespace DesktopSbS
             // Left
 
             RECT parallaxSourceRectLeft = new RECT(
-                this.SourceRect.Left + parallaxDecal,
+                this.SourceRect.Left  + parallaxDecal,
                 this.SourceRect.Top,
                 this.SourceRect.Right + parallaxDecal,
                 this.SourceRect.Bottom);
 
-            props.rcSource = new RECT
+               props.rcSource = new RECT
             {
                 Left = Math.Max(0, -parallaxSourceRectLeft.Left),
                 Top = Math.Max(0, -parallaxSourceRectLeft.Top),
@@ -123,7 +124,7 @@ namespace DesktopSbS
                        Math.Max(0, parallaxSourceRectLeft.Top),
                        props.rcDestination.Right,
                        props.rcDestination.Bottom,
-                       User32.SWP_ASYNCWINDOWPOS);
+                       SWP.SWP_ASYNCWINDOWPOS);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
 
@@ -156,7 +157,7 @@ namespace DesktopSbS
                        Math.Max(0, parallaxSourceRectRight.Top),
                        props.rcDestination.Right,
                        props.rcDestination.Bottom,
-                       User32.SWP_ASYNCWINDOWPOS);
+                       SWP.SWP_ASYNCWINDOWPOS);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
 

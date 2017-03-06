@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -51,19 +52,34 @@ namespace DesktopSbS
 
         public int ScreenHeight { get; private set; }
 
+        public double ScreenScale { get; private set; } = 1;
+
         private bool requestAbort = false;
 
         private Thread threadUpdateWindows;
         protected override void OnStartup(StartupEventArgs e)
         {
+
             base.OnStartup(e);
 
             this.ParallaxEffect = this.options.GetInt("ParallaxEffect");
             this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
 
-            this.ScreenWidth = (int)SystemParameters.PrimaryScreenWidth; //this.options.GetInt("ScreenWidth", 1920);
-            this.ScreenHeight = (int)SystemParameters.PrimaryScreenHeight; //this.options.GetInt("ScreenHeight", 1080);
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                this.ScreenScale = graphics.DpiX / 96.0;
+            }
 
+            this.ScreenWidth = (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale); //this.options.GetInt("ScreenWidth", 1920);
+            this.ScreenHeight = (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale); //this.options.GetInt("ScreenHeight", 1080);
+
+
+
+            //foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+            //{
+            //    uint x, y;
+            //    screen.GetDpi(DpiType.Effective, out x, out y);
+            //}
 
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
@@ -203,12 +219,7 @@ namespace DesktopSbS
                 }
             }
 
-            //this.cursorSbS.Owner = this.windows.FirstOrDefault();
-            this.cursorSbS.UpdateThumbs(offsetLevel+1);
-
-
-            // DebugWindow.Instance.UpdateMessage($"Active Window: {this.cursorSbS.Owner} Handle: {this.cursorSbS.Owner.Handle}{Environment.NewLine}Exe: {User32.GetFilePath(this.cursorSbS.Owner.Handle)}");
-            //DebugWindow.Instance.UpdateMessage(this.cursorSbS.OffsetLevel.ToString());
+            this.cursorSbS.UpdateThumbs(this.windows.Max(w => w.OffsetLevel) + 1);
         }
 
         private bool windowFound(IntPtr hwnd, int lParam)
@@ -247,7 +258,7 @@ namespace DesktopSbS
             RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
             cursorsKey.SetValue("AppStarting", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("Arrow", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Crossair", $@"{Util.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("Crosshair", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("Hand", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("Help", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("IBeam", $@"{Util.ExePath}Resources\blank.cur");
@@ -256,7 +267,7 @@ namespace DesktopSbS
             cursorsKey.SetValue("SizeAll", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("SizeNESW", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("SizeNS", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeNSWE", $@"{Util.ExePath}Resources\blank.cur");
+            cursorsKey.SetValue("SizeNWSE", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("SizeWE", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("UpArrow", $@"{Util.ExePath}Resources\blank.cur");
             cursorsKey.SetValue("Wait", $@"{Util.ExePath}Resources\blank.cur");
@@ -268,7 +279,7 @@ namespace DesktopSbS
             RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
             cursorsKey.SetValue("AppStarting", @"%SystemRoot%\cursors\aero_working.ani");
             cursorsKey.SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
-            cursorsKey.SetValue("Crossair", "");
+            cursorsKey.SetValue("Crosshair", "");
             cursorsKey.SetValue("Hand", @"%SystemRoot%\cursors\aero_link.cur");
             cursorsKey.SetValue("Help", @"%SystemRoot%\cursors\aero_helpsel.cur");
             cursorsKey.SetValue("IBeam", "");
@@ -277,7 +288,7 @@ namespace DesktopSbS
             cursorsKey.SetValue("SizeAll", @"%SystemRoot%\cursors\aero_move.cur");
             cursorsKey.SetValue("SizeNESW", @"%SystemRoot%\cursors\aero_nesw.cur");
             cursorsKey.SetValue("SizeNS", @"%SystemRoot%\cursors\aero_ns.cur");
-            cursorsKey.SetValue("SizeNSWE", @"%SystemRoot%\cursors\aero_nswe.cur");
+            cursorsKey.SetValue("SizeNWSE", @"%SystemRoot%\cursors\aero_nwse.cur");
             cursorsKey.SetValue("SizeWE", @"%SystemRoot%\cursors\aero_ew.cur");
             cursorsKey.SetValue("UpArrow", @"%SystemRoot%\cursors\aero_up.cur");
             cursorsKey.SetValue("Wait", @"%SystemRoot%\cursors\aero_busy.ani");

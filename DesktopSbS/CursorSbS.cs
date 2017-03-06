@@ -50,37 +50,34 @@ namespace DesktopSbS
         public void UpdateThumbs(int offsetLevel)
         {
             this.OffsetLevel = offsetLevel;
-     
+
             int parallaxDecal = App.Current.ParallaxEffect * offsetLevel;
 
             CURSORINFO cursorInfo = new CURSORINFO();
             cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
             User32.GetCursorInfo(out cursorInfo);
 
-                this.Position = cursorInfo.ptScreenPos;
+            this.Position = cursorInfo.ptScreenPos;
 
             POINT offset = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
             this.ThumbRight.SetCursor(cursorInfo.hCursor);
 
-       
-            DebugWindow.Instance.UpdateMessage($"Mouse Left: {this.Position.X} Top: {this.Position.Y}");
-
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                this.Position.X / 2 - offset.X + parallaxDecal,
-                this.Position.Y - offset.Y,
-                16,
-                32,
-                User32.SWP_ASYNCWINDOWPOS| User32.SWP_FRAMECHANGED |User32.SWP_NOSIZE);
-
-           
-            int screenWidthMiddle = App.Current.ScreenWidth/ 2;
+                (int)(this.Position.X / 2.0 + parallaxDecal-offset.X),
+                this.Position.Y-offset.Y,
+                0,
+                0,
+                SWP.SWP_ASYNCWINDOWPOS | SWP.SWP_NOSIZE);
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-                screenWidthMiddle + this.Position.X / 2 - offset.X - parallaxDecal,
-                this.Position.Y - offset.Y,
-                16,
-                32,
-                User32.SWP_ASYNCWINDOWPOS|User32.SWP_FRAMECHANGED | User32.SWP_NOSIZE);
+                (int)((App.Current.ScreenWidth + this.Position.X) / 2.0 - parallaxDecal-offset.X),
+                 this.Position.Y-offset.Y,
+                0,
+                0,
+                SWP.SWP_ASYNCWINDOWPOS |  SWP.SWP_NOSIZE);
+
+            //DebugWindow.Instance.UpdateMessage($"Mouse Left: {this.Position.X} Top: {this.Position.Y}");
+
         }
 
 

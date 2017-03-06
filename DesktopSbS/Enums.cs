@@ -150,6 +150,78 @@ namespace DesktopSbS
         0x00000100L,
     }
 
+    [Flags]
+    public enum SWP :int
+    {
+        SWP_ASYNCWINDOWPOS =
+        0x4000,
+
+        SWP_DEFERERASE =
+        0x2000,
+
+        SWP_DRAWFRAME =
+        0x0020,
+
+        SWP_FRAMECHANGED =
+        0x0020,
+
+        SWP_HIDEWINDOW =
+        0x0080,
+
+        SWP_NOACTIVATE =
+        0x0010,
+
+        SWP_NOCOPYBITS =
+        0x0100,
+
+        SWP_NOMOVE =
+        0x0002,
+
+        SWP_NOOWNERZORDER =
+        0x0200,
+
+        SWP_NOREDRAW =
+        0x0008,
+
+        SWP_NOREPOSITION =
+        0x0200,
+
+        SWP_NOSENDCHANGING =
+        0x0400,
+
+        SWP_NOSIZE =
+        0x0001,
+
+        SWP_NOZORDER =
+        0x0004,
+
+        SWP_SHOWWINDOW =
+        0x0040
+
+    }
+
+
+    public enum DpiType
+    {
+        Effective = 0,
+        Angular = 1,
+        Raw = 2,
+    }
+
+    public enum DeviceCap
+    {
+        /// <summary>
+        /// Logical pixels inch in X
+        /// </summary>
+        LOGPIXELSX = 88,
+        /// <summary>
+        /// Logical pixels inch in Y
+        /// </summary>
+        LOGPIXELSY = 90
+
+        // Other constants may be founded on pinvoke.net
+    }
+
     public enum CURSOR_TYPE
     {
         IDC_APPSTARTING =

@@ -58,9 +58,9 @@ namespace DesktopSbS
             User32.SetWindowPos(this.Handle, IntPtr.Zero,
                0,
                0,
-               1920,
-               1080,
-               User32.SWP_ASYNCWINDOWPOS);
+               App.Current.ScreenWidth,
+               App.Current.ScreenHeight,
+               SWP.SWP_ASYNCWINDOWPOS);
         }
     }
 }

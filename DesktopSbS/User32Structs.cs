@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DesktopSbS
 {
@@ -71,6 +72,17 @@ namespace DesktopSbS
                    this.Top == 0 &&
                    this.Right == 0 &&
                    this.Bottom == 0;
+        }
+
+        public static RECT operator *(RECT r,double d)
+        {
+           return new RECT(
+               (int)(r.Left * d),
+               (int)(r.Top * d), 
+               (int)(r.Right * d),
+               (int)(r.Bottom * d)
+               );
+
         }
 
         public override int GetHashCode()
