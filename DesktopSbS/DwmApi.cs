@@ -10,7 +10,10 @@ namespace DesktopSbS
 {
     public static class DwmApi
     {
-       #region Constants
+        private const string dll = "dwmapi.dll";
+
+
+        #region Constants
 
 
         public static readonly int DWM_TNP_SOURCECLIENTAREAONLY = 0x10;
@@ -24,16 +27,16 @@ namespace DesktopSbS
 
         #region DWM functions
 
-        [DllImport("dwmapi.dll")]
+        [DllImport(dll)]
         public static extern int DwmRegisterThumbnail(IntPtr dest, IntPtr src, out IntPtr thumb);
 
-        [DllImport("dwmapi.dll")]
+        [DllImport(dll)]
         public static extern int DwmUnregisterThumbnail(IntPtr thumb);
 
-        [DllImport("dwmapi.dll")]
+        [DllImport(dll)]
         public static extern int DwmQueryThumbnailSourceSize(IntPtr thumb, out PSIZE size);
 
-        [DllImport("dwmapi.dll")]
+        [DllImport(dll)]
         public static extern int DwmUpdateThumbnailProperties(IntPtr hThumb, ref DWM_THUMBNAIL_PROPERTIES props);
 
         #endregion
@@ -44,13 +47,12 @@ namespace DesktopSbS
         public struct DWM_THUMBNAIL_PROPERTIES
         {
             public int dwFlags;
-            public User32.RECT rcDestination;
-            public User32.RECT rcSource;
+            public RECT rcDestination;
+            public RECT rcSource;
             public byte opacity;
             public bool fVisible;
             public bool fSourceClientAreaOnly;
         }
-
 
 
         [StructLayout(LayoutKind.Sequential)]

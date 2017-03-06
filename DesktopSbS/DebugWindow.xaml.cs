@@ -26,11 +26,13 @@ namespace DesktopSbS
         {
             get
             {
+#if DEBUG
                 if (instance == null)
                 {
                     instance = new DebugWindow();
                     instance.Show();
                 }
+#endif
                 return instance;
             }
         }
@@ -47,7 +49,7 @@ namespace DesktopSbS
         {
             this.Handle = new WindowInteropHelper(this).Handle;
             int extendedStyle = User32.GetWindowLong(this.Handle, User32.GWL_EXSTYLE);
-            User32.SetWindowLong(this.Handle, User32.GWL_EXSTYLE, extendedStyle | User32.WS_EX_TRANSPARENT | User32.WS_EX_TOOLWINDOW);
+            User32.SetWindowLong(this.Handle, User32.GWL_EXSTYLE, extendedStyle | (int)WSEX.WS_EX_TRANSPARENT | (int)WSEX.WS_EX_TOOLWINDOW);
         }
 
         public void UpdateMessage(string inMessage)
@@ -58,7 +60,7 @@ namespace DesktopSbS
                0,
                1920,
                1080,
-               0);
+               User32.SWP_ASYNCWINDOWPOS);
         }
     }
 }

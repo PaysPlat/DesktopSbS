@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConfFile.cs" />
     <Compile Include="CursorSbS.cs" />
     <Compile Include="CursorWindow.xaml.cs">
       <DependentUpon>CursorWindow.xaml</DependentUpon>
@@ -71,6 +72,8 @@
     <Compile Include="Hook\GlobalKeyboardHook.cs" />
     <Compile Include="Hook\GlobalMouseHook.cs" />
     <Compile Include="User32.cs" />
+    <Compile Include="User32Structs.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="WinSbS.cs" />
     <Page Include="CursorWindow.xaml">
       <SubType>Designer</SubType>
@@ -121,7 +124,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\cross_SbS.png" />
+    <Resource Include="Resources\text_SbS.png" />
     <Resource Include="Resources\aero_arrow_SbS.png" />
+    <Resource Include="Resources\aero_busy_SbS.png" />
+    <Resource Include="Resources\aero_ew_SbS.png" />
+    <Resource Include="Resources\aero_helpsel_SbS.png" />
+    <Resource Include="Resources\aero_link_SbS.png" />
+    <Resource Include="Resources\aero_move_SbS.png" />
+    <Resource Include="Resources\aero_nesw_SbS.png" />
+    <Resource Include="Resources\aero_ns_SbS.png" />
+    <Resource Include="Resources\aero_nwse_SbS.png" />
+    <Resource Include="Resources\aero_pen_SbS.png" />
+    <Resource Include="Resources\aero_unavail_SbS.png" />
+    <Resource Include="Resources\aero_up_SbS.png" />
+    <Resource Include="Resources\aero_working_SbS.png" />
     <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

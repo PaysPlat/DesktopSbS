@@ -94,6 +94,7 @@ namespace DesktopSbS.Hook
             }
         }
 
+     
         /// <summary>
         /// The callback for the keyboard hook
         /// </summary>
@@ -105,12 +106,12 @@ namespace DesktopSbS.Hook
         {
             if (code >= 0)
             {
-
+                
                 Key key = KeyInterop.KeyFromVirtualKey(lParam.vkCode);
 
                 if ((KeyDown != null) && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
-                    KeyEventArgs kea = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, lParam.time, key);
+                    KeyEventArgs kea = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice?.ActiveSource, lParam.time, key);
 
                     KeyDown(this, kea);
                     if (kea.Handled)
@@ -118,7 +119,7 @@ namespace DesktopSbS.Hook
                 }
                 else if ((KeyUp != null) && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
-                    KeyEventArgs kea = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, lParam.time, key);
+                    KeyEventArgs kea = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice?.ActiveSource, lParam.time, key);
 
                     KeyUp(this, kea);
                     if (kea.Handled)

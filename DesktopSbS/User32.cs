@@ -12,64 +12,115 @@ namespace DesktopSbS
 {
     public static class User32
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool GetCursorPos(ref Win32Point pt);
+        private const string dll = "user32.dll";
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct Win32Point
-        {
-            public Int32 X;
-            public Int32 Y;
-        };
+        #region Cursors
 
-        public static Win32Point GetMousePositionOnScreen()
-        {
-            Win32Point w32Mouse = new Win32Point();
-            GetCursorPos(ref w32Mouse);
-            return w32Mouse;
-        }
+        public const int SPI_SETCURSORS = 0x0057;
+        public const int SPIF_UPDATEINIFILE = 0x01;
+        public const int SPIF_SENDCHANGE = 0x02;
 
-        [DllImport("user32.dll")]
-        public static extern int GetWindowLong(IntPtr hwnd, int index);
+        [DllImport(dll)]
+        public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
+        [DllImport(dll)]
+        public static extern bool GetCursorInfo(out CURSORINFO pci);
 
-        [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        [DllImport(dll)]
+        public static extern int ShowCursor(bool bShow);
 
-        public const int WS_EX_TRANSPARENT = 0x00000020;
-        public const int WS_EX_TOOLWINDOW = 0x00000080;
+        [DllImport(dll)]
+        public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+
+        #endregion
+
+        #region Styles
 
         public const int GWL_EXSTYLE = -20;
         public const int GWL_STYLE = -16;
 
+        [DllImport(dll)]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        [DllImport(dll)]
+        public static extern ulong GetWindowLongA(IntPtr hWnd, int nIndex);
+
+        [DllImport(dll)]
+        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
+        #endregion
+
+        #region Window
+
+        public static RECT GetMonitorRect(POINT pt)
+        {
+            IntPtr mh = MonitorFromPoint(pt, 0);
+            MONITORINFO mi = new MONITORINFO();
+            mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+            mi.dwFlags = 0;
+            bool result = GetMonitorInfo(mh, ref mi);
+            return mi.rcMonitor;
+        }
+
+        [DllImport(dll, CharSet = CharSet.Auto)]
+        public static extern bool GetMonitorInfo(IntPtr hmonitor,ref MONITORINFO info);
+
+        [DllImport(dll, ExactSpelling = true)]
+        public static extern IntPtr MonitorFromPoint(POINT pt, int flags);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
+        public class MONITORINFO
+        {
+            public int cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+            public RECT rcMonitor = new RECT();
+            public RECT rcWork = new RECT();
+            public int dwFlags = 0;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+            public char[] szDevice = new char[32];
+        }
+
+
+        public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            placement.length = Marshal.SizeOf(placement);
+            GetWindowPlacement(hwnd, ref placement);
+            return placement;
+        }
+
+        [DllImport(dll, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowPlacement(
+            IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        public const int SWP_ASYNCWINDOWPOS = 0x4000;
+        public const int SWP_FRAMECHANGED = 0x20;
+        public const int SWP_NOSIZE = 0x1;
+
+        [DllImport(dll)]
         public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
 
-        [DllImport("user32.dll")]
-        public static extern int ShowCursor(bool bShow);
-
-        [DllImport("user32.dll")]
+        [DllImport(dll)]
         public static extern IntPtr GetDesktopWindow();
-        [DllImport("user32.dll")]
+
+        [DllImport(dll)]
         public static extern IntPtr GetWindowDC(IntPtr hWnd);
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref User32.RECT rect);
-        [DllImport("user32.dll")]
+        [DllImport(dll)]
+        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
+        [DllImport(dll)]
         public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-
-        [DllImport("user32.dll")]
+        [DllImport(dll)]
         public static extern int EnumWindows(EnumWindowsCallback lpEnumFunc, int lParam);
         public delegate bool EnumWindowsCallback(IntPtr hwnd, int lParam);
 
-        [DllImport("user32.dll")]
-        public static extern ulong GetWindowLongA(IntPtr hWnd, int nIndex);
+        #endregion
 
-        [DllImport("user32.dll")]
+        #region Handle info
+
+        [DllImport(dll)]
         public static extern void GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-        [DllImport("user32.dll")]
+        [DllImport(dll)]
         private static extern int GetWindowThreadProcessId(IntPtr handle, out uint processId);
 
         public static string GetFilePath(IntPtr hwnd)
@@ -87,54 +138,9 @@ namespace DesktopSbS
             }
         }
 
-
-        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
-        public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
-
-        public const int SPI_SETCURSORS = 0x0057;
-        public const int SPIF_UPDATEINIFILE = 0x01;
-        public const int SPIF_SENDCHANGE = 0x02;
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
+        #endregion
 
 
-
-            public bool IsEmpty()
-            {
-                return this.Left == 0 &&
-                       this.Top == 0 &&
-                       this.Right == 0 &&
-                       this.Bottom == 0;
-            }
-
-            public override int GetHashCode()
-            {
-                return 11 * Left + 13 * Top + 17 * Right + 19 * Bottom;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is RECT)) return false;
-                RECT other = (RECT)obj;
-
-                return this.Left == other.Left &&
-                       this.Top == other.Top &&
-                       this.Right == other.Right &&
-                       this.Bottom == other.Bottom;
-            }
-
-            public override string ToString()
-            {
-                return $"Left: {Left} Top: {Top} Right: {Right} Bottom:{Bottom}";
-            }
-        }
-
-
+ 
     }
 }

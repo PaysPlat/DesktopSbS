@@ -10,5 +10,5 @@
         WindowStyle="None" ResizeMode="NoResize" Background="Transparent"
         AllowsTransparency="True"
         IsHitTestVisible="False">
-     <Image Source="Resources/aero_arrow_SbS.png"/>
+      <Image x:Name="CursorImage"/>
 </Window>
