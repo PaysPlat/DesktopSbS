@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -25,6 +26,7 @@ namespace DesktopSbS
     {
         static Mutex mutex = new Mutex(true, "{A118F0EB-E2D3-465C-8821-89061A45EE4C}");
 
+        private const int renderPassTimeMs = 20;
 
         public new static App Current
         {
@@ -38,7 +40,7 @@ namespace DesktopSbS
         private List<WinSbS> windows = new List<WinSbS>();
         private List<WinSbS> tmpWindows = new List<WinSbS>();
 
-   
+
         private bool hasToUpdate = false;
 
         private CursorSbS cursorSbS;
@@ -49,6 +51,8 @@ namespace DesktopSbS
             get { return this.parallaxEffect; }
             private set { this.parallaxEffect = Math.Max(0, value); }
         }
+
+        public List<string> ExcludedApplications { get; private set; }
 
         public int TaskBarHeight { get; private set; }
 
@@ -71,37 +75,39 @@ namespace DesktopSbS
             {
                 this.Shutdown();
             }
+            else
+            {
+                this.init();
+            }
 
+        }
+
+        private void init()
+        {
             this.ModeSbS = this.options.GetBool("ModeSbS", true);
             this.ParallaxEffect = this.options.GetInt("ParallaxEffect");
             this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
+            this.ExcludedApplications = this.options.GetListString("ExcludedApplications", new List<string>());
 
             using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
                 this.ScreenScale = graphics.DpiX / 96.0;
             }
 
-            this.ScreenWidth = (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale); //this.options.GetInt("ScreenWidth", 1920);
-            this.ScreenHeight = (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale); //this.options.GetInt("ScreenHeight", 1080);
-
-
-
-            //foreach (var screen in System.Windows.Forms.Screen.AllScreens)
-            //{
-            //    uint x, y;
-            //    screen.GetDpi(DpiType.Effective, out x, out y);
-            //}
+            this.ScreenWidth = this.options.GetInt("ScreenWidth", (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale));
+            this.ScreenHeight = this.options.GetInt("ScreenHeight", (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale));
 
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
-            this.hideCursors();
+            CursorWindow.HideCursors();
             this.cursorSbS = new CursorSbS();
             this.cursorSbS.RegisterThumbs();
 
             this.threadUpdateWindows = new Thread(asyncUpdateWindows);
             this.threadUpdateWindows.IsBackground = true;
             this.threadUpdateWindows.Start();
+
 
         }
 
@@ -141,7 +147,7 @@ namespace DesktopSbS
             this.options.Set("ParallaxEffect", this.ParallaxEffect);
             this.options.saveToFile();
 
-            this.showCursors();
+            CursorWindow.ShowCursors();
 
         }
 
@@ -156,7 +162,7 @@ namespace DesktopSbS
 
                 int elapsedMS = (int)(end - start).TotalMilliseconds;
                 // this.Dispatcher.Invoke(()=> DebugWindow.Instance.UpdateMessage($"Elapsed ms: {elapsedMS}"));
-                Thread.Sleep(Math.Max(0, 20 - elapsedMS));
+                Thread.Sleep(Math.Max(0, renderPassTimeMs - elapsedMS));
             }
 
             this.Dispatcher.Invoke(() =>
@@ -178,9 +184,18 @@ namespace DesktopSbS
 
             WinSbS taskBarWindow = null;
 
+            WinSbS tmpWindow = this.tmpWindows.FirstOrDefault(w => w.SourceRect.IsMaximized());
+            if (tmpWindow != null &&
+                this.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
+            {
+                this.tmpWindows.Clear();
+            }
+
             for (int i = this.tmpWindows.Count - 1; i >= 0; --i)
             {
-                WinSbS tmpWindow = this.tmpWindows[i];
+                tmpWindow = this.tmpWindows[i];
+
+
                 if (i < this.tmpWindows.Count - 1)
                 {
                     tmpWindow.Owner = this.tmpWindows[i + 1];
@@ -251,8 +266,7 @@ namespace DesktopSbS
             }
 
             taskBarWindow?.UpdateThumbs();
-
-            this.cursorSbS.UpdateThumbs(this.windows.Max(w => w.OffsetLevel) + 1);
+            this.cursorSbS.UpdateThumbs((this.windows.Any() ? this.windows.Max(w => w.OffsetLevel) : 0) + 1);
         }
 
         private bool windowFound(IntPtr hwnd, int lParam)
@@ -262,6 +276,7 @@ namespace DesktopSbS
             User32.GetWindowText(hwnd, sb, sb.Capacity);
             string title = sb.ToString();
 
+            // don't consider our own windows 
             if (title == "ThumbWindows") return true;
 
             WS winStyle = (WS)User32.GetWindowLongA(hwnd, User32.GWL_STYLE);
@@ -277,7 +292,7 @@ namespace DesktopSbS
                  && (winStyle & WS.WS_DISABLED) == 0
                  && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
             {
-               
+
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;
@@ -287,46 +302,5 @@ namespace DesktopSbS
             return true; //continue enumeration
         }
 
-        private void hideCursors()
-        {
-            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
-            cursorsKey.SetValue("AppStarting", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Arrow", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Crosshair", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Hand", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Help", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("IBeam", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("No", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("NWPen", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeAll", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeNESW", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeNS", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeNWSE", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("SizeWE", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("UpArrow", $@"{Util.ExePath}Resources\blank.cur");
-            cursorsKey.SetValue("Wait", $@"{Util.ExePath}Resources\blank.cur");
-            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
-
-        }
-        private void showCursors()
-        {
-            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
-            cursorsKey.SetValue("AppStarting", @"%SystemRoot%\cursors\aero_working.ani");
-            cursorsKey.SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
-            cursorsKey.SetValue("Crosshair", "");
-            cursorsKey.SetValue("Hand", @"%SystemRoot%\cursors\aero_link.cur");
-            cursorsKey.SetValue("Help", @"%SystemRoot%\cursors\aero_helpsel.cur");
-            cursorsKey.SetValue("IBeam", "");
-            cursorsKey.SetValue("No", @"%SystemRoot%\cursors\aero_unavail.cur");
-            cursorsKey.SetValue("NWPen", @"%SystemRoot%\cursors\aero_pen.cur");
-            cursorsKey.SetValue("SizeAll", @"%SystemRoot%\cursors\aero_move.cur");
-            cursorsKey.SetValue("SizeNESW", @"%SystemRoot%\cursors\aero_nesw.cur");
-            cursorsKey.SetValue("SizeNS", @"%SystemRoot%\cursors\aero_ns.cur");
-            cursorsKey.SetValue("SizeNWSE", @"%SystemRoot%\cursors\aero_nwse.cur");
-            cursorsKey.SetValue("SizeWE", @"%SystemRoot%\cursors\aero_ew.cur");
-            cursorsKey.SetValue("UpArrow", @"%SystemRoot%\cursors\aero_up.cur");
-            cursorsKey.SetValue("Wait", @"%SystemRoot%\cursors\aero_busy.ani");
-            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
-        }
     }
 }

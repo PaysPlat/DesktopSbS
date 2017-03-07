@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Europe_CommonWPF.Business
 {
@@ -312,6 +313,19 @@ namespace Europe_CommonWPF.Business
             }
         }
 
+        public List<string> GetListString(string key, List<string> defVal = null)
+        {
+            string val = Get(key);
+            if (!string.IsNullOrEmpty(val))
+            {
+                return new List<string>(val.Split(m_separator, StringSplitOptions.None));
+            }
+            else
+            {
+                return defVal;
+            }
+        }
+
 
 
         public void Set(string key, string content, bool add = true)
@@ -344,6 +358,11 @@ namespace Europe_CommonWPF.Business
         public void Set(string key, double content, bool add = true)
         {
             Set(key, content.ToString(Util.CultEn), add);
+        }
+
+        public void Set(string key, List<string> content, bool add = true)
+        {
+            Set(key, content.Aggregate((a,b)=>$"{a}{m_separator[0]}{b}" ), add);
         }
 
     }

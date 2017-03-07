@@ -12,6 +12,8 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Europe_CommonWPF;
+using Microsoft.Win32;
 
 namespace DesktopSbS
 {
@@ -92,6 +94,50 @@ namespace DesktopSbS
                 new POINT(16, 16)));
 
 
+        }
+
+
+        public static void HideCursors()
+        {
+            string blankCurPath = $@"{Util.ExePath}Resources\blank.cur";
+            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
+            cursorsKey.SetValue("AppStarting",blankCurPath);
+            cursorsKey.SetValue("Arrow",blankCurPath);
+            cursorsKey.SetValue("Crosshair",blankCurPath);
+            cursorsKey.SetValue("Hand",blankCurPath);
+            cursorsKey.SetValue("Help",blankCurPath);
+            cursorsKey.SetValue("IBeam",blankCurPath);
+            cursorsKey.SetValue("No",blankCurPath);
+            cursorsKey.SetValue("NWPen",blankCurPath);
+            cursorsKey.SetValue("SizeAll",blankCurPath);
+            cursorsKey.SetValue("SizeNESW",blankCurPath);
+            cursorsKey.SetValue("SizeNS",blankCurPath);
+            cursorsKey.SetValue("SizeNWSE",blankCurPath);
+            cursorsKey.SetValue("SizeWE",blankCurPath);
+            cursorsKey.SetValue("UpArrow",blankCurPath);
+            cursorsKey.SetValue("Wait",blankCurPath);
+            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
+
+        }
+        public static void ShowCursors()
+        {
+            RegistryKey cursorsKey = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Cursors", true);
+            cursorsKey.SetValue("AppStarting", @"%SystemRoot%\cursors\aero_working.ani");
+            cursorsKey.SetValue("Arrow", @"%SystemRoot%\cursors\aero_arrow.cur");
+            cursorsKey.SetValue("Crosshair", "");
+            cursorsKey.SetValue("Hand", @"%SystemRoot%\cursors\aero_link.cur");
+            cursorsKey.SetValue("Help", @"%SystemRoot%\cursors\aero_helpsel.cur");
+            cursorsKey.SetValue("IBeam", "");
+            cursorsKey.SetValue("No", @"%SystemRoot%\cursors\aero_unavail.cur");
+            cursorsKey.SetValue("NWPen", @"%SystemRoot%\cursors\aero_pen.cur");
+            cursorsKey.SetValue("SizeAll", @"%SystemRoot%\cursors\aero_move.cur");
+            cursorsKey.SetValue("SizeNESW", @"%SystemRoot%\cursors\aero_nesw.cur");
+            cursorsKey.SetValue("SizeNS", @"%SystemRoot%\cursors\aero_ns.cur");
+            cursorsKey.SetValue("SizeNWSE", @"%SystemRoot%\cursors\aero_nwse.cur");
+            cursorsKey.SetValue("SizeWE", @"%SystemRoot%\cursors\aero_ew.cur");
+            cursorsKey.SetValue("UpArrow", @"%SystemRoot%\cursors\aero_up.cur");
+            cursorsKey.SetValue("Wait", @"%SystemRoot%\cursors\aero_busy.ani");
+            User32.SystemParametersInfo(User32.SPI_SETCURSORS, 0, 0, User32.SPIF_UPDATEINIFILE | User32.SPIF_SENDCHANGE);
         }
 
         public CursorWindow()

@@ -66,14 +66,14 @@ namespace DesktopSbS
 
         [DllImport("Shcore.dll")]
         private static extern IntPtr GetDpiForMonitor([In]IntPtr hmonitor, [In]DpiType dpiType, [Out]out uint dpiX, [Out]out uint dpiY);
-    
 
 
-    #endregion
 
-    #region Window
-        
-    public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
+        #endregion
+
+        #region Window
+
+        public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
         {
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
             placement.length = Marshal.SizeOf(placement);
@@ -109,6 +109,7 @@ namespace DesktopSbS
 
         #region Handle info
 
+
         [DllImport(dll)]
         public static extern void GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
@@ -133,6 +134,6 @@ namespace DesktopSbS
         #endregion
 
 
- 
+
     }
 }

@@ -43,7 +43,7 @@ namespace DesktopSbS
         public int X;
         public int Y;
 
-        public POINT(int x,int y)
+        public POINT(int x, int y)
         {
             X = x;
             Y = y;
@@ -74,26 +74,35 @@ namespace DesktopSbS
                    this.Bottom == 0;
         }
 
-        public static RECT operator *(RECT r,double d)
+        public bool IsMaximized()
         {
-           return new RECT(
-               (int)(r.Left * d),
-               (int)(r.Top * d), 
-               (int)(r.Right * d),
-               (int)(r.Bottom * d)
-               );
+            return this.Left <= 0 &&
+                   this.Top <= 0 &&
+                   this.Right >= App.Current.ScreenWidth &&
+                   this.Bottom >= App.Current.ScreenHeight;
+
+        }
+
+        public static RECT operator *(RECT r, double d)
+        {
+            return new RECT(
+                (int)(r.Left * d),
+                (int)(r.Top * d),
+                (int)(r.Right * d),
+                (int)(r.Bottom * d)
+                );
 
         }
 
         public override int GetHashCode()
         {
-            return 11*Left + 13*Top + 17*Right + 19*Bottom;
+            return 11 * Left + 13 * Top + 17 * Right + 19 * Bottom;
         }
 
         public override bool Equals(object obj)
         {
             if (!(obj is RECT)) return false;
-            RECT other = (RECT) obj;
+            RECT other = (RECT)obj;
 
             return this.Left == other.Left &&
                    this.Top == other.Top &&
