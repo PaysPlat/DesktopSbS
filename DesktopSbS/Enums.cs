@@ -201,6 +201,7 @@ namespace DesktopSbS
     }
 
 
+
     public enum DpiType
     {
         Effective = 0,

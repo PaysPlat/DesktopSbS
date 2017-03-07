@@ -23,6 +23,9 @@ namespace DesktopSbS
     /// </summary>
     public partial class App : Application
     {
+        static Mutex mutex = new Mutex(true, "{A118F0EB-E2D3-465C-8821-89061A45EE4C}");
+
+
         public new static App Current
         {
             get { return Application.Current as App; }
@@ -53,6 +56,7 @@ namespace DesktopSbS
         public int ScreenHeight { get; private set; }
 
         public double ScreenScale { get; private set; } = 1;
+        public bool ModeSbS { get; private set; } = true;
 
         private bool requestAbort = false;
 
@@ -62,6 +66,12 @@ namespace DesktopSbS
 
             base.OnStartup(e);
 
+            if (!mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                this.Shutdown();
+            }
+
+            this.ModeSbS = this.options.GetBool("ModeSbS", true);
             this.ParallaxEffect = this.options.GetInt("ParallaxEffect");
             this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
 
@@ -104,6 +114,10 @@ namespace DesktopSbS
                     case System.Windows.Input.Key.C:
                         this.requestAbort = true;
                         break;
+                    case System.Windows.Input.Key.V:
+                        this.ModeSbS = !this.ModeSbS;
+                        this.hasToUpdate = true;
+                        break;
                     case System.Windows.Input.Key.W:
                         this.ParallaxEffect--;
                         this.hasToUpdate = true;
@@ -122,6 +136,7 @@ namespace DesktopSbS
         {
 
             base.OnExit(e);
+            this.options.Set("ModeSbS", this.ModeSbS);
             this.options.Set("ParallaxEffect", this.ParallaxEffect);
             this.options.saveToFile();
 
@@ -142,7 +157,12 @@ namespace DesktopSbS
                 // this.Dispatcher.Invoke(()=> DebugWindow.Instance.UpdateMessage($"Elapsed ms: {elapsedMS}"));
                 Thread.Sleep(Math.Max(0, 20 - elapsedMS));
             }
-            this.Dispatcher.Invoke(this.Shutdown);
+            
+            this.Dispatcher.Invoke(() =>
+            {
+                mutex.ReleaseMutex();
+                this.Shutdown();
+            });
         }
 
 
@@ -244,6 +264,11 @@ namespace DesktopSbS
                  && (winStyle & WS.WS_DISABLED) == 0
                  && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
             {
+                // To Be Improved
+                //if ((winStyleEx & WSEX.WS_EX_TOPMOST) == WSEX.WS_EX_TOPMOST)
+                //{
+                //    User32.SetWindowPos(hwnd, User32.NOT_TOPMOST, 0, 0, 0, 0, SWP.SWP_NOMOVE | SWP.SWP_NOSIZE);
+                //}
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;

@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopSbS"
-        mc:Ignorable="d" Width="16" Height="32"
+        mc:Ignorable="d" 
          Title="ThumbWindows"
         Topmost="True" ShowInTaskbar="False" 
         WindowStyle="None" ResizeMode="NoResize" Background="Transparent"
-        AllowsTransparency="True"
-        IsHitTestVisible="False">
-      <Image x:Name="CursorImage"/>
+        AllowsTransparency="True" Width="32" Height="32"
+        IsHitTestVisible="False" >
+    <Image x:Name="CursorImage" Source="Resources/aero_arrow.png" Stretch="Fill" />
 </Window>

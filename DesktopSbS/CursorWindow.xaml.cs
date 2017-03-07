@@ -32,64 +32,64 @@ namespace DesktopSbS
         {
             cursors = new Dictionary<IntPtr, Tuple<BitmapImage, POINT>>();
 
-            defaultCursor = new Tuple<BitmapImage, POINT>(new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_arrow_SbS.png", UriKind.Relative)), new POINT());
+            defaultCursor = new Tuple<BitmapImage, POINT>(new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_arrow.png", UriKind.Relative)), new POINT());
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_ARROW), defaultCursor);
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_APPSTARTING), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_working_SbS.png", UriKind.Relative)),
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_working.png", UriKind.Relative)),
                 new POINT(0, 8)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_CROSS), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/cross_SbS.png", UriKind.Relative)),
-                new POINT(8, 16)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/crosshair.png", UriKind.Relative)),
+                new POINT(16, 16)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_HAND), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_link_SbS.png", UriKind.Relative)),
-                new POINT(3, 0)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_link.png", UriKind.Relative)),
+                new POINT(7, 0)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_HELP), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_helpsel_SbS.png", UriKind.Relative)),
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_helpsel.png", UriKind.Relative)),
                 new POINT(0, 0)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_IBEAM), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/text_SbS.png", UriKind.Relative)),
-                new POINT(8, 16)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/ibeam.png", UriKind.Relative)),
+                new POINT(16, 16)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_NO), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_unavail_SbS.png", UriKind.Relative)),
-                new POINT(4, 8)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_unavail.png", UriKind.Relative)),
+                new POINT(8, 8)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZE), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_move_SbS.png", UriKind.Relative)),
-                new POINT(5, 11)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_move.png", UriKind.Relative)),
+                new POINT(11, 11)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZEALL), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_move_SbS.png", UriKind.Relative)),
-                new POINT(5, 11)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_move.png", UriKind.Relative)),
+                new POINT(11, 11)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZENESW), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_nesw_SbS.png", UriKind.Relative)),
-                new POINT(4, 9)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_nesw.png", UriKind.Relative)),
+                new POINT(8, 8)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZENS), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_ns_SbS.png", UriKind.Relative)),
-                new POINT(2, 11)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_ns.png", UriKind.Relative)),
+                new POINT(4, 11)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZENWSE), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_nwse_SbS.png", UriKind.Relative)),
-                new POINT(4, 8)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_nwse.png", UriKind.Relative)),
+                new POINT(8, 8)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_SIZEWE), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_ew_SbS.png", UriKind.Relative)),
-                new POINT(6,4)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_ew.png", UriKind.Relative)),
+                new POINT(11,4)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_UPARROW), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_up_SbS.png", UriKind.Relative)),
-                new POINT(2, 0)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_up.png", UriKind.Relative)),
+                new POINT(4, 0)));
 
             cursors.Add(User32.LoadCursor(IntPtr.Zero, (int)CURSOR_TYPE.IDC_WAIT), new Tuple<BitmapImage, POINT>(
-                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_busy_SbS.png", UriKind.Relative)),
-                new POINT(8, 16)));
+                new BitmapImage(new Uri(@"/DesktopSbS;component/Resources/aero_busy.png", UriKind.Relative)),
+                new POINT(16, 16)));
 
 
         }

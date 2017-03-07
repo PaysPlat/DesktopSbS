@@ -41,6 +41,7 @@ namespace DesktopSbS
 
         public void RegisterThumbs()
         {
+            User32.SetWindowPos(this.Handle, User32.NOT_TOPMOST, 0, 0, 0, 0, SWP.SWP_NOMOVE | SWP.SWP_NOSIZE);
 
             IntPtr thumbLeft = IntPtr.Zero,
                 thumbRight = IntPtr.Zero;
@@ -84,7 +85,14 @@ namespace DesktopSbS
 
             int screenHeight = App.Current.ScreenHeight;
 
-            int parallaxDecal = 2*this.OffsetLevel * App.Current.ParallaxEffect;
+            int parallaxDecal = 2 * this.OffsetLevel * App.Current.ParallaxEffect;
+
+            bool modeSbS = App.Current.ModeSbS;
+
+            double dX = modeSbS ? 2 : 1;
+            double dY = modeSbS ? 1 : 2;
+            int decalX = modeSbS ? screenWidth / 2 : 0;
+            int decalY = modeSbS ? 0 : screenHeight / 2;
 
             if (this.SourceRect.Top < screenHeight - App.Current.TaskBarHeight)
             {
@@ -98,12 +106,12 @@ namespace DesktopSbS
             // Left
 
             RECT parallaxSourceRectLeft = new RECT(
-                this.SourceRect.Left  + parallaxDecal,
+                this.SourceRect.Left + parallaxDecal,
                 this.SourceRect.Top,
                 this.SourceRect.Right + parallaxDecal,
                 this.SourceRect.Bottom);
 
-               props.rcSource = new RECT
+            props.rcSource = new RECT
             {
                 Left = Math.Max(0, -parallaxSourceRectLeft.Left),
                 Top = Math.Max(0, -parallaxSourceRectLeft.Top),
@@ -115,13 +123,13 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / 2.0),
-                Bottom = props.rcSource.Bottom - props.rcSource.Top
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                       (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left) / 2.0),
-                       Math.Max(0, parallaxSourceRectLeft.Top),
+                       (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left) / dX),
+                       (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top) / dY),
                        props.rcDestination.Right,
                        props.rcDestination.Bottom,
                        SWP.SWP_ASYNCWINDOWPOS);
@@ -148,13 +156,13 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / 2.0),
-                Bottom = props.rcSource.Bottom - props.rcSource.Top
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-                       screenWidth / 2 + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left) / 2.0),
-                       Math.Max(0, parallaxSourceRectRight.Top),
+                       decalX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left) / dX),
+                       decalY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top) / dY),
                        props.rcDestination.Right,
                        props.rcDestination.Bottom,
                        SWP.SWP_ASYNCWINDOWPOS);

@@ -72,10 +72,7 @@ namespace DesktopSbS
     #endregion
 
     #region Window
-
-
-
-
+        
     public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
         {
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
@@ -88,6 +85,8 @@ namespace DesktopSbS
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowPlacement(
             IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        public static readonly IntPtr NOT_TOPMOST = new IntPtr(-2);
 
         [DllImport(dll)]
         public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy, SWP wFlags);

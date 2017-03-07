@@ -133,21 +133,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\cross_SbS.png" />
-    <Resource Include="Resources\text_SbS.png" />
-    <Resource Include="Resources\aero_arrow_SbS.png" />
-    <Resource Include="Resources\aero_busy_SbS.png" />
-    <Resource Include="Resources\aero_ew_SbS.png" />
-    <Resource Include="Resources\aero_helpsel_SbS.png" />
-    <Resource Include="Resources\aero_link_SbS.png" />
-    <Resource Include="Resources\aero_move_SbS.png" />
-    <Resource Include="Resources\aero_nesw_SbS.png" />
-    <Resource Include="Resources\aero_ns_SbS.png" />
-    <Resource Include="Resources\aero_nwse_SbS.png" />
-    <Resource Include="Resources\aero_pen_SbS.png" />
-    <Resource Include="Resources\aero_unavail_SbS.png" />
-    <Resource Include="Resources\aero_up_SbS.png" />
-    <Resource Include="Resources\aero_working_SbS.png" />
+    <Resource Include="Resources\ibeam.png" />
+    <Resource Include="Resources\crosshair.png" />
+    <Resource Include="Resources\aero_arrow.png" />
+    <Resource Include="Resources\aero_busy.png" />
+    <Resource Include="Resources\aero_ew.png" />
+    <Resource Include="Resources\aero_helpsel.png" />
+    <Resource Include="Resources\aero_link.png" />
+    <Resource Include="Resources\aero_move.png" />
+    <Resource Include="Resources\aero_nesw.png" />
+    <Resource Include="Resources\aero_ns.png" />
+    <Resource Include="Resources\aero_nwse.png" />
+    <Resource Include="Resources\aero_pen.png" />
+    <Resource Include="Resources\aero_unavail.png" />
+    <Resource Include="Resources\aero_up.png" />
+    <Resource Include="Resources\aero_working.png" />
     <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
