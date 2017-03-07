@@ -38,6 +38,7 @@ namespace DesktopSbS
         private List<WinSbS> windows = new List<WinSbS>();
         private List<WinSbS> tmpWindows = new List<WinSbS>();
 
+   
         private bool hasToUpdate = false;
 
         private CursorSbS cursorSbS;
@@ -157,7 +158,7 @@ namespace DesktopSbS
                 // this.Dispatcher.Invoke(()=> DebugWindow.Instance.UpdateMessage($"Elapsed ms: {elapsedMS}"));
                 Thread.Sleep(Math.Max(0, 20 - elapsedMS));
             }
-            
+
             this.Dispatcher.Invoke(() =>
             {
                 mutex.ReleaseMutex();
@@ -175,18 +176,21 @@ namespace DesktopSbS
 
             int offsetLevel = 0;
 
+            WinSbS taskBarWindow = null;
+
             for (int i = this.tmpWindows.Count - 1; i >= 0; --i)
             {
+                WinSbS tmpWindow = this.tmpWindows[i];
                 if (i < this.tmpWindows.Count - 1)
                 {
-                    this.tmpWindows[i].Owner = this.tmpWindows[i + 1];
+                    tmpWindow.Owner = this.tmpWindows[i + 1];
                 }
                 else
                 {
-                    this.tmpWindows[i].Owner = null;
+                    tmpWindow.Owner = null;
                 }
 
-                if (tmpWindows[i].SourceRect.Left <= 0 && tmpWindows[i].SourceRect.Right >= this.ScreenWidth)
+                if (tmpWindow.SourceRect.Left <= 0 && tmpWindow.SourceRect.Right >= this.ScreenWidth)
                 {
                     offsetLevel = 0;
                 }
@@ -194,27 +198,34 @@ namespace DesktopSbS
                 {
                     offsetLevel++;
                 }
-                tmpWindows[i].OffsetLevel = offsetLevel;
+                tmpWindow.OffsetLevel = offsetLevel;
 
-                int oldIndex = this.windows.FindIndex(w => w.Handle == this.tmpWindows[i].Handle);
+                int oldIndex = this.windows.FindIndex(w => w.Handle == tmpWindow.Handle);
                 if (oldIndex < 0)
                 {
-                    this.tmpWindows[i].RegisterThumbs();
+                    tmpWindow.RegisterThumbs();
                 }
                 else
                 {
-                    this.tmpWindows[i].CopyThumbInstances(this.windows[oldIndex]);
+                    tmpWindow.CopyThumbInstances(this.windows[oldIndex]);
 
-                    if (updateAllIndex < 0 && this.windows[oldIndex].Owner?.Handle != this.tmpWindows[i].Owner?.Handle)
+                    if (updateAllIndex < 0 && this.windows[oldIndex].Owner?.Handle != tmpWindow.Owner?.Handle)
                     {
                         updateAllIndex = i;
                     }
-                    else if (!this.windows[oldIndex].SourceRect.Equals(this.tmpWindows[i].SourceRect))
+                    else if (!this.windows[oldIndex].SourceRect.Equals(tmpWindow.SourceRect))
                     {
-                        this.tmpWindows[i].UpdateThumbs();
+                        tmpWindow.UpdateThumbs();
                     }
                     this.windows.RemoveAt(oldIndex);
 
+                }
+
+                if (tmpWindow.SourceRect.Left <= 0 &&
+                        tmpWindow.SourceRect.Right >= this.ScreenWidth &&
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == this.TaskBarHeight)
+                {
+                    taskBarWindow = tmpWindow;
                 }
 
             }
@@ -238,6 +249,8 @@ namespace DesktopSbS
                     this.windows[i].UpdateThumbs();
                 }
             }
+
+            taskBarWindow?.UpdateThumbs();
 
             this.cursorSbS.UpdateThumbs(this.windows.Max(w => w.OffsetLevel) + 1);
         }
@@ -264,11 +277,7 @@ namespace DesktopSbS
                  && (winStyle & WS.WS_DISABLED) == 0
                  && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
             {
-                // To Be Improved
-                //if ((winStyleEx & WSEX.WS_EX_TOPMOST) == WSEX.WS_EX_TOPMOST)
-                //{
-                //    User32.SetWindowPos(hwnd, User32.NOT_TOPMOST, 0, 0, 0, 0, SWP.SWP_NOMOVE | SWP.SWP_NOSIZE);
-                //}
+               
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;
