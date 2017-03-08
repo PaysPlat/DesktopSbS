@@ -51,6 +51,9 @@ namespace DesktopSbS
 
         #region Monitor
 
+        [DllImport("User32.dll")]
+        public static extern int GetSystemMetrics(int nIndex);
+
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int GetDeviceCaps(IntPtr hDC, DeviceCap nIndex);
 

@@ -60,7 +60,6 @@ namespace DesktopSbS
 
         public int ScreenHeight { get; private set; }
 
-        public double ScreenScale { get; private set; } = 1;
         public bool ModeSbS { get; private set; } = true;
 
         private bool requestAbort = false;
@@ -89,13 +88,8 @@ namespace DesktopSbS
             this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
             this.ExcludedApplications = this.options.GetListString("ExcludedApplications", new List<string>());
 
-            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                this.ScreenScale = graphics.DpiX / 96.0;
-            }
-
-            this.ScreenWidth = this.options.GetInt("ScreenWidth", (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale));
-            this.ScreenHeight = this.options.GetInt("ScreenHeight", (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale));
+            this.ScreenWidth = this.options.GetInt("ScreenWidth", User32.GetSystemMetrics(0));
+            this.ScreenHeight = this.options.GetInt("ScreenHeight", User32.GetSystemMetrics(1));
 
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
