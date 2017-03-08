@@ -57,6 +57,7 @@ namespace DesktopSbS
 
             int screenWidth = App.Current.ScreenWidth;
             int screenHeight = App.Current.ScreenHeight;
+            double scale = App.Current.ScreenScale;
 
             double dX = modeSbS ? 2 : 1;
             double dY = modeSbS ? 1 : 2;
@@ -80,17 +81,17 @@ namespace DesktopSbS
             SWP rightVisible = !modeSbS || this.Position.X - parallaxDecal > 0 ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                (int)(( this.Position.X + parallaxDecal - offset.X )/ dX  ),
-                (int)((this.Position.Y - offset.Y )/ dY ),
-                (int)(32 / dX),
-                 (int)(32 / dY),
+                (int)(( this.Position.X + parallaxDecal - offset.X * scale) / dX  ),
+                (int)((this.Position.Y - offset.Y * scale) / dY ),
+                (int)(32 *scale/ dX),
+                 (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | leftVisible);
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-               decalX + (int)(( this.Position.X - parallaxDecal - offset.X) / dX ),
-               decalY + (int)((this.Position.Y - offset.Y) / dY),
-                 (int)(32 / dX),
-                 (int)(32 / dY),
+               decalX + (int)(( this.Position.X - parallaxDecal - offset.X * scale) / dX ),
+               decalY + (int)((this.Position.Y - offset.Y * scale) / dY),
+                 (int)(32 * scale / dX),
+                 (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS|rightVisible);
 
             //DebugWindow.Instance.UpdateMessage($"Mouse Left: {this.Position.X} Top: {this.Position.Y}");

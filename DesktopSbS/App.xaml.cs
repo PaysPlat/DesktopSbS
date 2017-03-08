@@ -60,6 +60,8 @@ namespace DesktopSbS
 
         public int ScreenHeight { get; private set; }
 
+        public double ScreenScale { get; private set; } = 1;
+
         public bool ModeSbS { get; private set; } = true;
 
         private bool requestAbort = false;
@@ -88,8 +90,13 @@ namespace DesktopSbS
             this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
             this.ExcludedApplications = this.options.GetListString("ExcludedApplications", new List<string>());
 
-            this.ScreenWidth = this.options.GetInt("ScreenWidth", User32.GetSystemMetrics(0));
-            this.ScreenHeight = this.options.GetInt("ScreenHeight", User32.GetSystemMetrics(1));
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                this.ScreenScale = graphics.DpiX / 96.0;
+            }
+
+            this.ScreenWidth = this.options.GetInt("ScreenWidth", (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale));
+            this.ScreenHeight = this.options.GetInt("ScreenHeight", (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale));
 
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
@@ -179,11 +186,19 @@ namespace DesktopSbS
             WinSbS taskBarWindow = null;
 
             WinSbS tmpWindow = this.tmpWindows.FirstOrDefault(w => w.SourceRect.IsMaximized());
-            if (tmpWindow != null &&
-                this.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
+            try
             {
-                this.tmpWindows.Clear();
+                if (tmpWindow != null &&
+                    this.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
+                {
+                    this.tmpWindows.Clear();
+                }
             }
+            catch (Exception e)
+            {
+                
+            }
+
 
             for (int i = this.tmpWindows.Count - 1; i >= 0; --i)
             {
