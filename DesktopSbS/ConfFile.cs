@@ -7,7 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Europe_CommonWPF.Business
+namespace DesktopSbS
 {
     public class ConfFile
     {

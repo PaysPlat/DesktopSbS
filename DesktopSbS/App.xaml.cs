@@ -13,8 +13,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using DesktopSbS.Hook;
-using Europe_CommonWPF;
-using Europe_CommonWPF.Business;
 using Microsoft.Win32;
 
 namespace DesktopSbS
@@ -69,7 +67,6 @@ namespace DesktopSbS
         private Thread threadUpdateWindows;
         protected override void OnStartup(StartupEventArgs e)
         {
-
             base.OnStartup(e);
 
             if (!mutex.WaitOne(TimeSpan.Zero, true))
@@ -101,7 +98,9 @@ namespace DesktopSbS
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
+#if !DEBUG
             CursorWindow.HideCursors();
+#endif
             this.cursorSbS = new CursorSbS();
             this.cursorSbS.RegisterThumbs();
 
@@ -133,6 +132,9 @@ namespace DesktopSbS
                     case System.Windows.Input.Key.X:
                         this.ParallaxEffect++;
                         this.hasToUpdate = true;
+                        break;
+                    case System.Windows.Input.Key.F1:
+                        //this.Dispatcher.Invoke(AboutWindow.Instance.Show);
                         break;
 
                 }
@@ -196,7 +198,7 @@ namespace DesktopSbS
             }
             catch (Exception e)
             {
-                
+
             }
 
 
@@ -276,6 +278,11 @@ namespace DesktopSbS
 
             taskBarWindow?.UpdateThumbs();
             this.cursorSbS.UpdateThumbs((this.windows.Any() ? this.windows.Max(w => w.OffsetLevel) : 0) + 1);
+
+            // IntPtr fw = User32.GetFocus();
+            // string fp= User32.GetFilePath(fw);
+            // DebugWindow.Instance?.UpdateMessage( fp);
+
         }
 
         private bool windowFound(IntPtr hwnd, int lParam)

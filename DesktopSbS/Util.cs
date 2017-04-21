@@ -12,7 +12,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Xml;
 
-namespace Europe_CommonWPF
+namespace DesktopSbS
 {
     public static class Util
     {

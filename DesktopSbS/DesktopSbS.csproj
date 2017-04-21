@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConfFile.cs" />
     <Compile Include="CursorSbS.cs" />
     <Compile Include="CursorWindow.xaml.cs">
@@ -86,6 +89,10 @@
     <Compile Include="User32Structs.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="WinSbS.cs" />
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CursorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
