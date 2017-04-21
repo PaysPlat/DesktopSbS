@@ -64,6 +64,36 @@ namespace DesktopSbS
 
         private bool requestAbort = false;
 
+        private bool is3DActive = false;
+        public bool Is3DActive
+        {
+            get
+            {
+                return is3DActive;
+            }
+            set
+            {
+                if (this.is3DActive != value)
+                {
+                    this.is3DActive = value;
+
+                    if (this.is3DActive)
+                    {
+#if !DEBUG
+                        CursorWindow.HideCursors();
+#endif
+                        this.cursorSbS.RegisterThumbs();
+                    }
+                    else
+                    {
+                        this.cursorSbS.UnRegisterThumbs();
+                        CursorWindow.ShowCursors();
+                    }
+
+                }
+            }
+        }
+
         private Thread threadUpdateWindows;
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -98,16 +128,13 @@ namespace DesktopSbS
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
-#if !DEBUG
-            CursorWindow.HideCursors();
-#endif
             this.cursorSbS = new CursorSbS();
-            this.cursorSbS.RegisterThumbs();
+
+            this.Is3DActive = true;
 
             this.threadUpdateWindows = new Thread(asyncUpdateWindows);
             this.threadUpdateWindows.IsBackground = true;
             this.threadUpdateWindows.Start();
-
 
         }
 
@@ -133,8 +160,12 @@ namespace DesktopSbS
                         this.ParallaxEffect++;
                         this.hasToUpdate = true;
                         break;
+                    case System.Windows.Input.Key.B:
+                        this.Is3DActive = !this.Is3DActive;
+
+                        break;
                     case System.Windows.Input.Key.F1:
-                        //this.Dispatcher.Invoke(AboutWindow.Instance.Show);
+                        this.Dispatcher.Invoke(AboutWindow.Instance.Show);
                         break;
 
                 }
@@ -150,7 +181,7 @@ namespace DesktopSbS
             this.options.Set("ParallaxEffect", this.ParallaxEffect);
             this.options.saveToFile();
 
-            CursorWindow.ShowCursors();
+            this.Is3DActive = false;
 
         }
 
@@ -179,7 +210,12 @@ namespace DesktopSbS
         private void updateWindows()
         {
             this.tmpWindows = new List<WinSbS>();
-            User32.EnumWindows(windowFound, 0);
+
+
+            if (this.Is3DActive)
+            {
+                User32.EnumWindows(windowFound, 0);
+            }
 
             int updateAllIndex = -1;
 
@@ -278,10 +314,6 @@ namespace DesktopSbS
 
             taskBarWindow?.UpdateThumbs();
             this.cursorSbS.UpdateThumbs((this.windows.Any() ? this.windows.Max(w => w.OffsetLevel) : 0) + 1);
-
-            // IntPtr fw = User32.GetFocus();
-            // string fp= User32.GetFilePath(fw);
-            // DebugWindow.Instance?.UpdateMessage( fp);
 
         }
 

@@ -28,8 +28,8 @@ namespace DesktopSbS
         {
 
 
-            this.ThumbLeft = new CursorWindow();
-            this.ThumbRight = new CursorWindow();
+            if (this.ThumbLeft == null) this.ThumbLeft = new CursorWindow();
+            if (this.ThumbRight == null) this.ThumbRight = new CursorWindow();
 
             this.ThumbLeft.Show();
             this.ThumbRight.Show();
@@ -42,8 +42,8 @@ namespace DesktopSbS
         public void UnRegisterThumbs()
         {
 
-            this.ThumbLeft.Close();
-            this.ThumbRight.Close();
+            this.ThumbLeft.Hide();
+            this.ThumbRight.Hide();
 
         }
 
@@ -51,6 +51,8 @@ namespace DesktopSbS
 
         public void UpdateThumbs(int offsetLevel)
         {
+            if (this.ThumbLeft == null || this.ThumbRight == null) return;
+
             this.OffsetLevel = offsetLevel;
 
             bool modeSbS = App.Current.ModeSbS;
