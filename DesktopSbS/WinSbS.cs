@@ -79,24 +79,24 @@ namespace DesktopSbS
 
 
 
-        public void UpdateThumbs()
+        public void UpdateThumbs(bool isTaskBar = false)
         {
-            int screenWidth = App.Current.ScreenWidth;
+            int screenWidth = App.CurrentWindow.ScreenWidth;
 
-            int screenHeight = App.Current.ScreenHeight;
+            int screenHeight = App.CurrentWindow.ScreenHeight;
 
-            int parallaxDecal = 2 * this.OffsetLevel * App.Current.ParallaxEffect;
+            int parallaxDecal = 2 * this.OffsetLevel * App.CurrentWindow.ParallaxEffect;
 
-            bool modeSbS = App.Current.ModeSbS;
+            bool modeSbS = App.CurrentWindow.ModeSbS;
 
             double dX = modeSbS ? 2 : 1;
             double dY = modeSbS ? 1 : 2;
             int decalX = modeSbS ? screenWidth / 2 : 0;
             int decalY = modeSbS ? 0 : screenHeight / 2;
 
-            if (this.SourceRect.Top < screenHeight - App.Current.TaskBarHeight)
+            if (this.SourceRect.Top < screenHeight - App.CurrentWindow.TaskBarHeight)
             {
-                screenHeight -= App.Current.TaskBarHeight;
+                screenHeight -= App.CurrentWindow.TaskBarHeight;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
@@ -168,6 +168,13 @@ namespace DesktopSbS
                        SWP.SWP_ASYNCWINDOWPOS);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
+
+            if (isTaskBar)
+            {
+                this.ThumbLeft.Background = Brushes.Black;
+                this.ThumbRight.Background = Brushes.Black;
+            }
+
 
 #if DEBUG
             //if (this.Title.Contains("About"))

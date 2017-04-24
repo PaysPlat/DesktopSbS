@@ -46,6 +46,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DesktopSbS.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -85,6 +88,9 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Hook\GlobalKeyboardHook.cs" />
     <Compile Include="Hook\GlobalMouseHook.cs" />
+    <Compile Include="MainVoidWindow.xaml.cs">
+      <DependentUpon>MainVoidWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User32.cs" />
     <Compile Include="User32Structs.cs" />
     <Compile Include="Util.cs" />
@@ -98,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DebugWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainVoidWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,6 +155,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\paypal.png" />
+    <Resource Include="Resources\DesktopSbS.png" />
     <Resource Include="Resources\ibeam.png" />
     <Resource Include="Resources\crosshair.png" />
     <Resource Include="Resources\aero_arrow.png" />
@@ -160,6 +172,7 @@
     <Resource Include="Resources\aero_unavail.png" />
     <Resource Include="Resources\aero_up.png" />
     <Resource Include="Resources\aero_working.png" />
+    <Resource Include="DesktopSbS.ico" />
     <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
