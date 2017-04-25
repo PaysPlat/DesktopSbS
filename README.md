@@ -92,7 +92,7 @@ The commands shortcuts are:
 
 DesktopSbS is provided without any warranty.
 
-I will not be responsible of any damage made on your computer.
+I will not be responsible for any damage made on your computer.
 
 Keep always a fire extinguisher near of you.
 
