@@ -9,7 +9,7 @@ But PC Windows 10 interface is really impossible to use.
 #### Windows 10 interface on 3D device
 ![Windows 10 interface on 3D device](/Res/ScreenShots/Default rendering.png)
 
-So I decided to develop a software able to manage 3D display of desktop in Side-by-Side or Top-Bottom mode. And I called it DesktopSbS
+So I decided to develop a software able to manage 3D display of desktop in Side-by-Side or Top-Bottom mode. And I called it **DesktopSbS**
 
 ## ScreenShots
 
