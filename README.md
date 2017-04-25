@@ -76,7 +76,7 @@ The commands shortcuts are:
 - Some options need direct configuration file editing in %APPDATA% folder
 - Add of a notification icon
 
-### What is not working (yet or never)?
+### What is not working (not yet or never)?
 
 - Windows start menu rendering
 - Windows applications switch rendering (Alt + Tab)
@@ -91,7 +91,9 @@ The commands shortcuts are:
 ### Warranty
 
 DesktopSbS is provided without any warranty.
+
 I will not be responsible of any damage made on your computer.
+
 Keep always a fire extinguisher near of you.
 
 ### Pricing
@@ -100,6 +102,7 @@ DesktopSbS is **free**.
 You can download, install and run it without paying.
 
 If you like it, you can still support me with a PayPal donation.
+
 [![PayPal donation](/DesktopSbS/Resources/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN)
 
 ### License
