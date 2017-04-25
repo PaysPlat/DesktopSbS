@@ -1,11 +1,21 @@
 # DesktopSbS
 
-I have recently bought a new projector. It handles 3D from computer in Side-by-Side and Top-Bottom mode, it is awesome for 3D content.
-But computer Windows interface is really impossible to use.
+## Introduction
 
+I have recently bought a new projector. It handles 3D from computer in Side-by-Side and Top-Bottom mode and it is awesome for 3D content.
+
+But PC Windows 10 interface is really impossible to use.
 ![Windows 10 rendering in Side-by-Side](/Res/ScreenShots/Default rendering.png)
 
-So I decided to develop a software able to manage 3D display in Side-by-Side or Top-Bottom mode.
+So I decided to develop a software able to manage 3D display of desktop in Side-by-Side or Top-Bottom mode. And I called it DesktopSbS
+
+## ScreenShots
+
+Here are two screenshots of DesktopSbS rendering. One in Side-by-Side and one in Top-Bottom.
+
+They seems strange but they look fine on a 3D device.
+![DesktopSbS in Side-by-Side](/Res/ScreenShots/Side-by-Side.png)
+![DesktopSbS in Top-Bottom](/Res/ScreenShots/Top-Bottom.png)
 
 ## Acronyms
 SbS = Side-by-Side
@@ -18,9 +28,9 @@ DWM = Desktop Window Manager
 
 ### Prerequisites
 
-DesktopSbS has been developped for Windows 10 and it works correctly from *Windows 10 Creators Update*.
+DesktopSbS has been developped for Windows 10 and it works correctly from **Windows 10 Creators Update**.
 It should work with any hardware configuration able to manage Windows 10.
-DesktopSbS rendering use Windows DWM (Desktop Window Manager), the built-in application for thumbnails so rendering is really performant and has a low CPU consumption.
+DesktopSbS rendering use Windows DWM (**Desktop Window Manager**), the built-in application for thumbnails so rendering is really performant and has a low CPU consumption.
 
 ### Installing
 
@@ -32,12 +42,12 @@ Add additional notes about how to deploy this on a live system
 
 At first launch, DesktopSbS will display its about window with commands shortcuts and other information.
 The commands shortcuts are: 
-- Ctrl + Alt + F1 : show about DesktopSbS
-- Ctrl + Alt + W : decrease parallax efect
-- Ctrl + Alt + X : increase parallax efect
-- Ctrl + Alt + C : Shutdown DesktopSbS
-- Ctrl + Alt + V : Switch Side-by-Side to Top-Bottom
-- Ctrl + Alt + B : Pause 3D mode
+- **Ctrl + Alt + F1** : show about DesktopSbS
+- **Ctrl + Alt + W** : decrease parallax efect
+- **Ctrl + Alt + X** : increase parallax efect
+- **Ctrl + Alt + C** : Shutdown DesktopSbS
+- **Ctrl + Alt + V** : Switch Side-by-Side to Top-Bottom
+- **Ctrl + Alt + B** : Pause 3D mode
 
 ## Features
 
@@ -68,7 +78,7 @@ The commands shortcuts are:
 
 ### Authors
 
-*PaysPlat* paysplat@gmail.com
+**PaysPlat** [paysplat@gmail.com](mailto:paysplat@gmail.com)
 
 ### Warranty
 
@@ -78,10 +88,11 @@ Keep always a fire extinguisher near of you.
 
 ### Pricing
 
-DesktopSbS is free.
+DesktopSbS is **free**.
 You can download, install and run it without paying.
 
 If you like it, you can still support me with a PayPal donation.
+[![PayPal donation](/DesktopSbS/Resources/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN)
 
 ### License
 
