@@ -2,11 +2,16 @@
 
 I have recently bought a new projector. It handles 3D from computer in Side-by-Side and Top-Bottom mode, it is awesome for 3D content.
 But computer Windows interface is really impossible to use.
-So I decided to develop a software able to manage 3D displays.
+
+![Windows 10 rendering in Side-by-Side](/Res/ScreenShots/Default rendering.png)
+
+So I decided to develop a software able to manage 3D display in Side-by-Side or Top-Bottom mode.
 
 ## Acronyms
 SbS = Side-by-Side
+
 TB  = Top-Bottom
+
 DWM = Desktop Window Manager
 
 ## Getting Started
