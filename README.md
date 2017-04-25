@@ -35,7 +35,7 @@ DWM = Desktop Window Manager
 ### Prerequisites
 
 DesktopSbS has been developped for Windows 10 and it works correctly from **Windows 10 Creators Update**.
-It should work with any hardware configuration able to manage Windows 10.
+It should work with any hardware configuration able to run Windows 10.
 
 DesktopSbS rendering use Windows DWM (**Desktop Window Manager**), the built-in application for thumbnails so rendering is really performant and has a low CPU consumption.
 
