@@ -36,17 +36,19 @@ DWM = Desktop Window Manager
 
 DesktopSbS has been developped for Windows 10 and it works correctly from **Windows 10 Creators Update**.
 It should work with any hardware configuration able to manage Windows 10.
+
 DesktopSbS rendering use Windows DWM (**Desktop Window Manager**), the built-in application for thumbnails so rendering is really performant and has a low CPU consumption.
 
 ### Installing
 
 You can download the latest version setup and run it.
+
 You can change install folder, start menu location and add a desktop icon, as usual in a setup wizard.
-Add additional notes about how to deploy this on a live system
 
 ### First launch
 
 At first launch, DesktopSbS will display its about window with commands shortcuts and other information.
+
 The commands shortcuts are: 
 - **Ctrl + Alt + F1** : show about DesktopSbS
 - **Ctrl + Alt + W** : decrease parallax efect
