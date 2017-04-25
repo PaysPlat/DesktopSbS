@@ -5,7 +5,8 @@
 I have recently bought a new projector. It handles 3D from computer in Side-by-Side and Top-Bottom mode and it is awesome for 3D content.
 
 But PC Windows 10 interface is really impossible to use.
-### Windows 10 interface on 3D device
+
+##### Windows 10 interface on 3D device
 ![Windows 10 interface on 3D device](/Res/ScreenShots/Default rendering.png)
 
 So I decided to develop a software able to manage 3D display of desktop in Side-by-Side or Top-Bottom mode. And I called it DesktopSbS
@@ -16,10 +17,10 @@ Here are two screenshots of DesktopSbS rendering.
 
 They seems strange but they look fine on a 3D device.
 
-### DesktopSbS in Side-by-Side mode
+##### DesktopSbS in Side-by-Side mode
 ![DesktopSbS in Side-by-Side](/Res/ScreenShots/Side-by-Side.png)
 
-### DesktopSbS in Top-Bottom mode
+##### DesktopSbS in Top-Bottom mode
 ![DesktopSbS in Top-Bottom](/Res/ScreenShots/Top-Bottom.png)
 
 ## Acronyms
