@@ -2,7 +2,7 @@
 
 ## Versions
 
-#### [DesktopSbS_v0.1_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
+#### 2017-04-26: Download [DesktopSbS_v0.1_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
 
 ## Introduction
 
