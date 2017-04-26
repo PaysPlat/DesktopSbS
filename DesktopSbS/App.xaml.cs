@@ -35,7 +35,8 @@ namespace DesktopSbS
 
             if (!mutex.WaitOne(TimeSpan.Zero, true))
             {
-                this.Shutdown();
+				MessageBox.Show("Only one instance of DesktopSbS can run");
+                this.Shutdown(1);
             }
             else
             {
@@ -47,6 +48,8 @@ namespace DesktopSbS
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
+   if (e.ApplicationExitCode >= 1)
+        return;
             mutex.ReleaseMutex();
         }
 

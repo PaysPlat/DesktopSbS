@@ -55,18 +55,17 @@ namespace DesktopSbS
 
             this.OffsetLevel = offsetLevel;
 
-            bool modeSbS = App.CurrentWindow.ModeSbS;
-
-            int screenWidth = App.CurrentWindow.ScreenWidth;
-            int screenHeight = App.CurrentWindow.ScreenHeight;
-            double scale = App.CurrentWindow.ScreenScale;
+      bool modeSbS = Options.ModeSbS;
+      int screenWidth = Options.ScreenWidth;
+      int screenHeight = Options.ScreenHeight;
+      double scale = Options.ScreenScale;
 
             double dX = modeSbS ? 2 : 1;
             double dY = modeSbS ? 1 : 2;
             int decalX = modeSbS ? screenWidth / 2 : 0;
-            int decalY = modeSbS ? 0 : App.CurrentWindow.ScreenHeight / 2;
+            int decalY = modeSbS ? 0 : Options.ScreenHeight / 2;
 
-            int parallaxDecal = 2*App.CurrentWindow.ParallaxEffect * offsetLevel;
+            int parallaxDecal = 2*Options.ParallaxEffect * offsetLevel;
 
             CURSORINFO cursorInfo = new CURSORINFO();
             cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);

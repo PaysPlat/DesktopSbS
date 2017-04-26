@@ -28,45 +28,15 @@ namespace DesktopSbS
             InitializeComponent();
             this.init();
         }
-
-
-
         private const int renderPassTimeMs = 20;
-
-    
-
-        private ConfFile options = new ConfFile("options.ini");
-
         private GlobalKeyboardHook keyboardHook;
 
         private List<WinSbS> windows = new List<WinSbS>();
         private List<WinSbS> tmpWindows = new List<WinSbS>();
 
-
         private bool hasToUpdate = false;
 
         private CursorSbS cursorSbS;
-
-        private int parallaxEffect;
-        public int ParallaxEffect
-        {
-            get { return this.parallaxEffect; }
-            private set { this.parallaxEffect = Math.Max(0, value); }
-        }
-
-        public List<string> ExcludedApplications { get; private set; }
-
-        public bool HideAboutOnStartup { get; set; }
-
-        public int TaskBarHeight { get; private set; }
-
-        public int ScreenWidth { get; private set; }
-
-        public int ScreenHeight { get; private set; }
-
-        public double ScreenScale { get; private set; } = 1;
-
-        public bool ModeSbS { get; private set; } = true;
 
         private bool requestAbort = false;
 
@@ -75,7 +45,7 @@ namespace DesktopSbS
         {
             get
             {
-                return is3DActive;
+                return this.is3DActive;
             }
             set
             {
@@ -104,26 +74,13 @@ namespace DesktopSbS
 
         private void init()
         {
-            this.ModeSbS = this.options.GetBool("ModeSbS", true);
-            this.ParallaxEffect = this.options.GetInt("ParallaxEffect");
-            this.TaskBarHeight = this.options.GetInt("TaskBarHeight", 40);
-            this.ExcludedApplications = this.options.GetListString("ExcludedApplications", new List<string>());
-            this.HideAboutOnStartup = this.options.GetBool("HideAboutOnStartup", false);
-
-            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                this.ScreenScale = graphics.DpiX / 96.0;
-            }
-
-            this.ScreenWidth = this.options.GetInt("ScreenWidth", (int)(SystemParameters.PrimaryScreenWidth * this.ScreenScale));
-            this.ScreenHeight = this.options.GetInt("ScreenHeight", (int)(SystemParameters.PrimaryScreenHeight * this.ScreenScale));
-
+ 
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
             this.cursorSbS = new CursorSbS();
 
-            if (!this.HideAboutOnStartup)
+            if (!Options.HideAboutOnStartup)
             {
                 AboutWindow.Instance.Show();
             }
@@ -150,15 +107,15 @@ namespace DesktopSbS
                         this.requestAbort = true;
                         break;
                     case System.Windows.Input.Key.V:
-                        this.ModeSbS = !this.ModeSbS;
+                        Options.ModeSbS = !Options.ModeSbS;
                         this.hasToUpdate = true;
                         break;
                     case System.Windows.Input.Key.W:
-                        this.ParallaxEffect--;
+                        Options.ParallaxEffect--;
                         this.hasToUpdate = true;
                         break;
                     case System.Windows.Input.Key.X:
-                        this.ParallaxEffect++;
+                        Options.ParallaxEffect++;
                         this.hasToUpdate = true;
                         break;
                     case System.Windows.Input.Key.B:
@@ -214,7 +171,7 @@ namespace DesktopSbS
             try
             {
                 if (tmpWindow != null &&
-                    this.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
+                    Options.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
                 {
                     this.tmpWindows.Clear();
                 }
@@ -239,7 +196,7 @@ namespace DesktopSbS
                     tmpWindow.Owner = null;
                 }
 
-                if (tmpWindow.SourceRect.Left <= 0 && tmpWindow.SourceRect.Right >= this.ScreenWidth)
+                if (tmpWindow.SourceRect.Left <= 0 && tmpWindow.SourceRect.Right >= Options.ScreenWidth)
                 {
                     offsetLevel = 0;
                 }
@@ -271,8 +228,8 @@ namespace DesktopSbS
                 }
 
                 if (tmpWindow.SourceRect.Left <= 0 &&
-                        tmpWindow.SourceRect.Right >= this.ScreenWidth &&
-                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == this.TaskBarHeight)
+                        tmpWindow.SourceRect.Right >= Options.ScreenWidth &&
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.TaskBarHeight)
                 {
                     taskBarWindow = tmpWindow;
                 }
@@ -341,11 +298,7 @@ namespace DesktopSbS
         {
            
             base.OnClosed(e);
-            this.options.Set("ModeSbS", this.ModeSbS);
-            this.options.Set("ParallaxEffect", this.ParallaxEffect);
-            this.options.Set("HideAboutOnStartup", this.HideAboutOnStartup );
-            this.options.saveToFile();
-
+      Options.Save();
             this.Is3DActive = false;
 
         }

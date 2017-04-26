@@ -81,22 +81,22 @@ namespace DesktopSbS
 
         public void UpdateThumbs(bool isTaskBar = false)
         {
-            int screenWidth = App.CurrentWindow.ScreenWidth;
+            int screenWidth = Options.ScreenWidth;
 
-            int screenHeight = App.CurrentWindow.ScreenHeight;
+            int screenHeight = Options.ScreenHeight;
 
-            int parallaxDecal = 2 * this.OffsetLevel * App.CurrentWindow.ParallaxEffect;
+            int parallaxDecal = 2 * this.OffsetLevel * Options.ParallaxEffect;
 
-            bool modeSbS = App.CurrentWindow.ModeSbS;
+            bool modeSbS = Options.ModeSbS;
 
             double dX = modeSbS ? 2 : 1;
             double dY = modeSbS ? 1 : 2;
             int decalX = modeSbS ? screenWidth / 2 : 0;
             int decalY = modeSbS ? 0 : screenHeight / 2;
 
-            if (this.SourceRect.Top < screenHeight - App.CurrentWindow.TaskBarHeight)
+            if (this.SourceRect.Top < screenHeight - Options.TaskBarHeight)
             {
-                screenHeight -= App.CurrentWindow.TaskBarHeight;
+                screenHeight -= Options.TaskBarHeight;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();

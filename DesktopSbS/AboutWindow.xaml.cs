@@ -36,7 +36,7 @@ namespace DesktopSbS
         public AboutWindow()
         {
             InitializeComponent();
-            this.hideNextTime.IsChecked = App.CurrentWindow.HideAboutOnStartup;
+            this.hideNextTime.IsChecked = Options.HideAboutOnStartup;
             
         }
 
@@ -48,9 +48,9 @@ namespace DesktopSbS
         private void Window_Closed(object sender, EventArgs e)
         {
 
+                Options.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
             if (App.CurrentWindow != null)
             {
-                App.CurrentWindow.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
                 App.CurrentWindow.Is3DActive = true;
             }
             instance = null;

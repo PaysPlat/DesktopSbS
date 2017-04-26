@@ -78,8 +78,8 @@ namespace DesktopSbS
         {
             return this.Left <= 0 &&
                    this.Top <= 0 &&
-                   this.Right >= App.CurrentWindow.ScreenWidth &&
-                   this.Bottom >= App.CurrentWindow.ScreenHeight;
+                   this.Right >= Options.ScreenWidth &&
+                   this.Bottom >= Options.ScreenHeight;
 
         }
 

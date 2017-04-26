@@ -76,7 +76,6 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConfFile.cs" />
     <Compile Include="CursorSbS.cs" />
     <Compile Include="CursorWindow.xaml.cs">
       <DependentUpon>CursorWindow.xaml</DependentUpon>
@@ -91,6 +90,7 @@
     <Compile Include="MainVoidWindow.xaml.cs">
       <DependentUpon>MainVoidWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Options.cs" />
     <Compile Include="User32.cs" />
     <Compile Include="User32Structs.cs" />
     <Compile Include="Util.cs" />
@@ -142,9 +142,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="options.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
