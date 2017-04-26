@@ -1,5 +1,7 @@
 # DesktopSbS
 
+## [Download current version setup](/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
+
 ## Introduction
 
 I have recently bought a new projector. It handles 3D from computer in Side-by-Side and Top-Bottom mode and it is awesome for 3D content.
