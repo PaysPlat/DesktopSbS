@@ -1,6 +1,7 @@
 # DesktopSbS
 
-## [![Icon](/Res/icon/pc 320 SbS.png) Download current version setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
+## [![Icon](/Res/icon/pc 320 SbS.png){:width="128px"} 
+Download current version setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
 
 ## Introduction
 
