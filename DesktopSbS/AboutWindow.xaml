@@ -53,6 +53,12 @@
 
 
         </StackPanel>
+        <TextBlock Margin="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom">
+            This project is licensed under the GNU GPLv3 License - see the 
+            <Hyperlink NavigateUri="https://github.com/PaysPlat/DesktopSbS/blob/master/LICENSE.md" RequestNavigate="Hyperlink_RequestNavigate">LICENSE.md</Hyperlink>
+            file for details
+            
+        </TextBlock> 
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
             Orientation="Horizontal" HorizontalAlignment="Right">
             <CheckBox x:Name="hideNextTime" VerticalAlignment="Center" Margin="10">Hide this window next time</CheckBox>
