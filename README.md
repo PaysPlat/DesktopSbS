@@ -1,13 +1,14 @@
 # DesktopSbS
 
-## Warning
+### Warning
 
-![Warning](/Res/icon/warning.svg){:width="64px"} DesktopSbS needs **Windows 10 Creators Update** to work well. You can download it manually if you do not want to wait Windows Update deployment.
+![Warning](/Res/icon/warning.png) DesktopSbS needs **Windows 10 Creators Update** to work well.
+<br/>You can download it manually if you do not want to wait Windows Update deployment.<br/>
 [Windows 10 Creators Update](https://www.microsoft.com/en-us/software-download/windows10)
 
 ### Versions
 
-#### 2017-04-26: [DesktopSbS_v0.1_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)
+**- 2017-04-26: [DesktopSbS_v0.1_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)**
 
 ## Introduction
 
