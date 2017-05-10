@@ -94,7 +94,7 @@ namespace DesktopSbS
             int decalX = modeSbS ? screenWidth / 2 : 0;
             int decalY = modeSbS ? 0 : screenHeight / 2;
 
-            if (this.SourceRect.Top < screenHeight - Options.TaskBarHeight)
+            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < screenHeight - Options.TaskBarHeight)
             {
                 screenHeight -= Options.TaskBarHeight;
             }

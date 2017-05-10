@@ -74,7 +74,7 @@ namespace DesktopSbS
 
         private void init()
         {
- 
+
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
@@ -186,7 +186,6 @@ namespace DesktopSbS
             {
                 tmpWindow = this.tmpWindows[i];
 
-
                 if (i < this.tmpWindows.Count - 1)
                 {
                     tmpWindow.Owner = this.tmpWindows[i + 1];
@@ -196,6 +195,7 @@ namespace DesktopSbS
                     tmpWindow.Owner = null;
                 }
 
+  
                 if (tmpWindow.SourceRect.Left <= 0 && tmpWindow.SourceRect.Right >= Options.ScreenWidth)
                 {
                     offsetLevel = 0;
@@ -252,7 +252,7 @@ namespace DesktopSbS
             {
                 for (int i = updateAllIndex; i >= 0; --i)
                 {
-                    this.windows[i].UpdateThumbs();
+                    if (this.windows[i] != taskBarWindow) this.windows[i].UpdateThumbs();
                 }
             }
 
@@ -296,9 +296,9 @@ namespace DesktopSbS
 
         protected override void OnClosed(EventArgs e)
         {
-           
+
             base.OnClosed(e);
-      Options.Save();
+            Options.Save();
             this.Is3DActive = false;
 
         }
