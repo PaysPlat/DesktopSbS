@@ -275,16 +275,18 @@ namespace DesktopSbS
             WSEX winStyleEx = (WSEX)User32.GetWindowLongA(hwnd, User32.GWL_EXSTYLE);
 
             RECT sourceRect = new RECT();
-
             User32.GetWindowRect(hwnd, ref sourceRect);
 
-            if (!sourceRect.IsEmpty()
+            // Detection of cloaked win10 windows => not rendered 
+            int cloaked = 0;
+            DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
+
+            if (cloaked == 0
+                && !sourceRect.IsEmpty()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
-                 && (winStyle & WS.WS_DISABLED) == 0
-                 && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
+                && (winStyle & WS.WS_DISABLED) == 0)
             {
-
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;

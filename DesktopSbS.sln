@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopSbS", "DesktopSbS\DesktopSbS.csproj", "{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopSbS.Diagnostic", "DesktopSbS.Diagnostic\DesktopSbS.Diagnostic.csproj", "{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,12 @@ Global
 		{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}.Remote|Any CPU.ActiveCfg = Remote|Any CPU
 		{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}.Remote|Any CPU.Build.0 = Remote|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Remote|Any CPU.ActiveCfg = Release|Any CPU
+		{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}.Remote|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

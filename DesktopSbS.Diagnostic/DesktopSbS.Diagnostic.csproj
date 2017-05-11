@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E76F8CF3-B0FA-4E67-9F9A-2FD5DCA949D5}</ProjectGuid>
+    <ProjectGuid>{5B36B014-5F65-4B85-A15D-E9A8D6D1F037}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DesktopSbS</RootNamespace>
-    <AssemblyName>DesktopSbS</AssemblyName>
+    <RootNamespace>DesktopSbS.Diagnostic</RootNamespace>
+    <AssemblyName>DesktopSbS.Diagnostic</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,7 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,26 +33,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Remote|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>\\HomeCinema\Sources\Divers\DesktopSbS\DesktopSbS\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>DesktopSbS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,72 +49,19 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VersionWarningWindow.xaml.cs">
-      <DependentUpon>VersionWarningWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CursorSbS.cs" />
-    <Compile Include="CursorWindow.xaml.cs">
-      <DependentUpon>CursorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DebugWindow.xaml.cs">
-      <DependentUpon>DebugWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DwmApi.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="Hook\GlobalKeyboardHook.cs" />
-    <Compile Include="Hook\GlobalMouseHook.cs" />
-    <Compile Include="MainVoidWindow.xaml.cs">
-      <DependentUpon>MainVoidWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Options.cs" />
-    <Compile Include="User32.cs" />
-    <Compile Include="User32Structs.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="WinSbS.cs" />
-    <Page Include="VersionWarningWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="AboutWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CursorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DebugWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainVoidWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ThumbWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ThumbWindow.xaml.cs">
-      <DependentUpon>ThumbWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -159,28 +89,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\warning.png" />
-    <Resource Include="Resources\paypal.png" />
-    <Resource Include="Resources\DesktopSbS.png" />
-    <Resource Include="Resources\ibeam.png" />
-    <Resource Include="Resources\crosshair.png" />
-    <Resource Include="Resources\aero_arrow.png" />
-    <Resource Include="Resources\aero_busy.png" />
-    <Resource Include="Resources\aero_ew.png" />
-    <Resource Include="Resources\aero_helpsel.png" />
-    <Resource Include="Resources\aero_link.png" />
-    <Resource Include="Resources\aero_move.png" />
-    <Resource Include="Resources\aero_nesw.png" />
-    <Resource Include="Resources\aero_ns.png" />
-    <Resource Include="Resources\aero_nwse.png" />
-    <Resource Include="Resources\aero_pen.png" />
-    <Resource Include="Resources\aero_unavail.png" />
-    <Resource Include="Resources\aero_up.png" />
-    <Resource Include="Resources\aero_working.png" />
-    <Resource Include="DesktopSbS.ico" />
-    <Content Include="Resources\blank.cur">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\DesktopSbS\DesktopSbS.csproj">
+      <Project>{e76f8cf3-b0fa-4e67-9f9a-2fd5dca949d5}</Project>
+      <Name>DesktopSbS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,8 +23,8 @@ namespace DesktopSbS
 
         public int OffsetLevel { get; set; }
 
-        //public DwmApi.WS WinStyle { get; set; }
-        //public DwmApi.WSEX WinStyleEx { get; set; }
+        public WS WinStyle { get; set; }
+        public WSEX WinStyleEx { get; set; }
 
         public RECT SourceRect { get; set; }
 

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -167,6 +168,24 @@ namespace DesktopSbS
             Console.WriteLine(stringBuilder.ToString());
         }
 
+        public static Version GetWindowsVersion()
+        {
+
+            Process cmdVer = new Process();
+            cmdVer.StartInfo.FileName = "cmd.exe";
+            cmdVer.StartInfo.Arguments = "/C ver";
+            cmdVer.StartInfo.CreateNoWindow = true;
+            cmdVer.StartInfo.UseShellExecute = false;
+            cmdVer.StartInfo.RedirectStandardOutput = true;
+            cmdVer.Start();
+            string strOutput = cmdVer.StandardOutput.ReadToEnd();
+            cmdVer.WaitForExit();
+            string verString = Regex.Match(strOutput, "[0-9.]+")?.Value;
+            Version version;
+            Version.TryParse(verString, out version);
+
+            return version;
+        }
 
 
 
