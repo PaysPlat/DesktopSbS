@@ -33,9 +33,17 @@ namespace DesktopSbS
         {
             base.OnStartup(e);
 
+            Version win10Version = Util.GetWindowsVersion();
+            if (win10Version.Major < 10 || (win10Version.Major == 10 && win10Version.Build < 15063))
+            {
+                VersionWarningWindow vww = new VersionWarningWindow();
+                vww.ShowDialog();
+                this.Shutdown(1);
+            }
+
             if (!mutex.WaitOne(TimeSpan.Zero, true))
             {
-				MessageBox.Show("Only one instance of DesktopSbS can run");
+                MessageBox.Show("Only one instance of DesktopSbS can run");
                 this.Shutdown(1);
             }
             else
@@ -48,8 +56,8 @@ namespace DesktopSbS
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
-   if (e.ApplicationExitCode >= 1)
-        return;
+            if (e.ApplicationExitCode >= 1)
+                return;
             mutex.ReleaseMutex();
         }
 

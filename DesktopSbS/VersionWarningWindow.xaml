@@ -1,0 +1,33 @@
+﻿<Window x:Class="DesktopSbS.VersionWarningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopSbS"
+        mc:Ignorable="d" MaxWidth="400" WindowStartupLocation="CenterScreen"
+        
+        Title="Version warning"  Icon="DesktopSbS.ico" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseCommandHandler"/>
+    </Window.CommandBindings>
+    <DockPanel Margin="10">
+        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Center" Command="ApplicationCommands.Close" Padding="20 5">Close</Button>
+        <Image Source="Resources/warning.png" DockPanel.Dock="Left" VerticalAlignment="Top" Stretch="None"/>
+        <StackPanel>
+            <TextBlock Margin="10,0" TextWrapping="Wrap">
+               DesktopSbS needs Windows 10 Creators Update to work well.
+            </TextBlock>
+            <TextBlock Margin="10,5,10,0" TextWrapping="Wrap">
+            You can download it manually if you do not want to wait Windows Update deployment.
+            </TextBlock>
+            <TextBlock Margin="10,10" TextWrapping="Wrap" TextAlignment="Center">
+            <Hyperlink NavigateUri="https://www.microsoft.com/en-us/software-download/windows10" RequestNavigate="Hyperlink_RequestNavigate">Windows 10 Creators Update</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+
+
+
+    </DockPanel>
+</Window>
