@@ -39,8 +39,8 @@ namespace DesktopSbS
         WS_MINIMIZEBOX =
         0x00020000L,
 
-        WS_OVERLAPPED =
-        0x00000000L,
+        //WS_OVERLAPPED =
+        //0x00000000L,
 
 
         WS_POPUP =
@@ -59,8 +59,8 @@ namespace DesktopSbS
         WS_THICKFRAME =
         0x00040000L,
 
-        WS_TILED =
-        0x00000000L,
+        //WS_TILED =
+        //0x00000000L,
 
 
         WS_VISIBLE =
@@ -68,6 +68,9 @@ namespace DesktopSbS
 
         WS_VSCROLL =
         0x00200000L,
+
+        WS_OVERLAPPEDWINDOW =
+             WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
 
     }
 

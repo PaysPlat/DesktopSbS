@@ -23,6 +23,27 @@ namespace DesktopSbS
         public static readonly int DWM_TNP_RECTDESTINATION = 0x1;
 
 
+        [Flags]
+        public enum DwmWindowAttribute : uint
+        {
+            DWMWA_NCRENDERING_ENABLED = 1,
+            DWMWA_NCRENDERING_POLICY,
+            DWMWA_TRANSITIONS_FORCEDISABLED,
+            DWMWA_ALLOW_NCPAINT,
+            DWMWA_CAPTION_BUTTON_BOUNDS,
+            DWMWA_NONCLIENT_RTL_LAYOUT,
+            DWMWA_FORCE_ICONIC_REPRESENTATION,
+            DWMWA_FLIP3D_POLICY,
+            DWMWA_EXTENDED_FRAME_BOUNDS,
+            DWMWA_HAS_ICONIC_BITMAP,
+            DWMWA_DISALLOW_PEEK,
+            DWMWA_EXCLUDED_FROM_PEEK,
+            DWMWA_CLOAK,
+            DWMWA_CLOAKED,
+            DWMWA_FREEZE_REPRESENTATION,
+            DWMWA_LAST
+        }
+
         #endregion
 
         #region DWM functions
@@ -38,6 +59,22 @@ namespace DesktopSbS
 
         [DllImport(dll)]
         public static extern int DwmUpdateThumbnailProperties(IntPtr hThumb, ref DWM_THUMBNAIL_PROPERTIES props);
+
+        [DllImport(dll)]
+        public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out int pvAttribute, int cbAttribute);
+
+      
+
+        [Serializable, StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+
+         
+        }
 
         #endregion
 

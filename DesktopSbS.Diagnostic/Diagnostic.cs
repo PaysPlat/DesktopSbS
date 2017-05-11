@@ -69,7 +69,6 @@ namespace DesktopSbS.Diagnostic
 
         }
 
-
         private bool windowFound(IntPtr hwnd, int lParam)
         {
 
@@ -85,6 +84,7 @@ namespace DesktopSbS.Diagnostic
 
             RECT sourceRect = new RECT();
 
+
             User32.GetWindowRect(hwnd, ref sourceRect);
 
             WinSbS win = new WinSbS(hwnd);
@@ -93,14 +93,15 @@ namespace DesktopSbS.Diagnostic
             win.WinStyle = winStyle;
             win.WinStyleEx = winStyleEx;
 
+            int cloaked = 0;
+            DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
 
-            if (!sourceRect.IsEmpty()
+            if (cloaked == 0 &&
+                !sourceRect.IsEmpty()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
-                && (winStyle & WS.WS_DISABLED) == 0
-                && (winStyleEx & WSEX.WS_EX_NOREDIRECTIONBITMAP) == 0)
+                && (winStyle & WS.WS_DISABLED) == 0)
             {
-
                 this.windowsToDisplay.Add(win);
             }
             else
