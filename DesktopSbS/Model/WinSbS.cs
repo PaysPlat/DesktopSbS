@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
+using DesktopSbS.Interop;
 
 namespace DesktopSbS
 {
@@ -16,8 +17,8 @@ namespace DesktopSbS
 
         public IntPtr Handle { get; private set; }
 
-        public ThumbWindow ThumbLeft { get; private set; }
-        public ThumbWindow ThumbRight { get; private set; }
+        public View.ThumbWindow ThumbLeft { get; private set; }
+        public View.ThumbWindow ThumbRight { get; private set; }
 
         public WinSbS Owner { get; set; }
 
@@ -46,8 +47,8 @@ namespace DesktopSbS
             IntPtr thumbLeft = IntPtr.Zero,
                 thumbRight = IntPtr.Zero;
 
-            this.ThumbLeft = new ThumbWindow();
-            this.ThumbRight = new ThumbWindow();
+            this.ThumbLeft = new View.ThumbWindow();
+            this.ThumbRight = new View.ThumbWindow();
 
             this.ThumbLeft.Show();
             this.ThumbRight.Show();

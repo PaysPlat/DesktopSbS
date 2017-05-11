@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using DesktopSbS.Hook;
+using DesktopSbS.Interop;
 using Microsoft.Win32;
 
 namespace DesktopSbS
@@ -24,9 +25,9 @@ namespace DesktopSbS
     {
         static Mutex mutex = new Mutex(true, "{A118F0EB-E2D3-465C-8821-89061A45EE4C}");
 
-        public static MainVoidWindow CurrentWindow
+        public static View.MainVoidWindow CurrentWindow
         {
-            get { return (Application.Current as App).MainWindow as MainVoidWindow; }
+            get { return (Application.Current as App).MainWindow as View.MainVoidWindow; }
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -36,7 +37,7 @@ namespace DesktopSbS
             Version win10Version = Util.GetWindowsVersion();
             if (win10Version.Major < 10 || (win10Version.Major == 10 && win10Version.Build < 15063))
             {
-                VersionWarningWindow vww = new VersionWarningWindow();
+                View.VersionWarningWindow vww = new View.VersionWarningWindow();
                 vww.ShowDialog();
                 this.Shutdown(1);
             }
@@ -48,7 +49,7 @@ namespace DesktopSbS
             }
             else
             {
-                this.MainWindow = new MainVoidWindow();
+                this.MainWindow = new View.MainVoidWindow();
             }
 
         }

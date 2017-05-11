@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using DesktopSbS.Interop;
 
 namespace DesktopSbS.Diagnostic
 {
@@ -96,8 +97,8 @@ namespace DesktopSbS.Diagnostic
             int cloaked = 0;
             DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
 
-            if (cloaked == 0 &&
-                !sourceRect.IsEmpty()
+            if (cloaked == 0
+                && !sourceRect.IsEmpty()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
                 && (winStyle & WS.WS_DISABLED) == 0)

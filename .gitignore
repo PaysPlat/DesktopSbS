@@ -2,3 +2,4 @@
 */obj/
 *.user
 *.suo
+Install/Binaries/*.exe

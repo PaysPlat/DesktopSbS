@@ -2,12 +2,13 @@
 
 ### Warning
 
-![Warning](/Res/icon/warning.png) DesktopSbS needs **Windows 10 Creators Update** to work well.
+![Warning](/Res/img/warning.png) DesktopSbS needs **Windows 10 Creators Update** to work well.
 <br/>You can download it manually if you do not want to wait Windows Update deployment.<br/>
 [Windows 10 Creators Update](https://www.microsoft.com/en-us/software-download/windows10)
 
 ### Versions
 
+**- 2017-05-11: [DesktopSbS_v0.2_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.2/DesktopSbS_v0.2_Setup.exe)**
 **- 2017-04-26: [DesktopSbS_v0.1_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)**
 
 ## Introduction
@@ -90,7 +91,7 @@ The commands shortcuts are:
 
 - Windows start menu rendering
 - Windows applications switch rendering (Alt + Tab)
-- Manage of secondary screen (do you have multiple 3D monitors?)
+- Management of secondary screen (do you have multiple 3D monitors?)
 
 ## Legal information
 
@@ -113,7 +114,7 @@ You can download, install and run it without paying.
 
 If you like it, you can still support me with a PayPal donation.
 
-[![PayPal donation](/DesktopSbS/Resources/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN)
+[![PayPal donation](/Res/img/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN)
 
 ### License
 

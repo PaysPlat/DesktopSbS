@@ -73,52 +73,52 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VersionWarningWindow.xaml.cs">
+    <Compile Include="View\VersionWarningWindow.xaml.cs">
       <DependentUpon>VersionWarningWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AboutWindow.xaml.cs">
+    <Compile Include="View\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CursorSbS.cs" />
-    <Compile Include="CursorWindow.xaml.cs">
+    <Compile Include="Model\CursorSbS.cs" />
+    <Compile Include="View\CursorWindow.xaml.cs">
       <DependentUpon>CursorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DebugWindow.xaml.cs">
+    <Compile Include="View\DebugWindow.xaml.cs">
       <DependentUpon>DebugWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DwmApi.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="Interop\DwmApi.cs" />
+    <Compile Include="Interop\Enums.cs" />
     <Compile Include="Hook\GlobalKeyboardHook.cs" />
     <Compile Include="Hook\GlobalMouseHook.cs" />
-    <Compile Include="MainVoidWindow.xaml.cs">
+    <Compile Include="View\MainVoidWindow.xaml.cs">
       <DependentUpon>MainVoidWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Options.cs" />
-    <Compile Include="User32.cs" />
-    <Compile Include="User32Structs.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="WinSbS.cs" />
-    <Page Include="VersionWarningWindow.xaml">
+    <Compile Include="Interop\User32.cs" />
+    <Compile Include="Interop\User32Structs.cs" />
+    <Compile Include="Interop\Util.cs" />
+    <Compile Include="Model\WinSbS.cs" />
+    <Page Include="View\VersionWarningWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AboutWindow.xaml">
+    <Page Include="View\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CursorWindow.xaml">
+    <Page Include="View\CursorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DebugWindow.xaml">
+    <Page Include="View\DebugWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainVoidWindow.xaml">
+    <Page Include="View\MainVoidWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ThumbWindow.xaml">
+    <Page Include="View\ThumbWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -126,7 +126,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ThumbWindow.xaml.cs">
+    <Compile Include="View\ThumbWindow.xaml.cs">
       <DependentUpon>ThumbWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -159,29 +159,30 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\warning.png" />
-    <Resource Include="Resources\paypal.png" />
-    <Resource Include="Resources\DesktopSbS.png" />
-    <Resource Include="Resources\ibeam.png" />
-    <Resource Include="Resources\crosshair.png" />
-    <Resource Include="Resources\aero_arrow.png" />
-    <Resource Include="Resources\aero_busy.png" />
-    <Resource Include="Resources\aero_ew.png" />
-    <Resource Include="Resources\aero_helpsel.png" />
-    <Resource Include="Resources\aero_link.png" />
-    <Resource Include="Resources\aero_move.png" />
-    <Resource Include="Resources\aero_nesw.png" />
-    <Resource Include="Resources\aero_ns.png" />
-    <Resource Include="Resources\aero_nwse.png" />
-    <Resource Include="Resources\aero_pen.png" />
-    <Resource Include="Resources\aero_unavail.png" />
-    <Resource Include="Resources\aero_up.png" />
-    <Resource Include="Resources\aero_working.png" />
+    <Resource Include="Resources\Img\warning.png" />
+    <Resource Include="Resources\Img\paypal.png" />
+    <Resource Include="Resources\Img\DesktopSbS.png" />
+    <Resource Include="Resources\Cursors\ibeam.png" />
+    <Resource Include="Resources\Cursors\crosshair.png" />
+    <Resource Include="Resources\Cursors\aero_arrow.png" />
+    <Resource Include="Resources\Cursors\aero_busy.png" />
+    <Resource Include="Resources\Cursors\aero_ew.png" />
+    <Resource Include="Resources\Cursors\aero_helpsel.png" />
+    <Resource Include="Resources\Cursors\aero_link.png" />
+    <Resource Include="Resources\Cursors\aero_move.png" />
+    <Resource Include="Resources\Cursors\aero_nesw.png" />
+    <Resource Include="Resources\Cursors\aero_ns.png" />
+    <Resource Include="Resources\Cursors\aero_nwse.png" />
+    <Resource Include="Resources\Cursors\aero_pen.png" />
+    <Resource Include="Resources\Cursors\aero_unavail.png" />
+    <Resource Include="Resources\Cursors\aero_up.png" />
+    <Resource Include="Resources\Cursors\aero_working.png" />
     <Resource Include="DesktopSbS.ico" />
     <Content Include="Resources\blank.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

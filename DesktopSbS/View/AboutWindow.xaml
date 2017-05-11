@@ -1,4 +1,4 @@
-﻿<Window x:Class="DesktopSbS.AboutWindow"
+﻿<Window x:Class="DesktopSbS.View.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopSbS" Closed="Window_Closed"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         
-        Title="About DesktopSbS" Height="480" Width="640" Icon="DesktopSbS.ico" ResizeMode="NoResize">
+        Title="About DesktopSbS" Height="480" Width="640"  ResizeMode="NoResize" Icon="/DesktopSbS;component/DesktopSbS.ico">
        <Window.CommandBindings>
             <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>
@@ -21,7 +21,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel>
-            <TextBlock FontSize="24" Margin="0 10">DesktopSbS v0.1</TextBlock>
+            <TextBlock FontSize="24" Margin="0 10">DesktopSbS v0.2</TextBlock>
 
             <TextBlock TextWrapping="Wrap" Margin="10 5">A Windows 10 software to manage 3D display in Side-by-Side or Top-Bottom mode
             
@@ -35,7 +35,7 @@
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + B</Bold> : Pause 3D mode</TextBlock>
         </StackPanel>
          <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
-            <Image     Source="DesktopSbS.ico" Width="128"/>
+            <Image Width="128" Source="/DesktopSbS;component/DesktopSbS.ico"/>
             <TextBlock TextAlignment="Center" Margin="10" TextWrapping="Wrap">
                 All information available on
                 <LineBreak/>
@@ -48,7 +48,7 @@
                 If you really like DesktopSbS, you can support me with a PayPal donation
             </TextBlock>
             <TextBlock TextAlignment="Center">
-            <Hyperlink NavigateUri="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN" TextDecorations="none" RequestNavigate="Hyperlink_RequestNavigate"><Image Source="Resources/paypal.png" Stretch="none"/></Hyperlink>
+            <Hyperlink NavigateUri="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCJN2LQHDVJTN" TextDecorations="none" RequestNavigate="Hyperlink_RequestNavigate"><Image Stretch="none" Source="/DesktopSbS;component/Resources/Img/paypal.png"/></Hyperlink>
             </TextBlock>
 
 

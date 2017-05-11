@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DesktopSbS.Interop;
 
 namespace DesktopSbS
 {
@@ -14,8 +15,8 @@ namespace DesktopSbS
     {
         private static readonly POINT arrowStdSize = new POINT(12, 19);
 
-        public CursorWindow ThumbLeft { get; private set; }
-        public CursorWindow ThumbRight { get; private set; }
+        public View.CursorWindow ThumbLeft { get; private set; }
+        public View.CursorWindow ThumbRight { get; private set; }
 
         public POINT Position { get; set; }
 
@@ -28,8 +29,8 @@ namespace DesktopSbS
         {
 
 
-            if (this.ThumbLeft == null) this.ThumbLeft = new CursorWindow();
-            if (this.ThumbRight == null) this.ThumbRight = new CursorWindow();
+            if (this.ThumbLeft == null) this.ThumbLeft = new View.CursorWindow();
+            if (this.ThumbRight == null) this.ThumbRight = new View.CursorWindow();
 
             this.ThumbLeft.Show();
             this.ThumbRight.Show();

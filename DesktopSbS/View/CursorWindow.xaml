@@ -1,15 +1,14 @@
-﻿<Window x:Class="DesktopSbS.ThumbWindow"
+﻿<Window x:Class="DesktopSbS.View.CursorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopSbS"
-        xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         Title="ThumbWindows"
         Topmost="True" ShowInTaskbar="False" 
         WindowStyle="None" ResizeMode="NoResize" Background="Transparent"
-        AllowsTransparency="True"
-        IsHitTestVisible="False">
-  
+        AllowsTransparency="True" Width="32" Height="32"
+        IsHitTestVisible="False" >
+    <Image x:Name="CursorImage" Source="/DesktopSbS;component/Resources/Cursors/aero_arrow.png" Stretch="Fill" />
 </Window>
