@@ -1,0 +1,10 @@
+Générer certificat et clé
+"c:\Program Files\OpenSSL-Win64\bin\openssl.exe" req -nodes -new -x509 -keyout paysplat.key -days 999 -out paysplat.cert
+
+Convertir en pfx
+"c:\Program Files\OpenSSL-Win64\bin\openssl.exe" pkcs12 -export -in paysplat.cert -inkey paysplat.key -out paysplat.pfx
+
+Signer un exe
+"C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe" sign /f E:\DesktopSbS\Install\cert\paysplat.pfx /t http://timestamp.verisign.com/scripts/timstamp.dll ..\Binaries\DesktopSbS_v0.2_Setup.exe
+
+Dans InnoSetup remplacer l'exe par $f

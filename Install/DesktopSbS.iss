@@ -35,6 +35,7 @@ UninstallDisplayIcon={app}\{#ExeName}
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
+SignTool=SignTool
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
