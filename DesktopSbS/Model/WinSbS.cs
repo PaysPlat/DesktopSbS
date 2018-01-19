@@ -8,11 +8,16 @@ using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using DesktopSbS.Interop;
+using DesktopSbS.View;
 
 namespace DesktopSbS
 {
     public class WinSbS
     {
+        private const bool
+            DISPLAY_LEFT = true,
+            DISPLAY_RIGHT = true;
+
         public string Title { get; set; }
 
         public IntPtr Handle { get; private set; }
@@ -54,8 +59,8 @@ namespace DesktopSbS
             this.ThumbRight.Show();
 
 
-            int tlRes = DwmApi.DwmRegisterThumbnail(this.ThumbLeft.Handle, this.Handle, out thumbLeft);
-            int trRes = DwmApi.DwmRegisterThumbnail(this.ThumbRight.Handle, this.Handle, out thumbRight);
+            int tlRes = DISPLAY_LEFT ? DwmApi.DwmRegisterThumbnail(this.ThumbLeft.Handle, this.Handle, out thumbLeft) : 0;
+            int trRes = DISPLAY_RIGHT ? DwmApi.DwmRegisterThumbnail(this.ThumbRight.Handle, this.Handle, out thumbRight) : 0;
 
             if (tlRes == 0 && trRes == 0)
             {
@@ -82,9 +87,10 @@ namespace DesktopSbS
 
         public void UpdateThumbs(bool isTaskBar = false)
         {
-            int screenWidth = Options.ScreenWidth;
+            //int screenWidth = Options.ScreenWidth;
+            int x, y, cx, cy;
 
-            int screenHeight = Options.ScreenHeight;
+            int screenBottom = Options.ScreenBounds.Bottom;
 
             int parallaxDecal = 2 * this.OffsetLevel * Options.ParallaxEffect;
 
@@ -92,12 +98,12 @@ namespace DesktopSbS
 
             double dX = modeSbS ? 2 : 1;
             double dY = modeSbS ? 1 : 2;
-            int decalX = modeSbS ? screenWidth / 2 : 0;
-            int decalY = modeSbS ? 0 : screenHeight / 2;
+            int decalX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
+            int decalY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
 
-            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < screenHeight - Options.TaskBarHeight)
+            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenBounds.Bottom - Options.TaskBarHeight)
             {
-                screenHeight -= Options.TaskBarHeight;
+                screenBottom -= Options.TaskBarHeight;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
@@ -114,10 +120,10 @@ namespace DesktopSbS
 
             props.rcSource = new RECT
             {
-                Left = Math.Max(0, -parallaxSourceRectLeft.Left),
-                Top = Math.Max(0, -parallaxSourceRectLeft.Top),
-                Right = Math.Min(screenWidth, parallaxSourceRectLeft.Right) - parallaxSourceRectLeft.Left,
-                Bottom = Math.Min(screenHeight, parallaxSourceRectLeft.Bottom) - parallaxSourceRectLeft.Top
+                Left = Math.Max(0, -parallaxSourceRectLeft.Left+Options.ScreenBounds.Left),
+                Top = Math.Max(0, -parallaxSourceRectLeft.Top+Options.ScreenBounds.Top),
+                Right = Math.Min(Options.ScreenBounds.Right, parallaxSourceRectLeft.Right) - parallaxSourceRectLeft.Left,
+                Bottom = Math.Min(screenBottom, parallaxSourceRectLeft.Bottom) - parallaxSourceRectLeft.Top
             };
 
             props.rcDestination = new RECT
@@ -128,12 +134,14 @@ namespace DesktopSbS
                 Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
+            x = Options.ScreenBounds.Left+(int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left-Options.ScreenBounds.Left) / dX);
+            y = Options.ScreenBounds.Top+(int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top-Options.ScreenBounds.Top) / dY);
+            cx = props.rcDestination.Right;
+            cy = props.rcDestination.Bottom;
+
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                       (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left) / dX),
-                       (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top) / dY),
-                       props.rcDestination.Right,
-                       props.rcDestination.Bottom,
-                       SWP.SWP_ASYNCWINDOWPOS);
+                x, y, cx, cy,
+                SWP.SWP_ASYNCWINDOWPOS);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbLeft.Thumb, ref props);
 
@@ -147,10 +155,10 @@ namespace DesktopSbS
 
             props.rcSource = new RECT
             {
-                Left = Math.Max(0, -parallaxSourceRectRight.Left),
-                Top = Math.Max(0, -parallaxSourceRectRight.Top),
-                Right = Math.Min(screenWidth, parallaxSourceRectRight.Right) - parallaxSourceRectRight.Left,
-                Bottom = Math.Min(screenHeight, parallaxSourceRectRight.Bottom) - parallaxSourceRectRight.Top
+                Left = Math.Max(0, -parallaxSourceRectRight.Left + Options.ScreenBounds.Left),
+                Top = Math.Max(0, -parallaxSourceRectRight.Top + Options.ScreenBounds.Top),
+                Right = Math.Min(Options.ScreenBounds.Right, parallaxSourceRectRight.Right) - parallaxSourceRectRight.Left,
+                Bottom = Math.Min(screenBottom, parallaxSourceRectRight.Bottom) - parallaxSourceRectRight.Top
             };
 
             props.rcDestination = new RECT
@@ -161,12 +169,14 @@ namespace DesktopSbS
                 Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
+            x = Options.ScreenBounds.Left + decalX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.ScreenBounds.Left) / dX);
+            y = Options.ScreenBounds.Top + decalY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.ScreenBounds.Top) / dY);
+            cx = props.rcDestination.Right;
+            cy = props.rcDestination.Bottom;
+
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-                       decalX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left) / dX),
-                       decalY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top) / dY),
-                       props.rcDestination.Right,
-                       props.rcDestination.Bottom,
-                       SWP.SWP_ASYNCWINDOWPOS);
+                x, y, cx, cy,
+                SWP.SWP_ASYNCWINDOWPOS);
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
 

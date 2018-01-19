@@ -43,6 +43,16 @@ namespace DesktopSbS.Interop
             X = x;
             Y = y;
         }
+
+        public static POINT operator -(POINT a, POINT b)
+        {
+            return new POINT(a.X - b.X, a.Y - b.Y);
+        }
+
+        public static POINT operator +(POINT a, POINT b)
+        {
+            return new POINT(a.X + b.X, a.Y + b.Y);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -71,10 +81,10 @@ namespace DesktopSbS.Interop
 
         public bool IsMaximized()
         {
-            return this.Left <= 0 &&
-                   this.Top <= 0 &&
-                   this.Right >= Options.ScreenWidth &&
-                   this.Bottom >= Options.ScreenHeight;
+            return this.Left <= Options.ScreenBounds.Left &&
+                   this.Top <= Options.ScreenBounds.Top &&
+                   this.Right >= Options.ScreenBounds.Right &&
+                   this.Bottom >= Options.ScreenBounds.Bottom;
 
         }
 

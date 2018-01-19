@@ -28,8 +28,7 @@ namespace DesktopSbS.Diagnostic
 
             sb.AppendLine("Options");
             sb.AppendLine("------------------------------------");
-            sb.AppendLine($"ScreenWidth: {DesktopSbS.Options.ScreenWidth}");
-            sb.AppendLine($"ScreenHeight: {DesktopSbS.Options.ScreenHeight}");
+            sb.AppendLine($"ScreenBounds: {DesktopSbS.Options.ScreenBounds}");
             sb.AppendLine($"ScreenScale: {DesktopSbS.Options.ScreenScale}");
             sb.AppendLine($"TaskBarHeight: {DesktopSbS.Options.TaskBarHeight}");
             sb.AppendLine($"HideAboutOnStartup: {DesktopSbS.Options.HideAboutOnStartup}");

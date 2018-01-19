@@ -7,7 +7,7 @@
 #define Guid "{94929386-9F11-4A9E-9087-1B3D0CDCFE3A}"
 #define SrcFolder "..\"+AppName+"\bin\Release"
 
-#define AppVersion "0.2"
+#define AppVersion "0.3"
 #define AppVerName AppName+" v"+AppVersion
 #define AppVerName_ StringChange(AppVerName," ", "_");
 #define FolderName StringChange(AppName," ", "_");
@@ -35,7 +35,6 @@ UninstallDisplayIcon={app}\{#ExeName}
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
-SignTool=SignTool
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

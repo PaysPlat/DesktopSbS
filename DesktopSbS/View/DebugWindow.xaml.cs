@@ -46,10 +46,10 @@ namespace DesktopSbS.View
         {
             this.DebugText.Text = inMessage;
             User32.SetWindowPos(this.Handle, IntPtr.Zero,
-               0,
-               0,
-               Options.ScreenWidth,
-               Options.ScreenHeight,
+               Options.ScreenBounds.Left,
+               Options.ScreenBounds.Top,
+               Options.ScreenBounds.Width,
+               Options.ScreenBounds.Height,
                SWP.SWP_ASYNCWINDOWPOS);
         }
     }
