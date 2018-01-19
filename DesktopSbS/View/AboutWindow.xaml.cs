@@ -23,9 +23,15 @@ namespace DesktopSbS.View
             }
         }
 
+        public string Version
+        {
+            get { return App.VERSION; }
+        }
+
         public AboutWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
             this.hideNextTime.IsChecked = Options.HideAboutOnStartup;
             
         }
