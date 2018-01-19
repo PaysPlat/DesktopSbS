@@ -68,6 +68,8 @@ namespace DesktopSbS.View
         private void init()
         {
 
+            System.Windows.Forms.Screen[] screens = System.Windows.Forms.Screen.AllScreens;
+
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
@@ -189,7 +191,7 @@ namespace DesktopSbS.View
                 }
 
   
-                if (tmpWindow.SourceRect.Left <= 0 && tmpWindow.SourceRect.Right >= Options.ScreenWidth)
+                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left && tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right)
                 {
                     offsetLevel = 0;
                 }
@@ -220,10 +222,11 @@ namespace DesktopSbS.View
 
                 }
 
-                if (tmpWindow.SourceRect.Left <= 0 &&
-                        tmpWindow.SourceRect.Right >= Options.ScreenWidth &&
+                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left &&
+                        tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right &&
                         tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.TaskBarHeight)
                 {
+                    
                     taskBarWindow = tmpWindow;
                 }
 
