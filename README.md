@@ -8,6 +8,8 @@
 
 ### Versions
 
+**- 2018-01-20: [DesktopSbS_v0.3_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.3/DesktopSbS_v0.3_Setup.exe)**
+
 **- 2017-05-11: [DesktopSbS_v0.2_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.2/DesktopSbS_v0.2_Setup.exe)**
 
 **- 2017-04-26: [DesktopSbS_v0.1_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.1/DesktopSbS_v0.1_Setup.exe)**
@@ -79,6 +81,7 @@ The commands shortcuts are:
 - SbS / TB management of mouse cursor (hide Windows cursor and display two resized)
 - Management of display scales different of 100%
 - Excluded fullScreen applications, DesktopSbS can pause itself for some applications, useful if other application already manage Side-by-Side display, for example a SbS video player.
+- Management of secondary screen
 
 ### What could be improved?
 
@@ -92,7 +95,6 @@ The commands shortcuts are:
 
 - Windows start menu rendering
 - Windows applications switch rendering (Alt + Tab)
-- Management of secondary screen (do you have multiple 3D monitors?)
 
 ## Legal information
 
