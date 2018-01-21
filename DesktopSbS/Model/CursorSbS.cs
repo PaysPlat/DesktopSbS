@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using DesktopSbS.Interop;
+using DesktopSbS.View;
 
 namespace DesktopSbS
 {
@@ -48,10 +49,47 @@ namespace DesktopSbS
 
         }
 
+        public bool Is3DActive { get; set; }
+
+        public bool IsCursorOnScreen { get; set; }
+
+        
+        private bool isCursorActive = false;
+        public void UpdateCursorState()
+        {
+            bool newCursorActive = this.Is3DActive && this.IsCursorOnScreen;
+
+            if (this.isCursorActive != newCursorActive)
+            {
+                this.isCursorActive = newCursorActive;
+                if (this.isCursorActive)
+                {
+#if !DEBUG
+                    CursorWindow.HideCursors();
+#endif
+                    this.RegisterThumbs();
+                }
+                else
+                {
+                    this.UnRegisterThumbs();
+                    CursorWindow.ShowCursors();
+                }
+            }
+
+
+        }
 
 
         public void UpdateThumbs(int offsetLevel)
         {
+            CURSORINFO cursorInfo = new CURSORINFO();
+            cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
+            User32.GetCursorInfo(out cursorInfo);
+            this.IsCursorOnScreen = Options.ScreenBounds.Contains(cursorInfo.ptScreenPos.X, cursorInfo.ptScreenPos.Y);
+            this.UpdateCursorState();
+
+           // DebugWindow.Instance.UpdateMessage($"Is3DActive: {this.Is3DActive}{Environment.NewLine}IsCursorOnScreen: {this.IsCursorOnScreen}{ Environment.NewLine}ScreenBounds: { Options.ScreenBounds}{Environment.NewLine}Mouse Position:{cursorInfo.ptScreenPos}");
+
             if (this.ThumbLeft == null || this.ThumbRight == null) return;
 
             this.OffsetLevel = offsetLevel;
@@ -71,10 +109,6 @@ namespace DesktopSbS
 
             int parallaxDecal = 2 * Options.ParallaxEffect * offsetLevel;
 
-            CURSORINFO cursorInfo = new CURSORINFO();
-            cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
-            User32.GetCursorInfo(out cursorInfo);
-
             this.Position = cursorInfo.ptScreenPos - screenTopLeft;
 
             POINT offset = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
@@ -86,7 +120,7 @@ namespace DesktopSbS
             SWP rightVisible = !modeSbS || this.Position.X - parallaxDecal > 0 ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                screenTopLeft.X+ (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
+                screenTopLeft.X + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
                 screenTopLeft.Y + (int)((this.Position.Y - offset.Y * scale) / dY),
                 (int)(32 * scale / dX),
                  (int)(32 * scale / dY),

@@ -45,20 +45,8 @@ namespace DesktopSbS.View
                 if (this.is3DActive != value)
                 {
                     this.is3DActive = value;
-
-                    if (this.is3DActive)
-                    {
-#if !DEBUG
-                        CursorWindow.HideCursors();
-#endif
-                        this.cursorSbS.RegisterThumbs();
-                    }
-                    else
-                    {
-                        this.cursorSbS.UnRegisterThumbs();
-                        CursorWindow.ShowCursors();
-                    }
-
+                    this.cursorSbS.Is3DActive = value;
+                    this.cursorSbS.UpdateCursorState();
                 }
             }
         }
