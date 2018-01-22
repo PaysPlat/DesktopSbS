@@ -73,42 +73,6 @@ namespace DesktopSbS.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int TaskBarHeight {
-            get {
-                return ((int)(this["TaskBarHeight"]));
-            }
-            set {
-                this["TaskBarHeight"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ScreenWidth {
-            get {
-                return ((int)(this["ScreenWidth"]));
-            }
-            set {
-                this["ScreenWidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ScreenHeight {
-            get {
-                return ((int)(this["ScreenHeight"]));
-            }
-            set {
-                this["ScreenHeight"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double ScreenScale {
             get {
                 return ((double)(this["ScreenScale"]));

@@ -59,17 +59,15 @@ namespace DesktopSbS
             }
         }
 
-        public static int TaskBarHeight { get; private set; }
-
-        //public static int ScreenWidth { get; private set; }
-
-        //public static int ScreenHeight { get; private set; }
-
+ 
         public static double ScreenScale { get; private set; }
 
         public static Rectangle ScreenBounds { get; private set; }
 
-        
+        public static Rectangle ScreenWorkspace { get; private set; }
+
+
+
         public static int ScreenId
         {
             get
@@ -85,23 +83,15 @@ namespace DesktopSbS
 
         static Options()
         {
-            Options.TaskBarHeight = Settings.Default.TaskBarHeight;
-            if (Options.TaskBarHeight <= 0)
-                Options.TaskBarHeight = 40;
             Options.ScreenScale = Settings.Default.ScreenScale;
             if (Options.ScreenScale <= 0.0)
             {
                 using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
                     Options.ScreenScale = (double)graphics.DpiX / 96.0;
             }
-            //Options.ScreenWidth = Settings.Default.ScreenWidth;
-            //if (Options.ScreenWidth <= 0)
-            //    Options.ScreenWidth = (int)(SystemParameters.PrimaryScreenWidth * Options.ScreenScale);
-            //Options.ScreenHeight = Settings.Default.ScreenHeight;
-            //if (Options.ScreenHeight > 0)
-            //    return;
-            //Options.ScreenHeight = (int)(SystemParameters.PrimaryScreenHeight * Options.ScreenScale);
+
             Options.ScreenBounds = Screen.AllScreens[Options.ScreenId - 1].Bounds;
+            Options.ScreenWorkspace = Screen.AllScreens[Options.ScreenId - 1].WorkingArea;
 
         }
 

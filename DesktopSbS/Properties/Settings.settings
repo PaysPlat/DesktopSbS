@@ -14,15 +14,6 @@
     <Setting Name="ExcludedApplications" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="TaskBarHeight" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="ScreenWidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="ScreenHeight" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="ScreenScale" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
