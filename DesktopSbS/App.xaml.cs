@@ -24,7 +24,7 @@ namespace DesktopSbS
     public partial class App : Application
     {
 
-        public const string VERSION = "0.3";
+        public const string VERSION = "0.4";
 
 
         static Mutex mutex = new Mutex(true, "{A118F0EB-E2D3-465C-8821-89061A45EE4C}");
