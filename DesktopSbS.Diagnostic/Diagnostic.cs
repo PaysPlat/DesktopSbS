@@ -29,8 +29,8 @@ namespace DesktopSbS.Diagnostic
             sb.AppendLine("Options");
             sb.AppendLine("------------------------------------");
             sb.AppendLine($"ScreenBounds: {DesktopSbS.Options.ScreenBounds}");
+            sb.AppendLine($"ScreenWorkspace: {DesktopSbS.Options.ScreenWorkspace}");
             sb.AppendLine($"ScreenScale: {DesktopSbS.Options.ScreenScale}");
-            sb.AppendLine($"TaskBarHeight: {DesktopSbS.Options.TaskBarHeight}");
             sb.AppendLine($"HideAboutOnStartup: {DesktopSbS.Options.HideAboutOnStartup}");
             sb.AppendLine($"ModeSbS: {DesktopSbS.Options.ModeSbS}");
             sb.AppendLine($"ParallaxEffect: {DesktopSbS.Options.ParallaxEffect}");

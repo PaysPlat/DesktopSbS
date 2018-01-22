@@ -101,9 +101,9 @@ namespace DesktopSbS
             int decalX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
             int decalY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
 
-            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenBounds.Bottom - Options.TaskBarHeight)
+            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenWorkspace.Bottom)
             {
-                screenBottom -= Options.TaskBarHeight;
+                screenBottom = Options.ScreenWorkspace.Bottom;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();

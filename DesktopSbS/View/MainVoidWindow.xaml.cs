@@ -212,7 +212,7 @@ namespace DesktopSbS.View
 
                 if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left &&
                         tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right &&
-                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.TaskBarHeight)
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenBounds.Height-Options.ScreenWorkspace.Height)
                 {
                     
                     taskBarWindow = tmpWindow;
