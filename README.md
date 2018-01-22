@@ -8,7 +8,9 @@
 
 ### Versions
 
-**- 2018-01-20: [DesktopSbS_v0.3_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.3/DesktopSbS_v0.3_Setup.exe)**
+**- 2018-01-22: [DesktopSbS_v0.4_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.4/DesktopSbS_v0.4_Setup.exe)**
+
+**- 2018-01-19: [DesktopSbS_v0.3_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.3/DesktopSbS_v0.3_Setup.exe)**
 
 **- 2017-05-11: [DesktopSbS_v0.2_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.2/DesktopSbS_v0.2_Setup.exe)**
 
