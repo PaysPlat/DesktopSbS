@@ -33,6 +33,7 @@
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + C</Bold> : Shutdown DesktopSbS</TextBlock>
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + V</Bold> : Switch Side-by-Side to Top-Bottom</TextBlock>
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + B</Bold> : Pause 3D mode</TextBlock>
+            <TextBlock Margin="10 5"><Bold>Ctrl + Alt + M</Bold> : Hide cursor in 3D mode</TextBlock>
         </StackPanel>
          <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
             <Image Width="128" Source="/DesktopSbS;component/DesktopSbS.ico"/>

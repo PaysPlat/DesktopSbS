@@ -4,3 +4,4 @@
 *.suo
 Install/Binaries/*.exe
 Install/cert/p*
+.vs

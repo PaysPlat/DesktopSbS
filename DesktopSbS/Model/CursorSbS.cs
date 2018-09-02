@@ -49,11 +49,23 @@ namespace DesktopSbS
 
         }
 
-        public bool Is3DActive { get; set; }
+        private bool is3DActive;
+        public bool Is3DActive
+        {
+            get
+            {
+                return this.is3DActive;
+            }
+            set
+            {
+                this.is3DActive = value && !Options.IgnoreCursor;
+                this.UpdateCursorState();                
+            }
+        }
 
         public bool IsCursorOnScreen { get; set; }
 
-        
+
         private bool isCursorActive = false;
         public void UpdateCursorState()
         {
@@ -88,7 +100,7 @@ namespace DesktopSbS
             this.IsCursorOnScreen = Options.ScreenBounds.Contains(cursorInfo.ptScreenPos.X, cursorInfo.ptScreenPos.Y);
             this.UpdateCursorState();
 
-           // DebugWindow.Instance.UpdateMessage($"Is3DActive: {this.Is3DActive}{Environment.NewLine}IsCursorOnScreen: {this.IsCursorOnScreen}{ Environment.NewLine}ScreenBounds: { Options.ScreenBounds}{Environment.NewLine}Mouse Position:{cursorInfo.ptScreenPos}");
+            // DebugWindow.Instance.UpdateMessage($"Is3DActive: {this.Is3DActive}{Environment.NewLine}IsCursorOnScreen: {this.IsCursorOnScreen}{ Environment.NewLine}ScreenBounds: { Options.ScreenBounds}{Environment.NewLine}Mouse Position:{cursorInfo.ptScreenPos}");
 
             if (this.ThumbLeft == null || this.ThumbRight == null) return;
 
