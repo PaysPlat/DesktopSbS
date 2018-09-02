@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: DesktopSbS.Options
-// Assembly: DesktopSbS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 49DE7989-53B5-4209-8CFF-027C6071B6C3
-// Assembly location: D:\Sources\Divers\DesktopSbS\DesktopSbS\bin\Release\DesktopSbS.exe
-
-using DesktopSbS.Properties;
+﻿using DesktopSbS.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Drawing;
@@ -51,6 +45,18 @@ namespace DesktopSbS
             }
         }
 
+        public static bool IgnoreCursor
+        {
+            get
+            {
+                return Settings.Default.IgnoreCursor;
+            }
+            set
+            {
+                Settings.Default.IgnoreCursor = value;
+            }
+        }
+
         public static StringCollection ExcludedApplications
         {
             get
@@ -59,7 +65,7 @@ namespace DesktopSbS
             }
         }
 
- 
+
         public static double ScreenScale { get; private set; }
 
         public static Rectangle ScreenBounds { get; private set; }
@@ -72,7 +78,7 @@ namespace DesktopSbS
         {
             get
             {
-                return Math.Max(Math.Min(Settings.Default.ScreenId, Screen.AllScreens.Length),1);
+                return Math.Max(Math.Min(Settings.Default.ScreenId, Screen.AllScreens.Length), 1);
             }
             set
             {

@@ -46,7 +46,6 @@ namespace DesktopSbS.View
                 {
                     this.is3DActive = value;
                     this.cursorSbS.Is3DActive = value;
-                    this.cursorSbS.UpdateCursorState();
                 }
             }
         }
@@ -79,34 +78,37 @@ namespace DesktopSbS.View
 
         }
 
-        private void KeyboardHook_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void KeyboardHook_KeyDown(object sender, KeyEventArgs e)
         {
             ModifierKeys ctrlAlt = ModifierKeys.Control | ModifierKeys.Alt;
             if ((e.KeyboardDevice.Modifiers & ctrlAlt) >= ctrlAlt)
             {
                 switch (e.Key)
                 {
-                    case System.Windows.Input.Key.C:
+                    case Key.C:
                         this.requestAbort = true;
                         break;
-                    case System.Windows.Input.Key.V:
+                    case Key.V:
                         Options.ModeSbS = !Options.ModeSbS;
                         this.hasToUpdate = true;
                         break;
-                    case System.Windows.Input.Key.W:
+                    case Key.W:
                         Options.ParallaxEffect--;
                         this.hasToUpdate = true;
                         break;
-                    case System.Windows.Input.Key.X:
+                    case Key.X:
                         Options.ParallaxEffect++;
                         this.hasToUpdate = true;
                         break;
-                    case System.Windows.Input.Key.B:
+                    case Key.B:
                         this.Is3DActive = !this.Is3DActive;
-
                         break;
-                    case System.Windows.Input.Key.F1:
+                    case Key.F1:
                         this.Dispatcher.Invoke(AboutWindow.Instance.Show);
+                        break;
+                    case Key.M:
+                        Options.IgnoreCursor = !Options.IgnoreCursor;
+                        this.cursorSbS.Is3DActive = this.Is3DActive ;
                         break;
 
                 }
@@ -178,7 +180,7 @@ namespace DesktopSbS.View
                     tmpWindow.Owner = null;
                 }
 
-  
+
                 if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left && tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right)
                 {
                     offsetLevel = 0;
@@ -212,9 +214,9 @@ namespace DesktopSbS.View
 
                 if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left &&
                         tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right &&
-                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenBounds.Height-Options.ScreenWorkspace.Height)
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenBounds.Height - Options.ScreenWorkspace.Height)
                 {
-                    
+
                     taskBarWindow = tmpWindow;
                 }
 
