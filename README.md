@@ -8,6 +8,8 @@
 
 ### Versions
 
+**- 2018-09-03: [DesktopSbS_v0.5_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.5/DesktopSbS_v0.5_Setup.exe)**
+
 **- 2018-01-22: [DesktopSbS_v0.4_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.4/DesktopSbS_v0.4_Setup.exe)**
 
 **- 2018-01-19: [DesktopSbS_v0.3_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v0.3/DesktopSbS_v0.3_Setup.exe)**
@@ -72,6 +74,8 @@ The commands shortcuts are:
 - **Ctrl + Alt + C** : Shutdown DesktopSbS
 - **Ctrl + Alt + V** : Switch Side-by-Side to Top-Bottom
 - **Ctrl + Alt + B** : Pause 3D mode
+- **Ctrl + Alt + M** : Hide cursor in 3D mode
+- **Ctrl + Alt + K** : Keep windows ratio
 
 ## Features
 
