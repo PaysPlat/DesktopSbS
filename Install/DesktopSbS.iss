@@ -7,7 +7,7 @@
 #define Guid "{94929386-9F11-4A9E-9087-1B3D0CDCFE3A}"
 #define SrcFolder "..\"+AppName+"\bin\Release"
 
-#define AppVersion "0.4"
+#define AppVersion "0.5"
 #define AppVerName AppName+" v"+AppVersion
 #define AppVerName_ StringChange(AppVerName," ", "_");
 #define FolderName StringChange(AppName," ", "_");
