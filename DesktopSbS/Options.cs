@@ -57,6 +57,18 @@ namespace DesktopSbS
             }
         }
 
+        public static bool KeepRatio
+        {
+            get
+            {
+                return Settings.Default.KeepRatio;
+            }
+            set
+            {
+                Settings.Default.KeepRatio = value;
+            }
+        }
+
         public static StringCollection ExcludedApplications
         {
             get

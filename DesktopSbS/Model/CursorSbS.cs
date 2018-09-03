@@ -59,7 +59,7 @@ namespace DesktopSbS
             set
             {
                 this.is3DActive = value && !Options.IgnoreCursor;
-                this.UpdateCursorState();                
+                this.UpdateCursorState();
             }
         }
 
@@ -107,6 +107,7 @@ namespace DesktopSbS
             this.OffsetLevel = offsetLevel;
 
             bool modeSbS = Options.ModeSbS;
+            bool keepRatio = Options.KeepRatio;
             int screenWidth = Options.ScreenBounds.Width;
             int screenHeight = Options.ScreenBounds.Height;
             double scale = Options.ScreenScale;
@@ -114,10 +115,13 @@ namespace DesktopSbS
 
             POINT screenTopLeft = new POINT(Options.ScreenBounds.Left, Options.ScreenBounds.Top);
 
-            double dX = modeSbS ? 2 : 1;
-            double dY = modeSbS ? 1 : 2;
-            int decalX = modeSbS ? screenWidth / 2 : 0;
-            int decalY = modeSbS ? 0 : screenHeight / 2;
+            double dX = modeSbS || keepRatio ? 2 : 1;
+            double dY = !modeSbS || keepRatio ? 2 : 1;
+            int decalSbSX = modeSbS ? screenWidth / 2 : 0;
+            int decalSbSY = modeSbS ? 0 : screenHeight / 2;
+            int decalRatioX = keepRatio && !modeSbS ? screenWidth / 4 : 0;
+            int decalRatioY = keepRatio && modeSbS ? screenHeight / 4 : 0;
+
 
             int parallaxDecal = 2 * Options.ParallaxEffect * offsetLevel;
 
@@ -126,21 +130,21 @@ namespace DesktopSbS
             POINT offset = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
             this.ThumbRight.SetCursor(cursorInfo.hCursor);
 
-            SWP leftVisible = (modeSbS && this.Position.X + parallaxDecal + arrowStdSize.X < screenWidth) ||
-                              (!modeSbS && this.Position.Y + arrowStdSize.Y < screenHeight)
+            SWP leftVisible = (this.Position.X + parallaxDecal + arrowStdSize.X < screenWidth) &&
+                              (modeSbS || this.Position.Y + arrowStdSize.Y < screenHeight)
                               ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
-            SWP rightVisible = !modeSbS || this.Position.X - parallaxDecal > 0 ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
+            SWP rightVisible = (this.Position.X - parallaxDecal > 0) ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                screenTopLeft.X + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
-                screenTopLeft.Y + (int)((this.Position.Y - offset.Y * scale) / dY),
+                screenTopLeft.X + decalRatioX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
+                screenTopLeft.Y + decalRatioY + (int)((this.Position.Y - offset.Y * scale) / dY),
                 (int)(32 * scale / dX),
                  (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | leftVisible);
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-               screenTopLeft.X + decalX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / dX),
-               screenTopLeft.Y + decalY + (int)((this.Position.Y - offset.Y * scale) / dY),
+               screenTopLeft.X + decalRatioX + decalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / dX),
+               screenTopLeft.Y + decalRatioY + decalSbSY + (int)((this.Position.Y - offset.Y * scale) / dY),
                  (int)(32 * scale / dX),
                  (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | rightVisible);

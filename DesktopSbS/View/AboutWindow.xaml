@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopSbS" Closed="Window_Closed"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         
-        Title="About DesktopSbS" Height="480" Width="640"  ResizeMode="NoResize" Icon="/DesktopSbS;component/DesktopSbS.ico">
+        Title="About DesktopSbS" Height="500" Width="640"  ResizeMode="NoResize" Icon="/DesktopSbS;component/DesktopSbS.ico">
        <Window.CommandBindings>
             <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>
@@ -34,9 +34,10 @@
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + V</Bold> : Switch Side-by-Side to Top-Bottom</TextBlock>
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + B</Bold> : Pause 3D mode</TextBlock>
             <TextBlock Margin="10 5"><Bold>Ctrl + Alt + M</Bold> : Hide cursor in 3D mode</TextBlock>
+            <TextBlock Margin="10 5"><Bold>Ctrl + Alt + K</Bold> : Keep windows ratio</TextBlock>
         </StackPanel>
          <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
-            <Image Width="128" Source="/DesktopSbS;component/DesktopSbS.ico"/>
+            <Image Margin="10" Width="128" Source="/DesktopSbS;component/DesktopSbS.ico"/>
             <TextBlock TextAlignment="Center" Margin="10" TextWrapping="Wrap">
                 All information available on
                 <LineBreak/>

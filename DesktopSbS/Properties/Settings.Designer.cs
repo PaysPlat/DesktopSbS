@@ -105,5 +105,17 @@ namespace DesktopSbS.Properties {
                 this["IgnoreCursor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KeepRatio {
+            get {
+                return ((bool)(this["KeepRatio"]));
+            }
+            set {
+                this["KeepRatio"] = value;
+            }
+        }
     }
 }

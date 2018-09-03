@@ -31,6 +31,8 @@ namespace DesktopSbS.View
 
         private CursorSbS cursorSbS;
 
+        private BackgroundWindow backgroundWindow;
+
         private bool requestAbort = false;
 
         private bool is3DActive = false;
@@ -46,21 +48,30 @@ namespace DesktopSbS.View
                 {
                     this.is3DActive = value;
                     this.cursorSbS.Is3DActive = value;
+                    if (this.is3DActive)
+                    {
+                        this.backgroundWindow.Show();
+                    }
+                    else
+                    {
+                        this.backgroundWindow.Hide();
+                    }
                 }
             }
         }
+
 
         private Thread threadUpdateWindows;
 
         private void init()
         {
-
-            System.Windows.Forms.Screen[] screens = System.Windows.Forms.Screen.AllScreens;
-
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
             this.cursorSbS = new CursorSbS();
+
+            this.backgroundWindow = new BackgroundWindow();
+
 
             if (!Options.HideAboutOnStartup)
             {
@@ -104,13 +115,20 @@ namespace DesktopSbS.View
                         this.Is3DActive = !this.Is3DActive;
                         break;
                     case Key.F1:
-                        this.Dispatcher.Invoke(AboutWindow.Instance.Show);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            AboutWindow.Instance.hideNextTime.IsChecked = false;
+                            AboutWindow.Instance.Show();
+                        });
                         break;
                     case Key.M:
                         Options.IgnoreCursor = !Options.IgnoreCursor;
-                        this.cursorSbS.Is3DActive = this.Is3DActive ;
+                        this.cursorSbS.Is3DActive = this.Is3DActive;
                         break;
-
+                    case Key.K:
+                        Options.KeepRatio = !Options.KeepRatio;
+                        this.hasToUpdate = true;
+                        break;
                 }
 
             }
@@ -244,6 +262,7 @@ namespace DesktopSbS.View
 
             taskBarWindow?.UpdateThumbs(true);
             this.cursorSbS.UpdateThumbs((this.windows.Any() ? this.windows.Max(w => w.OffsetLevel) : 0) + 1);
+
 
         }
 
