@@ -31,6 +31,8 @@ namespace DesktopSbS.View
 
         private CursorSbS cursorSbS;
 
+        private BackgroundWindow backgroundWindow;
+
         private bool requestAbort = false;
 
         private bool is3DActive = false;
@@ -46,9 +48,18 @@ namespace DesktopSbS.View
                 {
                     this.is3DActive = value;
                     this.cursorSbS.Is3DActive = value;
+                    if (this.is3DActive)
+                    {
+                        this.backgroundWindow.Show();
+                    }
+                    else
+                    {
+                        this.backgroundWindow.Hide();
+                    }
                 }
             }
         }
+
 
         private Thread threadUpdateWindows;
 
@@ -58,6 +69,9 @@ namespace DesktopSbS.View
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
             this.cursorSbS = new CursorSbS();
+
+            this.backgroundWindow = new BackgroundWindow();
+
 
             if (!Options.HideAboutOnStartup)
             {
