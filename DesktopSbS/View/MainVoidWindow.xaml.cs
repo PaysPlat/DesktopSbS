@@ -54,9 +54,6 @@ namespace DesktopSbS.View
 
         private void init()
         {
-
-            System.Windows.Forms.Screen[] screens = System.Windows.Forms.Screen.AllScreens;
-
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
@@ -104,7 +101,11 @@ namespace DesktopSbS.View
                         this.Is3DActive = !this.Is3DActive;
                         break;
                     case Key.F1:
-                        this.Dispatcher.Invoke(AboutWindow.Instance.Show);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            AboutWindow.Instance.hideNextTime.IsChecked = false;
+                            AboutWindow.Instance.Show();
+                        });
                         break;
                     case Key.M:
                         Options.IgnoreCursor = !Options.IgnoreCursor;
@@ -114,7 +115,6 @@ namespace DesktopSbS.View
                         Options.KeepRatio = !Options.KeepRatio;
                         this.hasToUpdate = true;
                         break;
-
                 }
 
             }
@@ -248,6 +248,7 @@ namespace DesktopSbS.View
 
             taskBarWindow?.UpdateThumbs(true);
             this.cursorSbS.UpdateThumbs((this.windows.Any() ? this.windows.Max(w => w.OffsetLevel) : 0) + 1);
+
 
         }
 
