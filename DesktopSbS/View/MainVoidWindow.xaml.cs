@@ -108,7 +108,11 @@ namespace DesktopSbS.View
                         break;
                     case Key.M:
                         Options.IgnoreCursor = !Options.IgnoreCursor;
-                        this.cursorSbS.Is3DActive = this.Is3DActive ;
+                        this.cursorSbS.Is3DActive = this.Is3DActive;
+                        break;
+                    case Key.K:
+                        Options.KeepRatio = !Options.KeepRatio;
+                        this.hasToUpdate = true;
                         break;
 
                 }

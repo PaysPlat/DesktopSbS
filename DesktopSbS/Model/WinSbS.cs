@@ -95,11 +95,15 @@ namespace DesktopSbS
             int parallaxDecal = 2 * this.OffsetLevel * Options.ParallaxEffect;
 
             bool modeSbS = Options.ModeSbS;
+            bool keepRatio = Options.KeepRatio;
 
-            double dX = modeSbS ? 2 : 1;
-            double dY = modeSbS ? 1 : 2;
-            int decalX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
-            int decalY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
+
+            double dX = modeSbS || keepRatio ? 2 : 1;
+            double dY = !modeSbS || keepRatio ? 2 : 1;
+            int decalSbSX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
+            int decalSbSY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
+            int decalRatioX = keepRatio && !modeSbS ? Options.ScreenBounds.Width / 4 : 0;
+            int decalRatioY = keepRatio && modeSbS ? Options.ScreenBounds.Height / 4 : 0;
 
             if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenWorkspace.Bottom)
             {
@@ -120,8 +124,8 @@ namespace DesktopSbS
 
             props.rcSource = new RECT
             {
-                Left = Math.Max(0, -parallaxSourceRectLeft.Left+Options.ScreenBounds.Left),
-                Top = Math.Max(0, -parallaxSourceRectLeft.Top+Options.ScreenBounds.Top),
+                Left = Math.Max(0, -parallaxSourceRectLeft.Left + Options.ScreenBounds.Left),
+                Top = Math.Max(0, -parallaxSourceRectLeft.Top + Options.ScreenBounds.Top),
                 Right = Math.Min(Options.ScreenBounds.Right, parallaxSourceRectLeft.Right) - parallaxSourceRectLeft.Left,
                 Bottom = Math.Min(screenBottom, parallaxSourceRectLeft.Bottom) - parallaxSourceRectLeft.Top
             };
@@ -134,8 +138,8 @@ namespace DesktopSbS
                 Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
-            x = Options.ScreenBounds.Left+(int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left-Options.ScreenBounds.Left) / dX);
-            y = Options.ScreenBounds.Top+(int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top-Options.ScreenBounds.Top) / dY);
+            x = Options.ScreenBounds.Left + decalRatioX + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left - Options.ScreenBounds.Left) / dX);
+            y = Options.ScreenBounds.Top + decalRatioY + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top - Options.ScreenBounds.Top) / dY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
@@ -169,8 +173,8 @@ namespace DesktopSbS
                 Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
             };
 
-            x = Options.ScreenBounds.Left + decalX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.ScreenBounds.Left) / dX);
-            y = Options.ScreenBounds.Top + decalY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.ScreenBounds.Top) / dY);
+            x = Options.ScreenBounds.Left + decalRatioX + decalSbSX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.ScreenBounds.Left) / dX);
+            y = Options.ScreenBounds.Top + decalRatioY + decalSbSY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.ScreenBounds.Top) / dY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
