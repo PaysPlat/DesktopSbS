@@ -76,9 +76,10 @@ namespace DesktopSbS
                 this.isCursorActive = newCursorActive;
                 if (this.isCursorActive)
                 {
-#if !DEBUG
-                    CursorWindow.HideCursors();
-#endif
+                    if (Options.HideSrcCursor)
+                    {
+                        CursorWindow.HideCursors();
+                    }
                     this.RegisterThumbs();
                 }
                 else
@@ -115,14 +116,30 @@ namespace DesktopSbS
             POINT screenSrcTopLeft = new POINT(Options.AreaSrcBounds.Left, Options.AreaSrcBounds.Top);
             POINT screenDestTopLeft = new POINT(Options.ScreenDestBounds.Left, Options.ScreenDestBounds.Top);
 
+            // Size ratio between src size and dest size
+            double dX = (modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Width / Options.ScreenDestBounds.Width;
+            double dY = (!modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Height / Options.ScreenDestBounds.Height;
 
-            double dX = modeSbS || keepRatio ? 2 : 1;
-            double dY = !modeSbS || keepRatio ? 2 : 1;
-            int decalSbSX = modeSbS ? screenWidth / 2 : 0;
-            int decalSbSY = modeSbS ? 0 : screenHeight / 2;
-            int decalRatioX = keepRatio && !modeSbS ? screenWidth / 4 : 0;
-            int decalRatioY = keepRatio && modeSbS ? screenHeight / 4 : 0;
+            int decalRatioX = 0;
+            int decalRatioY = 0;
 
+            if (keepRatio)
+            {
+                if (dX > dY)
+                {
+                    decalRatioY = (int)(Options.ScreenDestBounds.Height * (1 - dY / dX) / (!modeSbS ? 4 : 2));
+                    dY = dX;
+                }
+                else
+                {
+                    decalRatioX = (int)(Options.ScreenDestBounds.Width * (1 - dX / dY) / (modeSbS ? 4 : 2));
+                    dX = dY;
+                }
+            }
+
+            //* Options.ScreenDestScale / Options.ScreenSrcScale;
+            int decalSbSX = modeSbS ? Options.ScreenDestBounds.Width / 2 : 0;
+            int decalSbSY = modeSbS ? 0 : Options.ScreenDestBounds.Height / 2;
 
             int parallaxDecal = 2 * Options.ParallaxEffect * offsetLevel;
 

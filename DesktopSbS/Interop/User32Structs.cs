@@ -73,10 +73,8 @@ namespace DesktopSbS.Interop
 
         public bool IsSize0()
         {
-            return this.Left == 0 &&
-                   this.Top == 0 &&
-                   this.Right == 0 &&
-                   this.Bottom == 0;
+            return this.Left == this.Right ||
+                   this.Top == this.Bottom;
         }
 
         public bool IsMaximized()

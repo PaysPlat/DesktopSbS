@@ -97,17 +97,34 @@ namespace DesktopSbS
             bool modeSbS = Options.ModeSbS;
             bool keepRatio = Options.KeepRatio;
 
+            // Size ratio between src size and dest size
+            double dX = (modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Width / Options.ScreenDestBounds.Width;
+            double dY = (!modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Height / Options.ScreenDestBounds.Height;
 
-            double dX = modeSbS || keepRatio ? 2 : 1;
-            double dY = !modeSbS || keepRatio ? 2 : 1;
-            int decalSbSX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
-            int decalSbSY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
-            int decalRatioX = keepRatio && !modeSbS ? Options.ScreenBounds.Width / 4 : 0;
-            int decalRatioY = keepRatio && modeSbS ? Options.ScreenBounds.Height / 4 : 0;
+            int decalRatioX = 0;
+            int decalRatioY = 0;
 
-            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenWorkspace.Bottom)
+            if (keepRatio)
             {
-                screenBottom = Options.ScreenWorkspace.Bottom;
+                if (dX > dY)
+                {
+                    decalRatioY = (int)(Options.ScreenDestBounds.Height * (1 - dY / dX) / (!modeSbS ? 4 : 2));
+                    dY = dX;
+                }
+                else
+                {
+                    decalRatioX = (int)(Options.ScreenDestBounds.Width * (1 - dX / dY) / (modeSbS ? 4 : 2));
+                    dX = dY;
+                }
+            }
+
+            //* Options.ScreenDestScale / Options.ScreenSrcScale;
+            int decalSbSX = modeSbS ? Options.ScreenDestBounds.Width / 2 : 0;
+            int decalSbSY = modeSbS ? 0 : Options.ScreenDestBounds.Height / 2;
+
+            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenSrcWorkspace.Bottom)
+            {
+                screenBottom = Options.ScreenSrcWorkspace.Bottom;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
