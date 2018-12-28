@@ -58,7 +58,7 @@ namespace DesktopSbS
             }
             set
             {
-                this.is3DActive = value && !Options.IgnoreCursor;
+                this.is3DActive = value && !Options.HideDestCursor;
                 this.UpdateCursorState();
             }
         }
@@ -97,7 +97,7 @@ namespace DesktopSbS
             CURSORINFO cursorInfo = new CURSORINFO();
             cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
             User32.GetCursorInfo(out cursorInfo);
-            this.IsCursorOnScreen = Options.ScreenBounds.Contains(cursorInfo.ptScreenPos.X, cursorInfo.ptScreenPos.Y);
+            this.IsCursorOnScreen = Options.AreaSrcBounds.Contains(cursorInfo.ptScreenPos.X, cursorInfo.ptScreenPos.Y);
             this.UpdateCursorState();
 
             // DebugWindow.Instance.UpdateMessage($"Is3DActive: {this.Is3DActive}{Environment.NewLine}IsCursorOnScreen: {this.IsCursorOnScreen}{ Environment.NewLine}ScreenBounds: { Options.ScreenBounds}{Environment.NewLine}Mouse Position:{cursorInfo.ptScreenPos}");
@@ -108,12 +108,13 @@ namespace DesktopSbS
 
             bool modeSbS = Options.ModeSbS;
             bool keepRatio = Options.KeepRatio;
-            int screenWidth = Options.ScreenBounds.Width;
-            int screenHeight = Options.ScreenBounds.Height;
-            double scale = Options.ScreenScale;
+            int screenWidth = Options.ScreenDestBounds.Width;
+            int screenHeight = Options.ScreenDestBounds.Height;
+            double scale = Options.ScreenSrcScale / Options.ScreenDestScale;
 
+            POINT screenSrcTopLeft = new POINT(Options.AreaSrcBounds.Left, Options.AreaSrcBounds.Top);
+            POINT screenDestTopLeft = new POINT(Options.ScreenDestBounds.Left, Options.ScreenDestBounds.Top);
 
-            POINT screenTopLeft = new POINT(Options.ScreenBounds.Left, Options.ScreenBounds.Top);
 
             double dX = modeSbS || keepRatio ? 2 : 1;
             double dY = !modeSbS || keepRatio ? 2 : 1;
@@ -125,7 +126,7 @@ namespace DesktopSbS
 
             int parallaxDecal = 2 * Options.ParallaxEffect * offsetLevel;
 
-            this.Position = cursorInfo.ptScreenPos - screenTopLeft;
+            this.Position = cursorInfo.ptScreenPos - screenSrcTopLeft;
 
             POINT offset = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
             this.ThumbRight.SetCursor(cursorInfo.hCursor);
@@ -136,15 +137,15 @@ namespace DesktopSbS
             SWP rightVisible = (this.Position.X - parallaxDecal > 0) ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                screenTopLeft.X + decalRatioX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
-                screenTopLeft.Y + decalRatioY + (int)((this.Position.Y - offset.Y * scale) / dY),
+                screenDestTopLeft.X + decalRatioX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
+                screenDestTopLeft.Y + decalRatioY + (int)((this.Position.Y - offset.Y * scale) / dY),
                 (int)(32 * scale / dX),
                  (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | leftVisible);
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-               screenTopLeft.X + decalRatioX + decalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / dX),
-               screenTopLeft.Y + decalRatioY + decalSbSY + (int)((this.Position.Y - offset.Y * scale) / dY),
+               screenDestTopLeft.X + decalRatioX + decalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / dX),
+               screenDestTopLeft.Y + decalRatioY + decalSbSY + (int)((this.Position.Y - offset.Y * scale) / dY),
                  (int)(32 * scale / dX),
                  (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | rightVisible);

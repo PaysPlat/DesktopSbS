@@ -122,7 +122,7 @@ namespace DesktopSbS.View
                         });
                         break;
                     case Key.M:
-                        Options.IgnoreCursor = !Options.IgnoreCursor;
+                        Options.HideDestCursor = !Options.HideDestCursor;
                         this.cursorSbS.Is3DActive = this.Is3DActive;
                         break;
                     case Key.K:
@@ -199,7 +199,7 @@ namespace DesktopSbS.View
                 }
 
 
-                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left && tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right)
+                if (tmpWindow.SourceRect.Left <= Options.AreaSrcBounds.Left && tmpWindow.SourceRect.Right >= Options.AreaSrcBounds.Right)
                 {
                     offsetLevel = 0;
                 }
@@ -230,9 +230,9 @@ namespace DesktopSbS.View
 
                 }
 
-                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left &&
-                        tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right &&
-                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenBounds.Height - Options.ScreenWorkspace.Height)
+                if (tmpWindow.SourceRect.Left <= Options.ScreenSrcBounds.Left &&
+                        tmpWindow.SourceRect.Right >= Options.ScreenSrcBounds.Right &&
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenSrcBounds.Height - Options.ScreenSrcWorkspace.Height)
                 {
 
                     taskBarWindow = tmpWindow;
@@ -287,7 +287,7 @@ namespace DesktopSbS.View
             DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
 
             if (cloaked == 0
-                && !sourceRect.IsEmpty()
+                && !sourceRect.IsSize0()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
                 && (winStyle & WS.WS_DISABLED) == 0)

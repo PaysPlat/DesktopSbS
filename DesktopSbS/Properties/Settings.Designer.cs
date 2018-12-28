@@ -12,7 +12,7 @@ namespace DesktopSbS.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -22,7 +22,52 @@ namespace DesktopSbS.Properties {
                 return defaultInstance;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HideAboutOnStartup
+        {
+            get
+            {
+                return ((bool)(this["HideAboutOnStartup"]));
+            }
+            set
+            {
+                this["HideAboutOnStartup"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ModeSbS
+        {
+            get
+            {
+                return ((bool)(this["ModeSbS"]));
+            }
+            set
+            {
+                this["ModeSbS"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KeepRatio
+        {
+            get
+            {
+                return ((bool)(this["KeepRatio"]));
+            }
+            set
+            {
+                this["KeepRatio"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
@@ -32,30 +77,6 @@ namespace DesktopSbS.Properties {
             }
             set {
                 this["ParallaxEffect"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ModeSbS {
-            get {
-                return ((bool)(this["ModeSbS"]));
-            }
-            set {
-                this["ModeSbS"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool HideAboutOnStartup {
-            get {
-                return ((bool)(this["HideAboutOnStartup"]));
-            }
-            set {
-                this["HideAboutOnStartup"] = value;
             }
         }
         
@@ -72,50 +93,87 @@ namespace DesktopSbS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double ScreenScale {
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int ScreenSrcId {
             get {
-                return ((double)(this["ScreenScale"]));
+                return ((int)(this["ScreenSrcId"]));
             }
             set {
+                this["ScreenSrcId"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ScreenScale
+        {
+            get
+            {
+                return ((double)(this["ScreenScale"]));
+            }
+            set
+            {
                 this["ScreenScale"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point AreaSrcOrigin
+        {
+            get
+            {
+                return ((global::System.Drawing.Point)(this["AreaSrcOrigin"]));
+            }
+            set
+            {
+                this["AreaSrcOrigin"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Size AreaSrcSize
+        {
+            get
+            {
+                return ((global::System.Drawing.Size)(this["AreaSrcSize"]));
+            }
+            set
+            {
+                this["AreaSrcSize"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int ScreenId {
+        public int ScreenDestId {
             get {
-                return ((int)(this["ScreenId"]));
+                return ((int)(this["ScreenDestId"]));
             }
             set {
-                this["ScreenId"] = value;
+                this["ScreenDestId"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IgnoreCursor {
-            get {
-                return ((bool)(this["IgnoreCursor"]));
+        public bool HideDestCursor
+        {
+            get
+            {
+                return ((bool)(this["HideDestCursor"]));
             }
-            set {
-                this["IgnoreCursor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool KeepRatio {
-            get {
-                return ((bool)(this["KeepRatio"]));
-            }
-            set {
-                this["KeepRatio"] = value;
+            set
+            {
+                this["HideDestCursor"] = value;
             }
         }
+
     }
 }

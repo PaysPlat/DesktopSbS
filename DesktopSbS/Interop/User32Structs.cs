@@ -71,7 +71,7 @@ namespace DesktopSbS.Interop
             Bottom = bottom;
         }
 
-        public bool IsEmpty()
+        public bool IsSize0()
         {
             return this.Left == 0 &&
                    this.Top == 0 &&
@@ -81,10 +81,10 @@ namespace DesktopSbS.Interop
 
         public bool IsMaximized()
         {
-            return this.Left <= Options.ScreenBounds.Left &&
-                   this.Top <= Options.ScreenBounds.Top &&
-                   this.Right >= Options.ScreenBounds.Right &&
-                   this.Bottom >= Options.ScreenBounds.Bottom;
+            return this.Left <= Options.ScreenSrcBounds.Left &&
+                   this.Top <= Options.ScreenSrcBounds.Top &&
+                   this.Right >= Options.ScreenSrcBounds.Right &&
+                   this.Bottom >= Options.ScreenSrcBounds.Bottom;
 
         }
 
