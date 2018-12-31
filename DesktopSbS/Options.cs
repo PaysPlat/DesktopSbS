@@ -1,4 +1,5 @@
-﻿using DesktopSbS.Properties;
+﻿using DesktopSbS.Model;
+using DesktopSbS.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Drawing;
@@ -131,6 +132,7 @@ namespace DesktopSbS
 
         #endregion
 
+        public static SbSComputedVariables ComputedVariables;
 
         static Options()
         {
@@ -153,6 +155,8 @@ namespace DesktopSbS
                     Options.ScreenScale = graphics.DpiX / 96.0;
             }
 
+           
+            ComputedVariables.UpdateVariables();
         }
 
         public static void Save()

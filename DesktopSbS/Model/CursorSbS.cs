@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using DesktopSbS.Interop;
 using DesktopSbS.View;
+using DesktopSbS.Model;
 
 namespace DesktopSbS
 {
@@ -105,41 +106,16 @@ namespace DesktopSbS
 
             if (this.ThumbLeft == null || this.ThumbRight == null) return;
 
+            SbSComputedVariables scv = Options.ComputedVariables;
+
             this.OffsetLevel = offsetLevel;
 
-            bool modeSbS = Options.ModeSbS;
-            bool keepRatio = Options.KeepRatio;
             int screenWidth = Options.ScreenDestBounds.Width;
             int screenHeight = Options.ScreenDestBounds.Height;
-            double scale = Options.ScreenSrcScale / Options.ScreenDestScale;
+            double scale = Options.ScreenScale;
 
             POINT screenSrcTopLeft = new POINT(Options.AreaSrcBounds.Left, Options.AreaSrcBounds.Top);
             POINT screenDestTopLeft = new POINT(Options.ScreenDestBounds.Left, Options.ScreenDestBounds.Top);
-
-            // Size ratio between src size and dest size
-            double dX = (modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Width / Options.ScreenDestBounds.Width;
-            double dY = (!modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Height / Options.ScreenDestBounds.Height;
-
-            int decalRatioX = 0;
-            int decalRatioY = 0;
-
-            if (keepRatio)
-            {
-                if (dX > dY)
-                {
-                    decalRatioY = (int)(Options.ScreenDestBounds.Height * (1 - dY / dX) / (!modeSbS ? 4 : 2));
-                    dY = dX;
-                }
-                else
-                {
-                    decalRatioX = (int)(Options.ScreenDestBounds.Width * (1 - dX / dY) / (modeSbS ? 4 : 2));
-                    dX = dY;
-                }
-            }
-
-            //* Options.ScreenDestScale / Options.ScreenSrcScale;
-            int decalSbSX = modeSbS ? Options.ScreenDestBounds.Width / 2 : 0;
-            int decalSbSY = modeSbS ? 0 : Options.ScreenDestBounds.Height / 2;
 
             int parallaxDecal = 2 * Options.ParallaxEffect * offsetLevel;
 
@@ -149,23 +125,23 @@ namespace DesktopSbS
             this.ThumbRight.SetCursor(cursorInfo.hCursor);
 
             SWP leftVisible = (this.Position.X + parallaxDecal + arrowStdSize.X < screenWidth) &&
-                              (modeSbS || this.Position.Y + arrowStdSize.Y < screenHeight)
+                              (Options.ModeSbS || this.Position.Y + arrowStdSize.Y < screenHeight)
                               ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
             SWP rightVisible = (this.Position.X - parallaxDecal > 0) ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                screenDestTopLeft.X + decalRatioX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / dX),
-                screenDestTopLeft.Y + decalRatioY + (int)((this.Position.Y - offset.Y * scale) / dY),
-                (int)(32 * scale / dX),
-                 (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | leftVisible);
+                scv.DestPositionX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / scv.RatioX),
+                scv.DestPositionY + (int)((this.Position.Y - offset.Y * scale) / scv.RatioY),
+                (int)(32 * scale / scv.RatioX),
+                (int)(32 * scale / scv.RatioY),
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-               screenDestTopLeft.X + decalRatioX + decalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / dX),
-               screenDestTopLeft.Y + decalRatioY + decalSbSY + (int)((this.Position.Y - offset.Y * scale) / dY),
-                 (int)(32 * scale / dX),
-                 (int)(32 * scale / dY),
                 SWP.SWP_ASYNCWINDOWPOS | rightVisible);
+                scv.DestPositionX + scv.DecalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / scv.RatioX),
+                scv.DestPositionY + scv.DecalSbSY + (int)((this.Position.Y - offset.Y * scale) / scv.RatioY),
+                (int)(32 * scale / scv.RatioX),
+                (int)(32 * scale / scv.RatioY),
 
             //DebugWindow.Instance.UpdateMessage($"Mouse Left: {this.Position.X} Top: {this.Position.Y}");
 

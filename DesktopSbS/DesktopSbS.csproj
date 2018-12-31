@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\SbSComputedVariables.cs" />
     <Compile Include="View\BackgroundWindow.xaml.cs">
       <DependentUpon>BackgroundWindow.xaml</DependentUpon>
     </Compile>

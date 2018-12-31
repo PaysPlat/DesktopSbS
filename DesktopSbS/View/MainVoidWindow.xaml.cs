@@ -248,6 +248,7 @@ namespace DesktopSbS.View
 
             if (this.hasToUpdate)
             {
+                Options.ComputedVariables.UpdateVariables();
                 updateAllIndex = this.windows.Count - 1;
                 this.hasToUpdate = false;
             }

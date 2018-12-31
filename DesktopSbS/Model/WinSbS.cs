@@ -9,12 +9,13 @@ using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using DesktopSbS.Interop;
 using DesktopSbS.View;
+using DesktopSbS.Model;
 
 namespace DesktopSbS
 {
     public class WinSbS
     {
-        private const bool
+        internal const bool
             DISPLAY_LEFT = true,
             DISPLAY_RIGHT = true;
 
@@ -87,40 +88,13 @@ namespace DesktopSbS
 
         public void UpdateThumbs(bool isTaskBar = false)
         {
-            //int screenWidth = Options.ScreenWidth;
             int x, y, cx, cy;
+
+            SbSComputedVariables scv = Options.ComputedVariables;
 
             int screenBottom = Options.ScreenSrcBounds.Bottom;
 
             int parallaxDecal = 2 * this.OffsetLevel * Options.ParallaxEffect;
-
-            bool modeSbS = Options.ModeSbS;
-            bool keepRatio = Options.KeepRatio;
-
-            // Size ratio between src size and dest size
-            double dX = (modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Width / Options.ScreenDestBounds.Width;
-            double dY = (!modeSbS ? 2.0 : 1.0) * Options.AreaSrcBounds.Height / Options.ScreenDestBounds.Height;
-
-            int decalRatioX = 0;
-            int decalRatioY = 0;
-
-            if (keepRatio)
-            {
-                if (dX > dY)
-                {
-                    decalRatioY = (int)(Options.ScreenDestBounds.Height * (1 - dY / dX) / (!modeSbS ? 4 : 2));
-                    dY = dX;
-                }
-                else
-                {
-                    decalRatioX = (int)(Options.ScreenDestBounds.Width * (1 - dX / dY) / (modeSbS ? 4 : 2));
-                    dX = dY;
-                }
-            }
-
-            //* Options.ScreenDestScale / Options.ScreenSrcScale;
-            int decalSbSX = modeSbS ? Options.ScreenDestBounds.Width / 2 : 0;
-            int decalSbSY = modeSbS ? 0 : Options.ScreenDestBounds.Height / 2;
 
             if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenSrcWorkspace.Bottom)
             {
@@ -151,12 +125,12 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
-                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / scv.RatioX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / scv.RatioY)
             };
 
-            x = Options.ScreenDestBounds.Left + decalRatioX + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left - Options.AreaSrcBounds.Left) / dX);
-            y = Options.ScreenDestBounds.Top + decalRatioY + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top - Options.AreaSrcBounds.Top) / dY);
+            x = scv.DestPositionX + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left - Options.AreaSrcBounds.Left) / scv.RatioX);
+            y = scv.DestPositionY + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top - Options.AreaSrcBounds.Top) / scv.RatioY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
@@ -186,12 +160,12 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
-                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / scv.RatioX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / scv.RatioY)
             };
 
-            x = Options.ScreenDestBounds.Left + decalRatioX + decalSbSX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.AreaSrcBounds.Left) / dX);
-            y = Options.ScreenDestBounds.Top + decalRatioY + decalSbSY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.AreaSrcBounds.Top) / dY);
+            x = scv.DestPositionX + scv.DecalSbSX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.AreaSrcBounds.Left) / scv.RatioX);
+            y = scv.DestPositionY + scv.DecalSbSY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.AreaSrcBounds.Top) / scv.RatioY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
