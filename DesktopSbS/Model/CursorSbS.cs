@@ -81,11 +81,11 @@ namespace DesktopSbS
                     {
                         CursorWindow.HideCursors();
                     }
-                    this.RegisterThumbs();
+                    App.Current.Dispatcher.Invoke(this.RegisterThumbs);
                 }
                 else
                 {
-                    this.UnRegisterThumbs();
+                    App.Current.Dispatcher.Invoke(this.UnRegisterThumbs);
                     CursorWindow.ShowCursors();
                 }
             }
@@ -121,8 +121,12 @@ namespace DesktopSbS
 
             this.Position = cursorInfo.ptScreenPos - screenSrcTopLeft;
 
-            POINT offset = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
-            this.ThumbRight.SetCursor(cursorInfo.hCursor);
+            POINT offset = App.Current.Dispatcher.Invoke<POINT>(() =>
+            {
+                POINT result = this.ThumbLeft.SetCursor(cursorInfo.hCursor);
+                this.ThumbRight.SetCursor(cursorInfo.hCursor);
+                return result;
+            });
 
             SWP leftVisible = (this.Position.X + parallaxDecal + arrowStdSize.X < screenWidth) &&
                               (Options.ModeSbS || this.Position.Y + arrowStdSize.Y < screenHeight)
@@ -130,18 +134,18 @@ namespace DesktopSbS
             SWP rightVisible = (this.Position.X - parallaxDecal > 0) ? SWP.SWP_SHOWWINDOW : SWP.SWP_HIDEWINDOW;
 
             User32.SetWindowPos(this.ThumbLeft.Handle, this.Owner?.ThumbLeft.Handle ?? IntPtr.Zero,
-                SWP.SWP_ASYNCWINDOWPOS | leftVisible);
                 scv.DestPositionX + (int)((this.Position.X + parallaxDecal - offset.X * scale) / scv.RatioX),
                 scv.DestPositionY + (int)((this.Position.Y - offset.Y * scale) / scv.RatioY),
                 (int)(32 * scale / scv.RatioX),
                 (int)(32 * scale / scv.RatioY),
+                SWP.SWP_ASYNCWINDOWPOS | leftVisible);
 
             User32.SetWindowPos(this.ThumbRight.Handle, this.Owner?.ThumbRight.Handle ?? IntPtr.Zero,
-                SWP.SWP_ASYNCWINDOWPOS | rightVisible);
                 scv.DestPositionX + scv.DecalSbSX + (int)((this.Position.X - parallaxDecal - offset.X * scale) / scv.RatioX),
                 scv.DestPositionY + scv.DecalSbSY + (int)((this.Position.Y - offset.Y * scale) / scv.RatioY),
                 (int)(32 * scale / scv.RatioX),
                 (int)(32 * scale / scv.RatioY),
+                SWP.SWP_ASYNCWINDOWPOS | rightVisible);
 
             //DebugWindow.Instance.UpdateMessage($"Mouse Left: {this.Position.X} Top: {this.Position.Y}");
 

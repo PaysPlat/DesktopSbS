@@ -175,17 +175,15 @@ namespace DesktopSbS
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
 
-            if (isTaskBar)
-            {
-                this.ThumbLeft.Background = Brushes.Black;
-                this.ThumbRight.Background = Brushes.Black;
-            }
 
 
 #if DEBUG
             //if (this.Title.Contains("About"))
             //{
-            //    DebugWindow.Instance.UpdateMessage($"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine}Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //    App.Current.Dispatcher.Invoke(() =>
+            //    {
+            //        DebugWindow.Instance.UpdateMessage($"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine}Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //    });
             //}
 
 #endif

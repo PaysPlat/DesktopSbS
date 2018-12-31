@@ -29,11 +29,14 @@ namespace DesktopSbS.View
 
         private bool hasToUpdate = false;
 
+        private bool isAboutOpened = false;
+
         private CursorSbS cursorSbS;
 
         private BackgroundWindow backgroundWindow;
 
         private bool requestAbort = false;
+
 
         private bool is3DActive = false;
         public bool Is3DActive
@@ -60,11 +63,15 @@ namespace DesktopSbS.View
             }
         }
 
-
         private Thread threadUpdateWindows;
 
         private void init()
         {
+            if (!Options.HideAboutOnStartup)
+            {
+                AboutWindow.Instance.ShowDialog();
+            }
+
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
@@ -72,16 +79,7 @@ namespace DesktopSbS.View
 
             this.backgroundWindow = new BackgroundWindow();
 
-
-            if (!Options.HideAboutOnStartup)
-            {
-                AboutWindow.Instance.Show();
-            }
-            else
-            {
-                this.Is3DActive = true;
-            }
-
+            this.Is3DActive = true;
 
             this.threadUpdateWindows = new Thread(asyncUpdateWindows);
             this.threadUpdateWindows.IsBackground = true;
@@ -118,7 +116,11 @@ namespace DesktopSbS.View
                         this.Dispatcher.Invoke(() =>
                         {
                             AboutWindow.Instance.hideNextTime.IsChecked = false;
-                            AboutWindow.Instance.Show();
+                            this.Is3DActive = false;
+                            this.isAboutOpened = true;
+                            AboutWindow.Instance.ShowDialog();
+                            this.isAboutOpened = false;
+                            if (App.Current != null) this.Is3DActive = true;
                         });
                         break;
                     case Key.M:
@@ -142,7 +144,7 @@ namespace DesktopSbS.View
             while (!this.requestAbort)
             {
                 DateTime start = DateTime.Now;
-                this.Dispatcher.Invoke(this.updateWindows);
+                this.updateWindows();
                 DateTime end = DateTime.Now;
 
                 int elapsedMS = (int)(end - start).TotalMilliseconds;
@@ -212,7 +214,7 @@ namespace DesktopSbS.View
                 int oldIndex = this.windows.FindIndex(w => w.Handle == tmpWindow.Handle);
                 if (oldIndex < 0)
                 {
-                    tmpWindow.RegisterThumbs();
+                    App.Current.Dispatcher.Invoke(tmpWindow.RegisterThumbs);
                 }
                 else
                 {
@@ -241,10 +243,16 @@ namespace DesktopSbS.View
             }
             for (int i = 0; i < this.windows.Count; ++i)
             {
-                this.windows[i].UnRegisterThumbs();
+                App.Current.Dispatcher.Invoke(this.windows[i].UnRegisterThumbs);
             }
 
             this.windows = this.tmpWindows;
+
+            if (this.isAboutOpened)
+            {
+                return;
+            }
+
 
             if (this.hasToUpdate)
             {
@@ -296,6 +304,7 @@ namespace DesktopSbS.View
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;
+
                 this.tmpWindows.Add(win);
             }
 
