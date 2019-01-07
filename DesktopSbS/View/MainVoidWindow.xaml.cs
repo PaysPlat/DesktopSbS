@@ -29,11 +29,14 @@ namespace DesktopSbS.View
 
         private bool hasToUpdate = false;
 
+        private bool isAboutOpened = false;
+
         private CursorSbS cursorSbS;
 
         private BackgroundWindow backgroundWindow;
 
         private bool requestAbort = false;
+
 
         private bool is3DActive = false;
         public bool Is3DActive
@@ -60,11 +63,15 @@ namespace DesktopSbS.View
             }
         }
 
-
         private Thread threadUpdateWindows;
 
         private void init()
         {
+            if (!Options.HideAboutOnStartup)
+            {
+                AboutWindow.Instance.ShowDialog();
+            }
+
             this.keyboardHook = new GlobalKeyboardHook();
             this.keyboardHook.KeyDown += KeyboardHook_KeyDown;
 
@@ -72,16 +79,7 @@ namespace DesktopSbS.View
 
             this.backgroundWindow = new BackgroundWindow();
 
-
-            if (!Options.HideAboutOnStartup)
-            {
-                AboutWindow.Instance.Show();
-            }
-            else
-            {
-                this.Is3DActive = true;
-            }
-
+            this.Is3DActive = true;
 
             this.threadUpdateWindows = new Thread(asyncUpdateWindows);
             this.threadUpdateWindows.IsBackground = true;
@@ -118,11 +116,15 @@ namespace DesktopSbS.View
                         this.Dispatcher.Invoke(() =>
                         {
                             AboutWindow.Instance.hideNextTime.IsChecked = false;
-                            AboutWindow.Instance.Show();
+                            this.Is3DActive = false;
+                            this.isAboutOpened = true;
+                            AboutWindow.Instance.ShowDialog();
+                            this.isAboutOpened = false;
+                            if (App.Current != null) this.Is3DActive = true;
                         });
                         break;
                     case Key.M:
-                        Options.IgnoreCursor = !Options.IgnoreCursor;
+                        Options.HideDestCursor = !Options.HideDestCursor;
                         this.cursorSbS.Is3DActive = this.Is3DActive;
                         break;
                     case Key.K:
@@ -142,7 +144,7 @@ namespace DesktopSbS.View
             while (!this.requestAbort)
             {
                 DateTime start = DateTime.Now;
-                this.Dispatcher.Invoke(this.updateWindows);
+                this.updateWindows();
                 DateTime end = DateTime.Now;
 
                 int elapsedMS = (int)(end - start).TotalMilliseconds;
@@ -199,7 +201,7 @@ namespace DesktopSbS.View
                 }
 
 
-                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left && tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right)
+                if (tmpWindow.SourceRect.Left <= Options.AreaSrcBounds.Left && tmpWindow.SourceRect.Right >= Options.AreaSrcBounds.Right)
                 {
                     offsetLevel = 0;
                 }
@@ -212,7 +214,7 @@ namespace DesktopSbS.View
                 int oldIndex = this.windows.FindIndex(w => w.Handle == tmpWindow.Handle);
                 if (oldIndex < 0)
                 {
-                    tmpWindow.RegisterThumbs();
+                    App.Current.Dispatcher.Invoke(tmpWindow.RegisterThumbs);
                 }
                 else
                 {
@@ -230,9 +232,9 @@ namespace DesktopSbS.View
 
                 }
 
-                if (tmpWindow.SourceRect.Left <= Options.ScreenBounds.Left &&
-                        tmpWindow.SourceRect.Right >= Options.ScreenBounds.Right &&
-                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenBounds.Height - Options.ScreenWorkspace.Height)
+                if (tmpWindow.SourceRect.Left <= Options.ScreenSrcBounds.Left &&
+                        tmpWindow.SourceRect.Right >= Options.ScreenSrcBounds.Right &&
+                        tmpWindow.SourceRect.Bottom - tmpWindow.SourceRect.Top == Options.ScreenSrcBounds.Height - Options.ScreenSrcWorkspace.Height)
                 {
 
                     taskBarWindow = tmpWindow;
@@ -241,13 +243,20 @@ namespace DesktopSbS.View
             }
             for (int i = 0; i < this.windows.Count; ++i)
             {
-                this.windows[i].UnRegisterThumbs();
+                App.Current.Dispatcher.Invoke(this.windows[i].UnRegisterThumbs);
             }
 
             this.windows = this.tmpWindows;
 
+            if (this.isAboutOpened)
+            {
+                return;
+            }
+
+
             if (this.hasToUpdate)
             {
+                Options.ComputedVariables.UpdateVariables();
                 updateAllIndex = this.windows.Count - 1;
                 this.hasToUpdate = false;
             }
@@ -287,7 +296,7 @@ namespace DesktopSbS.View
             DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
 
             if (cloaked == 0
-                && !sourceRect.IsEmpty()
+                && !sourceRect.IsSize0()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
                 && (winStyle & WS.WS_DISABLED) == 0)
@@ -295,6 +304,7 @@ namespace DesktopSbS.View
                 WinSbS win = new WinSbS(hwnd);
                 win.SourceRect = sourceRect;
                 win.Title = title;
+
                 this.tmpWindows.Add(win);
             }
 

@@ -22,17 +22,29 @@ namespace DesktopSbS.Diagnostic
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("DesktopSbS diagnostic");
+            sb.AppendLine($"DesktopSbS diagnostic v{DesktopSbS.App.VERSION}");
             sb.AppendLine($"Date: {DateTime.Now}");
             sb.AppendLine();
 
             sb.AppendLine("Options");
             sb.AppendLine("------------------------------------");
-            sb.AppendLine($"ScreenBounds: {DesktopSbS.Options.ScreenBounds}");
-            sb.AppendLine($"ScreenWorkspace: {DesktopSbS.Options.ScreenWorkspace}");
+
+            sb.AppendLine($"ScreenSrcId: {DesktopSbS.Options.ScreenSrcId}");
+            sb.AppendLine($"ScreenSrcBounds: {DesktopSbS.Options.ScreenSrcBounds}");
+            sb.AppendLine($"AreaSrcBounds: {DesktopSbS.Options.AreaSrcBounds}");
+            sb.AppendLine($"ScreenSrcWorkspace: {DesktopSbS.Options.ScreenSrcWorkspace}");
             sb.AppendLine($"ScreenScale: {DesktopSbS.Options.ScreenScale}");
+            sb.AppendLine($"HideSrcCursor: {DesktopSbS.Options.HideSrcCursor}");
+            sb.AppendLine();
+
+            sb.AppendLine($"ScreenDestId: {DesktopSbS.Options.ScreenDestId}");
+            sb.AppendLine($"ScreenDestBounds: {DesktopSbS.Options.ScreenDestBounds}");
+            sb.AppendLine($"HideDestCursor: {DesktopSbS.Options.HideDestCursor}");
+            sb.AppendLine();
+
             sb.AppendLine($"HideAboutOnStartup: {DesktopSbS.Options.HideAboutOnStartup}");
             sb.AppendLine($"ModeSbS: {DesktopSbS.Options.ModeSbS}");
+            sb.AppendLine($"KeepRatio: {DesktopSbS.Options.KeepRatio}");
             sb.AppendLine($"ParallaxEffect: {DesktopSbS.Options.ParallaxEffect}");
             sb.AppendLine($"ExcludedApplications: {DesktopSbS.Options.ExcludedApplications}");
 
@@ -97,7 +109,7 @@ namespace DesktopSbS.Diagnostic
             DwmApi.DwmGetWindowAttribute(hwnd, DwmApi.DwmWindowAttribute.DWMWA_CLOAKED, out cloaked, sizeof(int));
 
             if (cloaked == 0
-                && !sourceRect.IsEmpty()
+                && !sourceRect.IsSize0()
                 && (winStyle & WS.WS_VISIBLE) == WS.WS_VISIBLE
                 && (winStyle & WS.WS_ICONIC) == 0
                 && (winStyle & WS.WS_DISABLED) == 0)

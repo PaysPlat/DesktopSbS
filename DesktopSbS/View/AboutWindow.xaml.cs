@@ -33,7 +33,7 @@ namespace DesktopSbS.View
             InitializeComponent();
             this.DataContext = this;
             this.hideNextTime.IsChecked = Options.HideAboutOnStartup;
-            
+
         }
 
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
@@ -43,12 +43,7 @@ namespace DesktopSbS.View
 
         private void Window_Closed(object sender, EventArgs e)
         {
-
-                Options.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
-            if (App.CurrentWindow != null)
-            {
-                App.CurrentWindow.Is3DActive = true;
-            }
+            Options.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
             instance = null;
         }
 

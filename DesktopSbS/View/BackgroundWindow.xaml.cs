@@ -21,10 +21,10 @@ namespace DesktopSbS.View
         {
             InitializeComponent();
 
-            this.Left = Options.ScreenBounds.Left;
-            this.Top = Options.ScreenBounds.Top;
-            this.Width = Options.ScreenBounds.Width;
-            this.Height = Options.ScreenBounds.Height;
+            this.Left = Options.ScreenDestBounds.Left;
+            this.Top = Options.ScreenDestBounds.Top;
+            this.Width = Options.ScreenDestBounds.Width;
+            this.Height = Options.ScreenDestBounds.Height;
         }
 
         protected override void OnSourceInitialized(EventArgs e)

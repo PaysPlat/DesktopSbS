@@ -9,12 +9,13 @@ using System.Windows.Forms.Integration;
 using System.Windows.Media;
 using DesktopSbS.Interop;
 using DesktopSbS.View;
+using DesktopSbS.Model;
 
 namespace DesktopSbS
 {
     public class WinSbS
     {
-        private const bool
+        internal const bool
             DISPLAY_LEFT = true,
             DISPLAY_RIGHT = true;
 
@@ -87,27 +88,17 @@ namespace DesktopSbS
 
         public void UpdateThumbs(bool isTaskBar = false)
         {
-            //int screenWidth = Options.ScreenWidth;
             int x, y, cx, cy;
 
-            int screenBottom = Options.ScreenBounds.Bottom;
+            SbSComputedVariables scv = Options.ComputedVariables;
+
+            int screenBottom = Options.ScreenSrcBounds.Bottom;
 
             int parallaxDecal = 2 * this.OffsetLevel * Options.ParallaxEffect;
 
-            bool modeSbS = Options.ModeSbS;
-            bool keepRatio = Options.KeepRatio;
-
-
-            double dX = modeSbS || keepRatio ? 2 : 1;
-            double dY = !modeSbS || keepRatio ? 2 : 1;
-            int decalSbSX = modeSbS ? Options.ScreenBounds.Width / 2 : 0;
-            int decalSbSY = modeSbS ? 0 : Options.ScreenBounds.Height / 2;
-            int decalRatioX = keepRatio && !modeSbS ? Options.ScreenBounds.Width / 4 : 0;
-            int decalRatioY = keepRatio && modeSbS ? Options.ScreenBounds.Height / 4 : 0;
-
-            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenWorkspace.Bottom)
+            if (!isTaskBar && !this.SourceRect.IsMaximized() && this.SourceRect.Top < Options.ScreenSrcWorkspace.Bottom)
             {
-                screenBottom = Options.ScreenWorkspace.Bottom;
+                screenBottom = Options.ScreenSrcWorkspace.Bottom;
             }
 
             DwmApi.DWM_THUMBNAIL_PROPERTIES props = new DwmApi.DWM_THUMBNAIL_PROPERTIES();
@@ -124,9 +115,9 @@ namespace DesktopSbS
 
             props.rcSource = new RECT
             {
-                Left = Math.Max(0, -parallaxSourceRectLeft.Left + Options.ScreenBounds.Left),
-                Top = Math.Max(0, -parallaxSourceRectLeft.Top + Options.ScreenBounds.Top),
-                Right = Math.Min(Options.ScreenBounds.Right, parallaxSourceRectLeft.Right) - parallaxSourceRectLeft.Left,
+                Left = Math.Max(0, -parallaxSourceRectLeft.Left + Options.AreaSrcBounds.Left),
+                Top = Math.Max(0, -parallaxSourceRectLeft.Top + Options.AreaSrcBounds.Top),
+                Right = Math.Min(Options.AreaSrcBounds.Right, parallaxSourceRectLeft.Right) - parallaxSourceRectLeft.Left,
                 Bottom = Math.Min(screenBottom, parallaxSourceRectLeft.Bottom) - parallaxSourceRectLeft.Top
             };
 
@@ -134,12 +125,12 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
-                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / scv.RatioX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / scv.RatioY)
             };
 
-            x = Options.ScreenBounds.Left + decalRatioX + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left - Options.ScreenBounds.Left) / dX);
-            y = Options.ScreenBounds.Top + decalRatioY + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top - Options.ScreenBounds.Top) / dY);
+            x = scv.DestPositionX + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Left - Options.AreaSrcBounds.Left) / scv.RatioX);
+            y = scv.DestPositionY + (int)Math.Floor(Math.Max(0, parallaxSourceRectLeft.Top - Options.AreaSrcBounds.Top) / scv.RatioY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
@@ -159,9 +150,9 @@ namespace DesktopSbS
 
             props.rcSource = new RECT
             {
-                Left = Math.Max(0, -parallaxSourceRectRight.Left + Options.ScreenBounds.Left),
-                Top = Math.Max(0, -parallaxSourceRectRight.Top + Options.ScreenBounds.Top),
-                Right = Math.Min(Options.ScreenBounds.Right, parallaxSourceRectRight.Right) - parallaxSourceRectRight.Left,
+                Left = Math.Max(0, -parallaxSourceRectRight.Left + Options.AreaSrcBounds.Left),
+                Top = Math.Max(0, -parallaxSourceRectRight.Top + Options.AreaSrcBounds.Top),
+                Right = Math.Min(Options.AreaSrcBounds.Right, parallaxSourceRectRight.Right) - parallaxSourceRectRight.Left,
                 Bottom = Math.Min(screenBottom, parallaxSourceRectRight.Bottom) - parallaxSourceRectRight.Top
             };
 
@@ -169,12 +160,12 @@ namespace DesktopSbS
             {
                 Left = 0,
                 Top = 0,
-                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / dX),
-                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / dY)
+                Right = (int)Math.Ceiling((props.rcSource.Right - props.rcSource.Left) / scv.RatioX),
+                Bottom = (int)Math.Ceiling((props.rcSource.Bottom - props.rcSource.Top) / scv.RatioY)
             };
 
-            x = Options.ScreenBounds.Left + decalRatioX + decalSbSX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.ScreenBounds.Left) / dX);
-            y = Options.ScreenBounds.Top + decalRatioY + decalSbSY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.ScreenBounds.Top) / dY);
+            x = scv.DestPositionX + scv.DecalSbSX + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Left - Options.AreaSrcBounds.Left) / scv.RatioX);
+            y = scv.DestPositionY + scv.DecalSbSY + (int)Math.Floor(Math.Max(0, parallaxSourceRectRight.Top - Options.AreaSrcBounds.Top) / scv.RatioY);
             cx = props.rcDestination.Right;
             cy = props.rcDestination.Bottom;
 
@@ -184,17 +175,15 @@ namespace DesktopSbS
 
             DwmApi.DwmUpdateThumbnailProperties(this.ThumbRight.Thumb, ref props);
 
-            if (isTaskBar)
-            {
-                this.ThumbLeft.Background = Brushes.Black;
-                this.ThumbRight.Background = Brushes.Black;
-            }
 
 
 #if DEBUG
             //if (this.Title.Contains("About"))
             //{
-            //    DebugWindow.Instance.UpdateMessage($"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine}Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //    App.Current.Dispatcher.Invoke(() =>
+            //    {
+            //        DebugWindow.Instance.UpdateMessage($"Source Win {this.SourceRect}{Environment.NewLine}Src Thumb {props.rcSource}{Environment.NewLine}Dst Thumb {props.rcDestination}{Environment.NewLine}Dst Pos Left: {Math.Max(0, this.SourceRect.Left) / 2} Top: {Math.Max(0, this.SourceRect.Top)}");
+            //    });
             //}
 
 #endif
