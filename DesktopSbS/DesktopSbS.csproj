@@ -98,7 +98,7 @@
     <Compile Include="View\MainVoidWindow.xaml.cs">
       <DependentUpon>MainVoidWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options.cs" />
+    <Compile Include="Model\Options.cs" />
     <Compile Include="Interop\User32.cs" />
     <Compile Include="Interop\User32Structs.cs" />
     <Compile Include="Interop\Util.cs" />
