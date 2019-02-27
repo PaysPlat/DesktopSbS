@@ -76,7 +76,7 @@ namespace DesktopSbS.Diagnostic
             }
             catch (Exception e)
             {
-                MessageBox.Show(sb.ToString(), "Unable to save diagnostic file");
+                MessageBox.Show($"{e} : {sb}", "Unable to save diagnostic file");
             }
 
         }
