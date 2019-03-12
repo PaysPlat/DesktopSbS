@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using DesktopSbS.Hook;
 using DesktopSbS.Interop;
+using DesktopSbS.Model;
 
 namespace DesktopSbS.View
 {
@@ -90,30 +91,17 @@ namespace DesktopSbS.View
 
         private void KeyboardHook_KeyDown(object sender, KeyEventArgs e)
         {
-            ModifierKeys ctrlAlt = ModifierKeys.Control | ModifierKeys.Alt;
-            if ((e.KeyboardDevice.Modifiers & ctrlAlt) >= ctrlAlt)
+            Key key = e.Key == Key.System ? e.SystemKey : e.Key;
+            ShortcutCommands? shortcutFound = Options.KeyboardShortcuts?.
+                FirstOrDefault(t =>
+                e.KeyboardDevice.Modifiers == t.Item1
+                && key == t.Item2)?.Item3;
+
+            if (shortcutFound.HasValue)
             {
-                switch (e.Key)
+                switch (shortcutFound.Value)
                 {
-                    case Key.C:
-                        this.requestAbort = true;
-                        break;
-                    case Key.V:
-                        Options.ModeSbS = !Options.ModeSbS;
-                        this.hasToUpdate = true;
-                        break;
-                    case Key.W:
-                        Options.ParallaxEffect--;
-                        this.hasToUpdate = true;
-                        break;
-                    case Key.X:
-                        Options.ParallaxEffect++;
-                        this.hasToUpdate = true;
-                        break;
-                    case Key.B:
-                        this.Is3DActive = !this.Is3DActive;
-                        break;
-                    case Key.F1:
+                    case ShortcutCommands.About:
                         this.Dispatcher.Invoke(() =>
                         {
                             AboutWindow.Instance.hideNextTime.IsChecked = false;
@@ -124,20 +112,37 @@ namespace DesktopSbS.View
                             if (App.Current != null) this.Is3DActive = true;
                         });
                         break;
-                    case Key.M:
+                    case ShortcutCommands.DecreaseParallax:
+                        Options.ParallaxEffect--;
+                        this.hasToUpdate = true;
+                        break;
+                    case ShortcutCommands.IncreaseParallax:
+                        Options.ParallaxEffect++;
+                        this.hasToUpdate = true;
+                        break;
+                    case ShortcutCommands.ShutDown:
+                        this.requestAbort = true;
+                        break;
+                    case ShortcutCommands.SwitchSbSMode:
+                        Options.ModeSbS = !Options.ModeSbS;
+                        this.hasToUpdate = true;
+                        break;
+                    case ShortcutCommands.Pause3D:
+                        this.Is3DActive = !this.Is3DActive;
+                        break;
+                    case ShortcutCommands.HideDestCursor:
                         Options.HideDestCursor = !Options.HideDestCursor;
                         this.cursorSbS.Is3DActive = this.Is3DActive;
                         break;
-                    case Key.K:
+                    case ShortcutCommands.KeepRatio:
                         Options.KeepRatio = !Options.KeepRatio;
                         this.hasToUpdate = true;
                         break;
+                    default:
+                        break;
                 }
-
             }
         }
-
-
 
         private void asyncUpdateWindows()
         {
@@ -161,7 +166,6 @@ namespace DesktopSbS.View
         {
             this.tmpWindows = new List<WinSbS>();
 
-
             if (this.Is3DActive)
             {
                 User32.EnumWindows(windowFound, 0);
@@ -177,7 +181,7 @@ namespace DesktopSbS.View
             try
             {
                 if (tmpWindow != null &&
-                    Options.ExcludedApplications.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))))
+                    Options.ExcludedApplications?.Contains(Path.GetFileName(User32.GetFilePath(tmpWindow.Handle))) == true)
                 {
                     this.tmpWindows.Clear();
                 }
