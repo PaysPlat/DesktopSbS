@@ -74,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ObjectToString.cs" />
+    <Compile Include="Converters\NotBool.cs" />
+    <Compile Include="Converters\AreEqual.cs" />
+    <Compile Include="Converters\DoubleOperation.cs" />
     <Compile Include="Model\SbSComputedVariables.cs" />
     <Compile Include="View\BackgroundWindow.xaml.cs">
       <DependentUpon>BackgroundWindow.xaml</DependentUpon>
