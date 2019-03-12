@@ -85,6 +85,9 @@
     <Compile Include="View\BackgroundWindow.xaml.cs">
       <DependentUpon>BackgroundWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\VersionWarningWindow.xaml.cs">
       <DependentUpon>VersionWarningWindow.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Page Include="View\BackgroundWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\VersionWarningWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -92,13 +92,13 @@
             This project is licensed under the GNU GPLv3 License - see the 
             <Hyperlink NavigateUri="https://github.com/PaysPlat/DesktopSbS/blob/master/LICENSE.md" RequestNavigate="Hyperlink_RequestNavigate">LICENSE.md</Hyperlink>
             file for details
-            
-        </TextBlock> 
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-            Orientation="Horizontal" HorizontalAlignment="Right">
-            <CheckBox x:Name="hideNextTime" VerticalAlignment="Center" Margin="10">Hide this window next time</CheckBox>
-            <Button VerticalAlignment="Center" Command="ApplicationCommands.Close" Margin="10" Padding="20 5">Close</Button>
-        </StackPanel>
+
+        </TextBlock>
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
+            <Button DockPanel.Dock="Left" VerticalAlignment="Center" Command="ApplicationCommands.Properties" Margin="10" Padding="20 5">Settings</Button>
+            <Button DockPanel.Dock="Right" VerticalAlignment="Center" Command="ApplicationCommands.Close" Margin="10" Padding="20 5">Close</Button>
+            <CheckBox x:Name="hideNextTime" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Right">Hide this window next time</CheckBox>
+        </DockPanel>
 
     </Grid>
 </Window>
