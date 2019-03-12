@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:DesktopSbS"
         mc:Ignorable="d" MaxWidth="400" WindowStartupLocation="CenterScreen"
         
-        Title="Version warning"  Icon="DesktopSbS.ico" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+        Title="Version warning" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>
     </Window.CommandBindings>
     <DockPanel Margin="10">
         <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Center" Command="ApplicationCommands.Close" Padding="20 5">Close</Button>
-        <Image Source="Resources/warning.png" DockPanel.Dock="Left" VerticalAlignment="Top" Stretch="None"/>
+        <Image Source="/DesktopSbS;component/Resources/Img/warning.png" DockPanel.Dock="Left" VerticalAlignment="Top" Stretch="None"/>
         <StackPanel>
             <TextBlock Margin="10,0" TextWrapping="Wrap">
                DesktopSbS needs Windows 10 Creators Update to work well.
