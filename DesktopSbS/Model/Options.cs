@@ -213,6 +213,41 @@ namespace DesktopSbS
 
         #endregion
 
+        #region Update
+
+        public static bool CheckUpdateAtStartup
+        {
+            get
+            {
+                return Settings.Default.CheckUpdateAtStartup;
+            }
+            set
+            {
+                Settings.Default.CheckUpdateAtStartup = value;
+            }
+        }
+
+        public static Version CurrentVersion { get; } = new Version(App.VERSION);
+
+        public static Version LatestVersion
+        {
+            get
+            {
+                Version.TryParse(Settings.Default.LatestVersion, out Version version);
+                if (version != null && version >= CurrentVersion)
+                {
+                    return version;
+                }
+                else
+                {
+                    return CurrentVersion;
+                }
+            }
+            set { Settings.Default.LatestVersion = value.ToString(); }
+        }
+
+        #endregion
+
         public static SbSComputedVariables ComputedVariables;
 
         static Options()
@@ -265,6 +300,6 @@ namespace DesktopSbS
             }
         }
 
-     
+
     }
 }
