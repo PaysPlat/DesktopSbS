@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopSbS.View"
         xmlns:conv="clr-namespace:DesktopSbS.Converters"
         mc:Ignorable="d"
-        Title="DesktopSbS Settings" Height="600" Width="600" MinWidth="480" MinHeight="480"
+        Title="DesktopSbS Settings" Height="620" Width="620" MinWidth="480" MinHeight="480"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="GroupBox">
@@ -24,7 +24,10 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="5 0"/>
         </Style>
-
+        <Style TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5 0"/>
+        </Style>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
@@ -36,8 +39,9 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <GroupBox Grid.ColumnSpan="2" Header="Screens">
@@ -172,11 +176,6 @@
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                         </Style>
-
-                        <Style TargetType="CheckBox">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="5 0"/>
-                        </Style>
                     </Grid.Resources>
 
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Screen source Id :"/>
@@ -201,7 +200,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Row="1" Header="Keyboard shortcuts" >
+        <GroupBox Grid.Row="1" Grid.RowSpan="2" Header="Keyboard shortcuts" >
             <ScrollViewer>
                 <ItemsControl ItemsSource="{Binding KeyboardShortcuts}" Grid.IsSharedSizeScope="True"  FocusVisualStyle="{x:Null}">
                     <ItemsControl.ItemTemplate>
@@ -264,7 +263,12 @@
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
-        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Misc">
+            <StackPanel Margin="0 3">
+                <CheckBox Content="Check updates at startup" IsChecked="{Binding CheckUpdateAtStartup}"/>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
             <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin" Value="10"/>

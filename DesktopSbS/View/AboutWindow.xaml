@@ -8,7 +8,6 @@
         xmlns:converters="clr-namespace:DesktopSbS.Converters" 
         Closed="Window_Closed"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        
         Title="About DesktopSbS" Height="500" Width="640"  ResizeMode="NoResize" Icon="/DesktopSbS;component/DesktopSbS.ico">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
@@ -26,7 +25,10 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel>
-            <TextBlock FontSize="24" Margin="0 10" Text="{Binding Version,StringFormat=DesktopSbS v{0}}"/>
+            <TextBlock FontSize="24" Margin="0 10">
+                <Run Text="DesktopSbS"/>
+                <Run Text="{Binding Source={x:Static local:Options.CurrentVersion}, Mode=OneWay,StringFormat={}v{0}}"/>
+            </TextBlock>
 
             <TextBlock TextWrapping="Wrap" Margin="10 5">A Windows 10 software to manage 3D display in Side-by-Side or Top-Bottom mode
 
@@ -96,6 +98,7 @@
         </TextBlock>
         <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
             <Button DockPanel.Dock="Left" VerticalAlignment="Center" Command="ApplicationCommands.Properties" Margin="10" Padding="20 5">Settings</Button>
+            <Button DockPanel.Dock="Left" VerticalAlignment="Center" Command="{Binding CmdCheckUpdate}" Margin="10" Padding="20 5">Check for update</Button>
             <Button DockPanel.Dock="Right" VerticalAlignment="Center" Command="ApplicationCommands.Close" Margin="10" Padding="20 5">Close</Button>
             <CheckBox x:Name="hideNextTime" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Right">Hide this window next time</CheckBox>
         </DockPanel>

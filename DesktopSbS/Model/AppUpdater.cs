@@ -15,16 +15,17 @@ namespace DesktopSbS.Model
     public static class AppUpdater
     {
 
-        public static void CheckForUpdates(bool automaticMode)
+        public static void CheckForUpdates(bool automaticMode, Action<Action> doRequestAction = null)
         {
             RequestObject updateRequest = new RequestObject
             {
                 WebRequest = WebRequest.CreateHttp(App.VERSIONS_URL),
                 Parameter = automaticMode,
+                DoRequestAction = doRequestAction,
                 OnSuccess = ReadUpdateResponseStream,
-                OnFailure = p =>
+                OnFailure = ro =>
                 {
-                    if ((p as bool?) == false)
+                    if ((ro.Parameter as bool?) == false)
                     {
                         MessageBox.Show($"Update URL \"{App.VERSIONS_URL}\" could not be opened.", "Network error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -47,7 +48,7 @@ namespace DesktopSbS.Model
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         Stream streamResponse = response.GetResponseStream();
-                        requestObject.OnSuccess(streamResponse, requestObject.Parameter);
+                        requestObject.OnSuccess(streamResponse, requestObject);
 
                         // Close the stream object
                         streamResponse.Close();
@@ -58,17 +59,18 @@ namespace DesktopSbS.Model
                 }
                 catch (WebException exception)
                 {
-                    requestObject.OnFailure?.Invoke(requestObject.Parameter);
+                    requestObject.OnFailure?.Invoke(requestObject);
                 }
             }
         }
 
 
-        private static void ReadUpdateResponseStream(Stream updateStream, object parameter)
+        private static void ReadUpdateResponseStream(Stream updateStream, RequestObject requestObject)
         {
             StreamReader streamReader = new StreamReader(updateStream);
 
-            bool automaticMode = (parameter as bool?) == true;
+            bool automaticMode = (requestObject.Parameter as bool?) == true;
+            Action<Action> doRequestAction = requestObject.DoRequestAction ?? (a => a?.Invoke());
 
             Version referenceVersion = automaticMode ? Options.LatestVersion : Options.CurrentVersion;
 
@@ -98,53 +100,59 @@ namespace DesktopSbS.Model
                 Options.LatestVersion = maxAvailableVersion.Item1;
                 Options.Save();
 
-                bool uawResult = false;
-
-                Application.Current.Dispatcher.Invoke(() =>
+                doRequestAction(() =>
                 {
-                    View.UpdateAvailableWindow uaw = new View.UpdateAvailableWindow
-                    {
-                        NewVersion = maxAvailableVersion.Item1,
-                        ReleaseDate = maxAvailableVersion.Item2,
-                    };
-                    uawResult = uaw.ShowDialog() == true;
-                });
+                    bool uawResult = false;
 
-                if (uawResult)
-                {
-                    string fileName = Path.GetFileName(maxAvailableVersion.Item3);
-                    string extension = Path.GetExtension(fileName);
-                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        FileName = fileName,
-                        OverwritePrompt = true,
-                        AddExtension = true,
-                        Filter = $"{extension.Replace(".", string.Empty).ToUpper()} files (*{extension})|*{extension}",
-                        DefaultExt = extension
-
-                    };
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filePath = saveFileDialog.FileName;
-                        Application.Current.Dispatcher.Invoke(() =>
+                        View.UpdateAvailableWindow uaw = new View.UpdateAvailableWindow
                         {
-                            View.DownloadUpdateWindow duw = new View.DownloadUpdateWindow();
-                            duw.DownloadAndStart(maxAvailableVersion.Item3, filePath);
-                        });
+                            NewVersion = maxAvailableVersion.Item1,
+                            ReleaseDate = maxAvailableVersion.Item2,
+                        };
+                        uawResult = uaw.ShowDialog() == true;
+                    });
+
+                    if (uawResult)
+                    {
+                        string fileName = Path.GetFileName(maxAvailableVersion.Item3);
+                        string extension = Path.GetExtension(fileName);
+                        SaveFileDialog saveFileDialog = new SaveFileDialog
+                        {
+                            FileName = fileName,
+                            OverwritePrompt = true,
+                            AddExtension = true,
+                            Filter = $"{extension.Replace(".", string.Empty).ToUpper()} files (*{extension})|*{extension}",
+                            DefaultExt = extension
+
+                        };
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filePath = saveFileDialog.FileName;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                View.DownloadUpdateWindow duw = new View.DownloadUpdateWindow();
+                                duw.DownloadAndStart(maxAvailableVersion.Item3, filePath);
+                            });
+                        }
                     }
-                }
+                });
             }
             else if (!automaticMode)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                doRequestAction(() =>
                 {
-                    View.UpdateAvailableWindow uaw = new View.UpdateAvailableWindow
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        NewVersion = null,
-                        ReleaseDate = null
-                    };
-                    uaw.ShowDialog();
+                        View.UpdateAvailableWindow uaw = new View.UpdateAvailableWindow
+                        {
+                            NewVersion = null,
+                            ReleaseDate = null
+                        };
+                        uaw.ShowDialog();
+                    });
                 });
             }
 
@@ -158,9 +166,11 @@ namespace DesktopSbS.Model
 
             public object Parameter { get; set; }
 
-            public Action<Stream, object> OnSuccess { get; set; }
+            public Action<Stream, RequestObject> OnSuccess { get; set; }
 
-            public Action<object> OnFailure { get; set; }
+            public Action<RequestObject> OnFailure { get; set; }
+
+            public Action<Action> DoRequestAction { get; set; }
 
             public IAsyncResult BeginGetResponse(AsyncCallback responseReceived)
             {
