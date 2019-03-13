@@ -74,10 +74,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibility.cs" />
+    <Compile Include="Converters\ObjectNotNull.cs" />
     <Compile Include="Converters\ObjectToString.cs" />
     <Compile Include="Converters\NotBool.cs" />
     <Compile Include="Converters\AreEqual.cs" />
     <Compile Include="Converters\DoubleOperation.cs" />
+    <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\NotifiableValue.cs" />
     <Compile Include="Model\RelayCommand.cs" />
