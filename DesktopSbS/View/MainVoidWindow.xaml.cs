@@ -69,6 +69,30 @@ namespace DesktopSbS.View
 
         private void init()
         {
+            if (Options.CheckUpdateAtStartup)
+            {
+                AppUpdater.CheckForUpdates(true, dra =>
+                 {
+                     bool is3DRunning = this.Is3DActive;
+                     if (is3DRunning)
+                     {
+                         this.Dispatcher.Invoke(() =>
+                         {
+                             this.Is3DActive = false;
+                             this.isAboutOpened = true;
+                         });
+                     }
+                     dra?.Invoke();
+                     if (is3DRunning)
+                     {
+                         this.Dispatcher.Invoke(() =>
+                         {
+                             this.isAboutOpened = false;
+                             if (App.Current != null) this.Is3DActive = true;
+                         });
+                     }
+                 });
+            }
             if (!Options.HideAboutOnStartup)
             {
                 AboutWindow.Instance.ShowDialog();

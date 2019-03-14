@@ -164,5 +164,29 @@ namespace DesktopSbS.Properties {
                 this["Shortcuts"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LatestVersion {
+            get {
+                return ((string)(this["LatestVersion"]));
+            }
+            set {
+                this["LatestVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckUpdateAtStartup {
+            get {
+                return ((bool)(this["CheckUpdateAtStartup"]));
+            }
+            set {
+                this["CheckUpdateAtStartup"] = value;
+            }
+        }
     }
 }

@@ -434,6 +434,25 @@ namespace DesktopSbS.View
 
         #endregion
 
+        #region Misc
+
+        private bool _CheckUpdateAtStartup;
+        public bool CheckUpdateAtStartup
+        {
+            get { return this._CheckUpdateAtStartup; }
+            set
+            {
+                if (this._CheckUpdateAtStartup != value)
+                {
+                    this._CheckUpdateAtStartup = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+
+        #endregion
+
         #region Windows
 
         public SettingsWindow()
@@ -484,6 +503,8 @@ namespace DesktopSbS.View
 
                 Options.KeyboardShortcuts = this.KeyboardShortcuts.ToList();
                 Options.ExcludedApplications = this.ExcludedApplications.Select(ea => ea.Value).ToList();
+
+                Options.CheckUpdateAtStartup = this.CheckUpdateAtStartup;
 
                 Options.Save();
                 Options.InitializeScreenOptions();
@@ -568,6 +589,7 @@ namespace DesktopSbS.View
                 ? new ObservableCollection<NotifiableValue<string>>(Options.ExcludedApplications.Select(ea => (NotifiableValue<string>)ea))
                 : new ObservableCollection<NotifiableValue<string>>();
 
+            this.CheckUpdateAtStartup = Options.CheckUpdateAtStartup;
         }
 
         #endregion

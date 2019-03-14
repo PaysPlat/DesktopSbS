@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -27,11 +28,6 @@ namespace DesktopSbS.View
             }
         }
 
-        public string Version
-        {
-            get { return App.VERSION; }
-        }
-
         public List<Tuple<ModifierKeys, Key, ShortcutCommands>> KeyboardShortcuts
         {
             get { return Options.KeyboardShortcuts; }
@@ -49,6 +45,12 @@ namespace DesktopSbS.View
             this.Close();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Options.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
+            instance = null;
+        }
+
         private void PropertiesCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
             new SettingsWindow().ShowDialog();
@@ -56,11 +58,34 @@ namespace DesktopSbS.View
         }
 
 
-        private void Window_Closed(object sender, EventArgs e)
+        #region CheckUpdate
+
+        private RelayCommand cmdCheckUpdate;
+        public ICommand CmdCheckUpdate
         {
-            Options.HideAboutOnStartup = this.hideNextTime.IsChecked == true;
-            instance = null;
+            get
+            {
+                if (cmdCheckUpdate == null) { cmdCheckUpdate = new RelayCommand(fctCheckUpdate, canCheckUpdate, true); }
+                return cmdCheckUpdate;
+            }
         }
+
+        private bool canCheckUpdate(object y)
+        {
+            return true;
+        }
+
+        private void fctCheckUpdate(object x)
+        {
+            if (CmdCheckUpdate.CanExecute(x))
+            {
+                AppUpdater.CheckForUpdates(false);
+            }
+
+        }
+
+        #endregion
+
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
@@ -82,5 +107,6 @@ namespace DesktopSbS.View
 
         #endregion
 
+      
     }
 }

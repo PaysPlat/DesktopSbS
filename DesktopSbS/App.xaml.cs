@@ -26,6 +26,8 @@ namespace DesktopSbS
 
         public const string VERSION = "0.5";
 
+        public const string VERSIONS_URL = "http://desktopsbs.paysplat.fr/versions";
+
 
         static Mutex mutex = new Mutex(true, "{A118F0EB-E2D3-465C-8821-89061A45EE4C}");
 
