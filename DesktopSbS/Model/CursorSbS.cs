@@ -75,19 +75,22 @@ namespace DesktopSbS
             if (this.isCursorActive != newCursorActive)
             {
                 this.isCursorActive = newCursorActive;
-                if (this.isCursorActive)
+                App.Current.Dispatcher.Invoke(() =>
                 {
-                    if (Options.HideSrcCursor)
+                    if (this.isCursorActive)
                     {
-                        CursorWindow.HideCursors();
+                        if (Options.HideSrcCursor)
+                        {
+                            CursorWindow.HideCursors();
+                        }
+                        this.RegisterThumbs();
                     }
-                    App.Current.Dispatcher.Invoke(this.RegisterThumbs);
-                }
-                else
-                {
-                    App.Current.Dispatcher.Invoke(this.UnRegisterThumbs);
-                    CursorWindow.ShowCursors();
-                }
+                    else
+                    {
+                        this.UnRegisterThumbs();
+                        CursorWindow.ShowCursors();
+                    }
+                });
             }
 
 
