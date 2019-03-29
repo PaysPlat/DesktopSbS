@@ -72,7 +72,7 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
-            <Image Margin="10" Width="128" Source="/DesktopSbS;component/Resources/Img/DesktopSbS.png"/>
+            <Image Margin="10" Stretch="None" Source="/DesktopSbS;component/Resources/Img/DesktopSbS.png"/>
             <TextBlock TextAlignment="Center" Margin="10" TextWrapping="Wrap">
                 All information available on
                 <LineBreak/>
