@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DesktopSbS.Hook;
 using DesktopSbS.Interop;
+using DesktopSbS.Properties;
 using Microsoft.Win32;
 
 namespace DesktopSbS
@@ -41,6 +43,13 @@ namespace DesktopSbS
         {
             base.OnStartup(e);
 
+            if (e.Args.FirstOrDefault()?.ToLower() == "/read-settings")
+            {
+                string settings = Util.ReadSettings();
+                Console.WriteLine(settings);
+                this.Shutdown(1);
+            }
+
             Version win10Version = Util.GetWindowsVersion();
             if (win10Version.Major < 10 || (win10Version.Major == 10 && win10Version.Build < 15063))
             {
@@ -65,7 +74,9 @@ namespace DesktopSbS
         {
             base.OnExit(e);
             if (e.ApplicationExitCode >= 1)
+            {
                 return;
+            }
             mutex.ReleaseMutex();
         }
 
