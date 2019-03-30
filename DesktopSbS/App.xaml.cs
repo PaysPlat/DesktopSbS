@@ -23,6 +23,7 @@ namespace DesktopSbS
     /// </summary>
     public partial class App : Application
     {
+        public const string APP_NAME = "DesktopSbS";
 
         public const string VERSION = "0.5";
 
