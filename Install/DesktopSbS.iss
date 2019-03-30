@@ -7,7 +7,7 @@
 #define Guid "{94929386-9F11-4A9E-9087-1B3D0CDCFE3A}"
 #define SrcFolder "..\"+AppName+"\bin\Release"
 
-#define AppVersion "0.5"
+#define AppVersion GetStringFileInfo(SrcFolder+"\"+AppName+".exe","ProductVersion")
 #define AppVerName AppName+" v"+AppVersion
 #define AppVerName_ StringChange(AppVerName," ", "_");
 #define FolderName StringChange(AppName," ", "_");
@@ -45,14 +45,14 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#SrcFolder}\{#ExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SrcFolder}\{#ExeName}.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SrcFolder}\*.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SrcFolder}\*.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SrcFolder}\Resources\*"; DestDir: "{app}\Resources"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\{#AppVerName}"; Filename: "{app}\{#ExeName}"
-Name: "{group}\{cm:UninstallProgram,{#AppVerName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#AppVerName}"; Filename: "{app}\{#ExeName}"; Tasks: desktopicon
+Name: "{group}\{#AppName}"; Filename: "{app}\{#ExeName}"
+Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#ExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#ExeName}"; Description: "{cm:LaunchProgram,{#AppVerName}}"; Flags: nowait postinstall skipifsilent unchecked
