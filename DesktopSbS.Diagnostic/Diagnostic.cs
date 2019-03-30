@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,35 +19,38 @@ namespace DesktopSbS.Diagnostic
 
         public void WriteDiagnosticOnTextFile()
         {
-            string diagnosticFilePath = Util.ExePath + "diagnostic.txt";
+            string diagnosticFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\{DesktopSbS.App.APP_NAME}.Diagnostic.txt";
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"DesktopSbS diagnostic v{DesktopSbS.App.VERSION}");
+            Process proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = $"{Util.ExePath}{DesktopSbS.App.APP_NAME}.exe",
+                    Arguments = "/read-settings",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            sb.AppendLine($"{DesktopSbS.App.APP_NAME} diagnostic v{DesktopSbS.App.VERSION}");
+            sb.AppendLine($"Windows version: {Util.GetWindowsVersion()}");
             sb.AppendLine($"Date: {DateTime.Now}");
             sb.AppendLine();
 
             sb.AppendLine("Options");
             sb.AppendLine("------------------------------------");
-
-            sb.AppendLine($"ScreenSrcId: {DesktopSbS.Options.ScreenSrcId}");
-            sb.AppendLine($"ScreenSrcBounds: {DesktopSbS.Options.ScreenSrcBounds}");
-            sb.AppendLine($"AreaSrcBounds: {DesktopSbS.Options.AreaSrcBounds}");
-            sb.AppendLine($"ScreenSrcWorkspace: {DesktopSbS.Options.ScreenSrcWorkspace}");
-            sb.AppendLine($"ScreenScale: {DesktopSbS.Options.ScreenScale}");
-            sb.AppendLine($"HideSrcCursor: {DesktopSbS.Options.HideSrcCursor}");
-            sb.AppendLine();
-
-            sb.AppendLine($"ScreenDestId: {DesktopSbS.Options.ScreenDestId}");
-            sb.AppendLine($"ScreenDestBounds: {DesktopSbS.Options.ScreenDestBounds}");
-            sb.AppendLine($"HideDestCursor: {DesktopSbS.Options.HideDestCursor}");
-            sb.AppendLine();
-
-            sb.AppendLine($"HideAboutOnStartup: {DesktopSbS.Options.HideAboutOnStartup}");
-            sb.AppendLine($"ModeSbS: {DesktopSbS.Options.ModeSbS}");
-            sb.AppendLine($"KeepRatio: {DesktopSbS.Options.KeepRatio}");
-            sb.AppendLine($"ParallaxEffect: {DesktopSbS.Options.ParallaxEffect}");
-            sb.AppendLine($"ExcludedApplications: {DesktopSbS.Options.ExcludedApplications}");
+            proc.Start();
+            while (!proc.StandardOutput.EndOfStream)
+            {
+                string setting = proc.StandardOutput.ReadLine();
+                if (!string.IsNullOrEmpty(setting))
+                {
+                    sb.AppendLine(setting);
+                }
+            }
 
             User32.EnumWindows(windowFound, 0);
 
