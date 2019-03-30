@@ -27,7 +27,7 @@ namespace DesktopSbS
     {
         public const string APP_NAME = "DesktopSbS";
 
-        public const string VERSION = "0.5";
+        public const string VERSION = "1.0";
 
         public const string VERSIONS_URL = "http://desktopsbs.paysplat.fr/versions";
 
