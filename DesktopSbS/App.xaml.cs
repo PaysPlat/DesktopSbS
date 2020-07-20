@@ -42,7 +42,9 @@ namespace DesktopSbS
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            
             if (e.Args.FirstOrDefault()?.ToLower() == "/read-settings")
             {
                 string settings = Util.ReadSettings();
@@ -67,7 +69,37 @@ namespace DesktopSbS
             {
                 this.MainWindow = new View.MainVoidWindow();
             }
+        }
 
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                LogException(ex);
+            }
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            LogException(e.Exception);
+        }
+
+        private void LogException(Exception e)
+        { 
+            string diagnosticFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\{DesktopSbS.App.APP_NAME}.Exception.txt";
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{DateTime.Now} -> {e}");
+
+            try
+            {
+                File.AppendAllText(diagnosticFilePath, sb.ToString());
+                Process.Start(diagnosticFilePath);
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
