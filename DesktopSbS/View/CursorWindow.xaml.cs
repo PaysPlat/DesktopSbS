@@ -21,6 +21,8 @@ namespace DesktopSbS.View
         private Tuple<BitmapImage, POINT> currentCursor;
         private IntPtr currentCursorType = IntPtr.Zero;
 
+        private object lockSetCursor = new object();
+
         static CursorWindow()
         {
             cursors = new Dictionary<IntPtr, Tuple<BitmapImage, POINT>>();
@@ -136,18 +138,23 @@ namespace DesktopSbS.View
             InitializeComponent();
         }
 
+
+
         public POINT SetCursor(IntPtr inCursorType)
         {
-            if (inCursorType != this.currentCursorType)
+            lock (lockSetCursor)
             {
-                this.currentCursorType = inCursorType;
-                if (!cursors.TryGetValue(this.currentCursorType, out this.currentCursor))
+                if (inCursorType != this.currentCursorType)
                 {
-                    this.currentCursor = defaultCursor;
+                    this.currentCursorType = inCursorType;
+                    if (!cursors.TryGetValue(this.currentCursorType, out this.currentCursor))
+                    {
+                        this.currentCursor = defaultCursor;
+                    }
+                    this.CursorImage.Source = this.currentCursor.Item1;
                 }
-                this.CursorImage.Source = this.currentCursor.Item1;
+                return this.currentCursor.Item2;
             }
-            return this.currentCursor.Item2;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
