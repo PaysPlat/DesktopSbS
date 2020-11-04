@@ -53,7 +53,11 @@ namespace DesktopSbS
             }
 
             Version win10Version = Util.GetWindowsVersion();
-            if (win10Version.Major < 10 || (win10Version.Major == 10 && win10Version.Build < 15063))
+            if (win10Version == null)
+            {
+                MessageBox.Show("Windows OS version cannot be read");
+            }
+            else if (win10Version.Major < 10 || (win10Version.Major == 10 && win10Version.Build < 15063))
             {
                 View.VersionWarningWindow vww = new View.VersionWarningWindow();
                 vww.ShowDialog();
