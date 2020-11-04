@@ -76,7 +76,7 @@
             <TextBlock TextAlignment="Center" Margin="10" TextWrapping="Wrap">
                 All information available on
                 <LineBreak/>
-                <Hyperlink NavigateUri="http://desktopsbs.paysplat.fr" RequestNavigate="Hyperlink_RequestNavigate">http://desktopsbs.paysplat.fr</Hyperlink>
+                <Hyperlink NavigateUri="https://desktopsbs.paysplat.fr" RequestNavigate="Hyperlink_RequestNavigate">https://desktopsbs.paysplat.fr</Hyperlink>
             </TextBlock>
             <TextBlock TextAlignment="Center" Margin="10" TextWrapping="Wrap">If you have some suggestions to improve DesktopSbS, please contact me at
             <Hyperlink NavigateUri="mailto:paysplat@gmail.com" RequestNavigate="Hyperlink_RequestNavigate">paysplat@gmail.com</Hyperlink>
