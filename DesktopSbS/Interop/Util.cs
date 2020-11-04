@@ -170,21 +170,8 @@ namespace DesktopSbS.Interop
 
         public static Version GetWindowsVersion()
         {
-
-            Process cmdVer = new Process();
-            cmdVer.StartInfo.FileName = "cmd.exe";
-            cmdVer.StartInfo.Arguments = "/C ver";
-            cmdVer.StartInfo.CreateNoWindow = true;
-            cmdVer.StartInfo.UseShellExecute = false;
-            cmdVer.StartInfo.RedirectStandardOutput = true;
-            cmdVer.Start();
-            string strOutput = cmdVer.StandardOutput.ReadToEnd();
-            cmdVer.WaitForExit();
-            string verString = Regex.Match(strOutput, "[0-9.]+")?.Value;
-            Version version;
-            Version.TryParse(verString, out version);
-
-            return version;
+            var os = Environment.OSVersion;
+            return os.Version;
         }
 
         public static string ReadSettings()
