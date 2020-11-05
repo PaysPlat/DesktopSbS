@@ -1,16 +1,16 @@
 # DesktopSbS
 
-### Warning
+## Warning
 
 ![Warning](./Res/img/warning.png) DesktopSbS needs **Windows 10 Creators Update** to work well.  
 You can download it manually if you do not want to wait Windows Update deployment.  
 [Windows 10 Creators Update](https://www.microsoft.com/en-us/software-download/windows10)
 
-### Download latest version
+## Download latest version
 
-**2019-03-30: DesktopSbS v1.0 [(Changelog)](http://desktopsbs.paysplat.fr/index.html#versions)**
+**2020-11-05: DesktopSbS v1.2 [(Changelog)](#versions)**
 
-![Warning](./Res/img/DesktopSbS_64.png) **[DesktopSbS_v1.0_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.0/DesktopSbS_v1.0_Setup.exe)**
+![Warning](./Res/img/DesktopSbS_64.png) **[DesktopSbS_v1.2_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.2/DesktopSbS_v1.2_Setup.exe)**
 
 ## Introduction
 
@@ -18,24 +18,28 @@ I have (not so) recently bought a new video projector. It handles 3D from comput
 
 But PC Windows 10 interface is really impossible to use.
 
-#### Windows 10 interface on 3D device
+### Windows 10 interface on 3D device
+
 ![Windows 10 interface on 3D device](./Res/ScreenShots/Default-Rendering.png)
 
 So I decided to develop a software able to manage 3D display of desktop in Side-by-Side or Top-Bottom mode. And I called it **DesktopSbS**
 
 ## ScreenShots
 
-Here are two screenshots of DesktopSbS rendering. 
+Here are two screenshots of DesktopSbS rendering.
 
 They seems strange but they look fine on a 3D device.
 
-#### DesktopSbS in Side-by-Side mode
+### DesktopSbS in Side-by-Side mode
+
 ![DesktopSbS in Side-by-Side](./Res/ScreenShots/Side-by-Side.png)
 
-#### DesktopSbS in Top-Bottom mode
+### DesktopSbS in Top-Bottom mode
+
 ![DesktopSbS in Top-Bottom](./Res/ScreenShots/Top-Bottom.png)
 
 ## Acronyms
+
 SbS = Side-by-Side
 
 TB  = Top-Bottom
@@ -61,7 +65,8 @@ You can change install folder, start menu location and add a desktop icon, as us
 
 At first launch, DesktopSbS will display its about window with commands shortcuts and other information.
 
-The default commands shortcuts are: 
+The default commands shortcuts are:
+
 - **Ctrl + Alt + F1** : show about DesktopSbS
 - **Ctrl + Alt + W** : decrease parallax efect
 - **Ctrl + Alt + X** : increase parallax efect
@@ -76,6 +81,14 @@ Shortcuts are configurable in settings window.
 ## Features
 
 ### Versions
+
+**- 2020-11-05: [DesktopSbS_v1.2_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.2/DesktopSbS_v1.2_Setup.exe)**
+
+- fix crashes at startup
+
+**- 2020-07-21: [DesktopSbS_v1.1_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.1/DesktopSbS_v1.1_Setup.exe)**
+
+- Exception logger
 
 **- 2019-03-30: [DesktopSbS_v1.0_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.0/DesktopSbS_v1.0_Setup.exe)**
 
@@ -115,15 +128,13 @@ Shortcuts are configurable in settings window.
 - Management of display scales different of 100%
 - Excluded fullScreen applications, DesktopSbS can pause itself for some applications, useful if other application already manage Side-by-Side display, for example a SbS video player.
 
-
-
-### What could be improved?
+### What could be improved
 
 - Sometimes a window goes up DesktopSbS rendering
 - Sometimes Windows taskbar goes up DesktopSbs rendering
 - Add of a notification icon
 
-### What is not working (not yet or never)?
+### What is not working (not yet or never)
 
 - Windows start menu rendering
 - Windows applications switch rendering (Alt + Tab)
