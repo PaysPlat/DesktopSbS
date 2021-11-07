@@ -126,15 +126,18 @@ namespace DesktopSbS.View
                 switch (shortcutFound.Value)
                 {
                     case ShortcutCommands.About:
-                        this.Dispatcher.Invoke(() =>
+                        if (!this.isAboutOpened)
                         {
-                            AboutWindow.Instance.hideNextTime.IsChecked = false;
-                            this.Is3DActive = false;
-                            this.isAboutOpened = true;
-                            AboutWindow.Instance.ShowDialog();
-                            this.isAboutOpened = false;
-                            if (App.Current != null) this.Is3DActive = true;
-                        });
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                AboutWindow.Instance.hideNextTime.IsChecked = false;
+                                this.Is3DActive = false;
+                                this.isAboutOpened = true;
+                                AboutWindow.Instance.ShowDialog();
+                                this.isAboutOpened = false;
+                                if (App.Current != null) this.Is3DActive = true;
+                            });
+                        }
                         break;
                     case ShortcutCommands.DecreaseParallax:
                         Options.ParallaxEffect--;
