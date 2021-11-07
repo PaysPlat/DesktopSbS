@@ -8,9 +8,9 @@ You can download it manually if you do not want to wait Windows Update deploymen
 
 ## Download latest version
 
-**2020-11-05: DesktopSbS v1.2 [(Changelog)](#versions)**
+**2021-11-07: DesktopSbS v1.3 [(Changelog)](#versions)**
 
-![Warning](./Res/img/DesktopSbS_64.png) **[DesktopSbS_v1.2_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.2/DesktopSbS_v1.2_Setup.exe)**
+![Warning](./Res/img/DesktopSbS_64.png) **[DesktopSbS_v1.3_Setup.exe](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.3/DesktopSbS_v1.3_Setup.exe)**
 
 ## Introduction
 
@@ -81,6 +81,10 @@ Shortcuts are configurable in settings window.
 ## Features
 
 ### Versions
+
+**- 2021-11-07: [DesktopSbS_v1.3_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.3/DesktopSbS_v1.3_Setup.exe)**
+
+- fix crash when opening About window if already opened
 
 **- 2020-11-05: [DesktopSbS_v1.2_Setup](https://github.com/PaysPlat/DesktopSbS/releases/download/v1.2/DesktopSbS_v1.2_Setup.exe)**
 
